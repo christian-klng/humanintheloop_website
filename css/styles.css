@@ -756,6 +756,8 @@ footer {
 }
 
 /* === Responsive === */
+
+/* Tablet */
 @media (max-width: 900px) {
     .detail-layout {
         grid-template-columns: 1fr;
@@ -765,19 +767,62 @@ footer {
     .detail-sidebar .card {
         position: static;
     }
+
+    .footer-links {
+        gap: 40px;
+    }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
-    .hero h1 {
-        font-size: 48px;
+    /* Nav: hide "Apply Now" button, reduce padding */
+    nav {
+        padding: 12px 16px;
     }
 
-    nav {
-        padding: 16px 24px;
+    .nav-cta {
+        display: none;
+    }
+
+    .nav-links {
+        gap: 16px;
+        font-size: 13px;
+    }
+
+    .logo {
+        font-size: 14px;
+    }
+
+    .logo-img {
+        height: 24px;
+    }
+
+    /* Hero */
+    .hero {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .hero p {
+        font-size: 17px;
     }
 
     .hero-btns {
         flex-direction: column;
+        align-items: center;
+    }
+
+    /* Sections */
+    section {
+        padding: 48px 0;
+    }
+
+    .section--spaced {
+        padding-top: 80px;
     }
 
     .section-header {
@@ -786,14 +831,47 @@ footer {
         gap: 16px;
     }
 
+    .section-title {
+        font-size: 20px;
+    }
+
+    /* Page headers */
+    .page-header {
+        padding-top: 100px;
+        padding-bottom: 24px;
+    }
+
+    .page-header h1 {
+        font-size: 32px;
+    }
+
+    /* Grid: allow single column on small screens */
+    .grid {
+        grid-template-columns: 1fr;
+        margin-top: 32px;
+    }
+
+    /* Event detail */
     .event-cover-img {
-        height: 280px;
+        height: 220px;
+        border-radius: var(--radius-sm);
+        margin-bottom: 32px;
     }
 
-    .nav-links {
-        gap: 16px;
+    .detail-layout {
+        gap: 32px;
     }
 
+    /* Cards */
+    .card {
+        padding: 24px;
+    }
+
+    .event-content {
+        padding: 20px;
+    }
+
+    /* Footer */
     .footer-grid {
         flex-direction: column;
         gap: 40px;
@@ -807,4 +885,69 @@ footer {
     .footer-brand {
         max-width: none;
     }
+
+    .footer-bottom {
+        margin-top: 32px;
+    }
+
+    /* Legal pages */
+    .legal-content h2 {
+        font-size: 19px;
+        margin-top: 32px;
+    }
+
+    /* Styleguide */
+    .sg-h1 { font-size: 40px; }
+    .sg-h2 { font-size: 32px; }
+    .sg-h3 { font-size: 20px; }
+
+    .color-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 16px;
+    }
+
+    .color-swatch {
+        height: 72px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .nav-links {
+        gap: 12px;
+        font-size: 12px;
+    }
+
+    .logo {
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    .logo-img {
+        height: 20px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 28px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .sg-h1 { font-size: 32px; }
+    .sg-h2 { font-size: 26px; }
 }
