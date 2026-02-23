@@ -494,11 +494,89 @@ section {
 /* === Footer === */
 footer {
     border-top: 1px solid var(--border-color);
-    padding: 48px 0;
+    padding: 64px 0 32px;
     margin-top: 80px;
-    text-align: center;
     color: var(--text-secondary);
     font-size: 14px;
+}
+
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 64px;
+}
+
+.footer-brand {
+    max-width: 300px;
+}
+
+.footer-brand .logo {
+    margin-bottom: 12px;
+}
+
+.footer-tagline {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 16px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.social-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface);
+}
+
+.footer-links {
+    display: flex;
+    gap: 64px;
+}
+
+.footer-col ul {
+    list-style: none;
+}
+
+.footer-col li {
+    margin-bottom: 10px;
+}
+
+.footer-col a {
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+
+.footer-col a:hover {
+    color: var(--text-primary);
+}
+
+.footer-heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+}
+
+.footer-bottom {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+    font-size: 13px;
+    color: var(--text-secondary);
 }
 
 /* === Styleguide Page === */
@@ -662,5 +740,19 @@ footer {
 
     .nav-links {
         gap: 16px;
+    }
+
+    .footer-grid {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .footer-links {
+        gap: 32px;
+        flex-wrap: wrap;
+    }
+
+    .footer-brand {
+        max-width: none;
     }
 }
