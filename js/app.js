@@ -221,6 +221,44 @@ function renderRoute(route) {
     }
 }
 
+// --- Mobile Menu ---
+
+const navToggle = document.querySelector('.nav-toggle');
+const navEl = document.querySelector('nav');
+const navLinksEl = document.querySelector('.nav-links');
+const navOverlay = document.querySelector('.nav-overlay');
+
+function openMenu() {
+    navEl.classList.add('is-open');
+    navLinksEl.classList.add('is-open');
+    navOverlay.classList.add('is-open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+}
+
+function closeMenu() {
+    navEl.classList.remove('is-open');
+    navLinksEl.classList.remove('is-open');
+    navOverlay.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+}
+
+if (navToggle) {
+    navToggle.addEventListener('click', () => {
+        const isOpen = navEl.classList.contains('is-open');
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    });
+}
+
+if (navOverlay) {
+    navOverlay.addEventListener('click', closeMenu);
+}
+
 // --- Event Listeners ---
 
 // Nav links
@@ -228,6 +266,7 @@ Object.entries(navLinks).forEach(([page, link]) => {
     if (!link) return;
     link.addEventListener('click', (e) => {
         e.preventDefault();
+        closeMenu();
         navigateTo(page);
     });
 });
@@ -237,12 +276,14 @@ const logo = document.querySelector('.logo');
 if (logo) {
     logo.addEventListener('click', (e) => {
         e.preventDefault();
+        closeMenu();
         navigateTo('home');
     });
 }
 
 // Back/forward buttons
 window.addEventListener('hashchange', () => {
+    closeMenu();
     renderRoute(getRouteFromHash());
 });
 
