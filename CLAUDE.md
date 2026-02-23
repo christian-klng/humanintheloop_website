@@ -26,6 +26,10 @@ Static website for Human in the Loop. No build step, no frameworks — plain HTM
 └── CLAUDE.md
 ```
 
+## Naming
+
+- **Never abbreviate "Human in the Loop"** — do not use "HITL" as it has unfortunate connotations in German. Always write the full name.
+
 ## Key Conventions
 
 - **No CSS frameworks** — custom CSS with design tokens in `:root` variables
