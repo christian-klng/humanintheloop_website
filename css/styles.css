@@ -10,7 +10,13 @@
     --text-primary: #111111;
     --text-secondary: #8a8f98;
     --border-color: #eaeaea;
-    --accent-blue: #0070f3;
+    --accent: #FFD166;
+    --accent-hover: #f0c050;
+    --secondary: #073B4C;
+    --secondary-hover: #0a4d63;
+    --warning: #EF476F;
+    --success: #06D6A0;
+    --info: #118AB2;
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 24px;
@@ -124,40 +130,41 @@ nav {
 
 /* === Buttons === */
 .btn {
-    background: var(--text-primary);
-    color: #ffffff;
+    background: var(--accent);
+    color: var(--text-primary);
     font-family: inherit;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     padding: 8px 16px;
     border-radius: var(--radius-sm);
     border: 1px solid transparent;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
 .btn:hover {
-    background: #222;
+    background: var(--accent-hover);
 }
 
 .btn:focus-visible {
-    outline: 2px solid var(--accent-blue);
+    outline: 2px solid var(--secondary);
     outline-offset: 2px;
 }
 
 .btn-outline {
-    background: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    background: var(--secondary);
+    color: #ffffff;
+    border: 1px solid var(--secondary);
+    box-shadow: 0 2px 4px rgba(7, 59, 76, 0.15);
 }
 
 .btn-outline:hover {
-    background: var(--bg-surface);
+    background: var(--secondary-hover);
+    border-color: var(--secondary-hover);
 }
 
 .btn-block {
@@ -227,7 +234,7 @@ section {
     display: inline-block;
     width: 6px;
     height: 6px;
-    background-color: var(--accent-blue);
+    background-color: var(--accent);
     border-radius: 50%;
 }
 
@@ -305,7 +312,7 @@ section {
 }
 
 .event-card:focus-visible {
-    outline: 2px solid var(--accent-blue);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
@@ -383,7 +390,7 @@ section {
 }
 
 .back-link:focus-visible {
-    outline: 2px solid var(--accent-blue);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
