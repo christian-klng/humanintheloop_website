@@ -1,5 +1,5 @@
 /* ============================================
-   Lumina Academy — Application Logic
+   Human in the Loop — Application Logic
    ============================================ */
 
 // --- State ---
@@ -201,15 +201,15 @@ function renderRoute(route) {
 
     // Update page title
     const titles = {
-        home: 'Lumina Academy | Modern Education',
-        events: 'Events & Workshops | Lumina Academy',
+        home: 'Human in the Loop | Modern Education',
+        events: 'Events & Workshops | Human in the Loop',
         'event-detail': null,
-        styleguide: 'Styleguide | Lumina Academy'
+        styleguide: 'Styleguide | Human in the Loop'
     };
 
     if (page === 'event-detail') {
         const event = events.find((e) => e.id === eventId) || events[0];
-        document.title = `${event.title} | Lumina Academy`;
+        document.title = `${event.title} | Human in the Loop`;
     } else {
         document.title = titles[page] || titles.home;
     }

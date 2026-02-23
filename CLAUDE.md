@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Static website for Human in the Loop (Lumina Academy). No build step, no frameworks — plain HTML, CSS, and vanilla JavaScript served via nginx in a Docker container.
+Static website for Human in the Loop. No build step, no frameworks — plain HTML, CSS, and vanilla JavaScript served via nginx in a Docker container.
 
 ## Tech Stack
 
