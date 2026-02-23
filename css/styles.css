@@ -102,12 +102,9 @@ nav {
     gap: 8px;
 }
 
-.logo-icon {
-    width: 24px;
-    height: 24px;
-    background: var(--text-primary);
-    border-radius: 4px;
-    display: inline-block;
+.logo-img {
+    height: 28px;
+    width: auto;
 }
 
 .nav-links {
