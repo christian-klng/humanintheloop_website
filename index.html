@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Academy | Modern Education</title>
+    <meta name="description" content="Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy. Built for ambitious professionals.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lumina Academy | Modern Education">
+    <meta property="og:description" content="Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="events/images/event-conference.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+
+    <!-- Fonts & Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Skip to content (a11y) -->
+    <a href="#app" class="skip-link">Skip to content</a>
+
+    <!-- Navigation -->
+    <nav aria-label="Main navigation">
+        <a href="#home" class="logo" aria-label="Lumina Academy — Home">
+            <span class="logo-icon" aria-hidden="true"></span>
+            Lumina
+        </a>
+        <div class="nav-links" role="navigation">
+            <a href="#home" id="nav-home" class="active">Overview</a>
+            <a href="#events" id="nav-events">Events</a>
+            <a href="#styleguide" id="nav-styleguide">Styleguide</a>
+        </div>
+        <div>
+            <button class="btn" type="button">Apply Now</button>
+        </div>
+    </nav>
+
+    <!-- Views -->
+    <div id="app">
+
+        <!-- ===== 1. Home ===== -->
+        <main id="home-view" class="view is-active">
+            <!-- Hero -->
+            <section class="hero container">
+                <div class="badge">
+                    <span class="badge-dot" aria-hidden="true"></span> Spring Cohort 2026 Open
+                </div>
+                <h1>Education designed<br>for the modern era.</h1>
+                <p>Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy. Built for ambitious professionals.</p>
+                <div class="hero-btns">
+                    <button class="btn" type="button">Explore Curriculum</button>
+                    <a href="#events" class="btn btn-outline">View Upcoming Events</a>
+                </div>
+            </section>
+
+            <!-- Value Proposition -->
+            <section class="container">
+                <h2 class="section-title">The Lumina Standard</h2>
+                <p class="text-muted">Why the world's best teams learn with us.</p>
+
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                        <h3>Industry-led Curriculum</h3>
+                        <p>Our syllabus is built and maintained by active practitioners from top tech companies. No outdated theory.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                        </div>
+                        <h3>Project-Based Learning</h3>
+                        <p>Learn by doing. Graduate with a portfolio of real-world applications and system designs.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3>Global Network</h3>
+                        <p>Join an elite alumni network of engineers and designers. Participate in exclusive AMAs and meetups.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Next Events -->
+            <section class="container">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Next Events</h2>
+                        <p class="text-muted">Workshops, talks, and community meetups.</p>
+                    </div>
+                    <a href="#events" class="btn btn-outline">View all events &rarr;</a>
+                </div>
+
+                <div class="grid" id="home-events-grid">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== 2. Events ===== -->
+        <main id="events-view" class="view">
+            <div class="page-header container">
+                <h1>Events &amp; Workshops</h1>
+                <p class="text-muted text-lg">Register for upcoming live sessions, hackathons, and guest lectures.</p>
+            </div>
+
+            <section class="container section--flush">
+                <div class="grid" id="events-grid">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== 3. Event Detail ===== -->
+        <main id="event-detail-view" class="view">
+            <div id="event-detail-content">
+                <!-- Rendered by JS -->
+            </div>
+        </main>
+
+        <!-- ===== 4. Styleguide ===== -->
+        <main id="styleguide-view" class="view">
+            <div class="page-header container">
+                <h1>Styleguide</h1>
+                <p class="text-muted text-lg">The design system and component library powering Lumina.</p>
+            </div>
+
+            <section class="container section--flush">
+
+                <!-- Typography -->
+                <div class="sg-section">
+                    <h2 class="sg-section-title">Typography</h2>
+
+                    <div class="sg-block">
+                        <span class="sg-label">Font Family</span>
+                        <p class="sg-font-preview">Inter, -apple-system, BlinkMacSystemFont, sans-serif</p>
+                    </div>
+
+                    <div class="sg-row sg-row--baseline">
+                        <div>
+                            <span class="sg-label">Heading 1 (72px)</span>
+                            <h1 class="sg-h1">Agile Frameworks</h1>
+                        </div>
+                    </div>
+                    <div class="sg-row sg-row--baseline">
+                        <div>
+                            <span class="sg-label">Heading 2 (48px)</span>
+                            <h2 class="sg-h2">Continuous Delivery</h2>
+                        </div>
+                    </div>
+                    <div class="sg-row sg-row--baseline">
+                        <div>
+                            <span class="sg-label">Heading 3 (24px)</span>
+                            <h3 class="sg-h3">Microservice Architecture</h3>
+                        </div>
+                    </div>
+                    <div class="sg-row sg-row--baseline">
+                        <div>
+                            <span class="sg-label">Heading 4 (18px)</span>
+                            <h4 class="sg-h4">Deployment Pipelines</h4>
+                        </div>
+                    </div>
+                    <div class="sg-row">
+                        <div class="sg-text-preview">
+                            <span class="sg-label">Body Text (16px)</span>
+                            <p>Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy. Built for ambitious professionals who want to push the boundaries of technology.</p>
+                        </div>
+                    </div>
+                    <div class="sg-row">
+                        <div class="sg-text-preview">
+                            <span class="sg-label">Muted Text (16px)</span>
+                            <p class="text-muted">Register for upcoming live sessions, hackathons, and guest lectures hosted by industry veterans.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div class="sg-section">
+                    <h2 class="sg-section-title">Colors</h2>
+                    <div class="color-grid">
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: var(--text-primary);"></div>
+                            <div class="color-info">
+                                <div class="color-name">Text Primary</div>
+                                <div class="color-hex">#111111</div>
+                            </div>
+                        </div>
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: var(--text-secondary);"></div>
+                            <div class="color-info">
+                                <div class="color-name">Text Secondary</div>
+                                <div class="color-hex">#8A8F98</div>
+                            </div>
+                        </div>
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: var(--bg-base);"></div>
+                            <div class="color-info">
+                                <div class="color-name">Bg Base</div>
+                                <div class="color-hex">#FFFFFF</div>
+                            </div>
+                        </div>
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: var(--bg-surface);"></div>
+                            <div class="color-info">
+                                <div class="color-name">Bg Surface</div>
+                                <div class="color-hex">#FAFAFA</div>
+                            </div>
+                        </div>
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: var(--border-color);"></div>
+                            <div class="color-info">
+                                <div class="color-name">Border</div>
+                                <div class="color-hex">#EAEAEA</div>
+                            </div>
+                        </div>
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: var(--accent-blue);"></div>
+                            <div class="color-info">
+                                <div class="color-name">Accent Blue</div>
+                                <div class="color-hex">#0070F3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Components -->
+                <div class="sg-section">
+                    <h2 class="sg-section-title">Components</h2>
+
+                    <div class="sg-block">
+                        <span class="sg-label">Buttons</span>
+                        <div class="sg-row sg-row--center">
+                            <button class="btn" type="button">Primary Button</button>
+                            <button class="btn btn-outline" type="button">Outline Button</button>
+                        </div>
+                    </div>
+
+                    <div class="sg-block">
+                        <span class="sg-label">Badges</span>
+                        <div class="sg-row sg-row--center">
+                            <div class="badge inline"><span class="badge-dot" aria-hidden="true"></span> Live Status</div>
+                            <div class="badge inline">Engineering</div>
+                            <div class="badge inline">Design</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="sg-label">Standard Card Structure</span>
+                        <div class="grid grid--flush">
+                            <div class="card">
+                                <div class="card-icon" aria-hidden="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                </div>
+                                <h3>Industry-led Curriculum</h3>
+                                <p>Our syllabus is built and maintained by active practitioners from top tech companies. No outdated theory.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Lumina Academy. Designed for the web.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

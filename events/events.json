@@ -1,0 +1,105 @@
+[
+    {
+        "id": "advanced-system-architecture",
+        "title": "Advanced System Architecture",
+        "date": "Oct 12, 2026",
+        "dateFull": "October 12, 2026",
+        "time": "10:00 AM - 3:00 PM (CET)",
+        "location": "Live Stream",
+        "locationNote": "Link provided upon RSVP",
+        "type": "Live Stream",
+        "cost": "Free for Alumni",
+        "spots": 14,
+        "tags": ["Architecture", "Engineering"],
+        "image": "events/images/event-conference.jpg",
+        "description": [
+            "As modern applications scale to millions of concurrent users, traditional monoliths begin to break down. This exclusive intensive session dives deep into the realities of migrating to and maintaining distributed architectures at enterprise scale.",
+            "Led by former Principal Engineers from AWS and Netflix, we will dissect real-world case studies, analyze post-mortem outage reports, and build a theoretical high-availability system from scratch during our interactive whiteboarding session."
+        ],
+        "learns": [
+            "Identifying the breaking points of monolithic architectures.",
+            "Patterns for reliable asynchronous communication (Eventual consistency, Sagas).",
+            "Designing robust API gateways and implementing rate limiting.",
+            "Data partitioning strategies for globally distributed databases.",
+            "Effective observability and tracing in microservice ecosystems."
+        ],
+        "audience": "This event is strictly tailored for Senior Backend Engineers, Technical Leads, and System Architects looking to modernize their infrastructure. A strong understanding of networking protocols and backend languages (Go, Rust, Node, or Java) is expected."
+    },
+    {
+        "id": "frontend-performance-clinic",
+        "title": "Frontend Performance Clinic",
+        "date": "Oct 24, 2026",
+        "dateFull": "October 24, 2026",
+        "time": "2:00 PM - 6:00 PM (CET)",
+        "location": "Berlin HQ",
+        "locationNote": null,
+        "type": "Berlin HQ",
+        "cost": "Free for Alumni",
+        "spots": 20,
+        "tags": ["Frontend", "Performance"],
+        "image": "events/images/event-workshop.jpg",
+        "description": [
+            "Bring your sluggish web apps. We'll profile, debug, and optimize them live on the big screen.",
+            "This hands-on clinic covers Core Web Vitals, rendering performance, bundle optimization, and modern caching strategies. Bring a real project and leave with measurable improvements."
+        ],
+        "learns": [
+            "Profiling and diagnosing rendering bottlenecks with Chrome DevTools.",
+            "Optimizing Largest Contentful Paint (LCP) and Interaction to Next Paint (INP).",
+            "Code splitting and lazy loading strategies for modern frameworks.",
+            "Effective use of service workers and caching strategies.",
+            "Measuring and monitoring real-user performance metrics."
+        ],
+        "audience": "Frontend developers of all levels who want to ship faster, more responsive web applications. Bring a laptop with a project you'd like to optimize."
+    },
+    {
+        "id": "figma-prototyping-masterclass",
+        "title": "Figma Prototyping Masterclass",
+        "date": "Nov 02, 2026",
+        "dateFull": "November 2, 2026",
+        "time": "11:00 AM - 4:00 PM (CET)",
+        "location": "Hybrid",
+        "locationNote": "Berlin HQ + Live Stream",
+        "type": "Hybrid",
+        "cost": "Free for Alumni",
+        "spots": 30,
+        "tags": ["Design", "Prototyping"],
+        "image": "events/images/event-prototyping.jpg",
+        "description": [
+            "Learn advanced variables, conditionals, and micro-interactions from principal product designers.",
+            "This masterclass goes beyond basic prototyping to cover Figma's latest features including variables, conditionals, and expressions. Build production-ready prototypes that communicate design intent clearly to engineering teams."
+        ],
+        "learns": [
+            "Figma variables and design token management.",
+            "Conditional logic and expressions in prototypes.",
+            "Micro-interaction design with smart animate.",
+            "Building reusable component libraries with variants.",
+            "Handoff best practices for developer collaboration."
+        ],
+        "audience": "Product designers and UX engineers who want to level up their Figma prototyping skills. Basic Figma knowledge is expected."
+    },
+    {
+        "id": "winter-alumni-mixer",
+        "title": "Winter Alumni Mixer",
+        "date": "Nov 15, 2026",
+        "dateFull": "November 15, 2026",
+        "time": "6:00 PM - 10:00 PM (GMT)",
+        "location": "London",
+        "locationNote": "Venue TBA",
+        "type": "London",
+        "cost": "Free",
+        "spots": 50,
+        "tags": ["Networking", "Community"],
+        "image": "events/images/event-networking.jpg",
+        "description": [
+            "Connect with fellow Lumina graduates, hire top talent, and enjoy an evening of tech talks.",
+            "Our annual winter mixer brings together the best of the Lumina community for an evening of lightning talks, networking, and celebration. Whether you're hiring, looking for collaborators, or just want to reconnect — this is the event for you."
+        ],
+        "learns": [
+            "Lightning talks from alumni working at leading tech companies.",
+            "Structured networking sessions with curated introductions.",
+            "Live demos of alumni side projects and startups.",
+            "Panel discussion on career growth in tech for 2027."
+        ],
+        "audience": "All Lumina alumni and current cohort members. Bring a friend who might be a good fit for the community."
+    }
+]
