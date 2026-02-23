@@ -11,7 +11,10 @@ const views = {
     home: document.getElementById('home-view'),
     events: document.getElementById('events-view'),
     'event-detail': document.getElementById('event-detail-view'),
-    styleguide: document.getElementById('styleguide-view')
+    styleguide: document.getElementById('styleguide-view'),
+    privacy: document.getElementById('privacy-view'),
+    terms: document.getElementById('terms-view'),
+    imprint: document.getElementById('imprint-view')
 };
 
 const navLinks = {
@@ -204,7 +207,10 @@ function renderRoute(route) {
         home: 'Human in the Loop | Modern Education',
         events: 'Events & Workshops | Human in the Loop',
         'event-detail': null,
-        styleguide: 'Styleguide | Human in the Loop'
+        styleguide: 'Styleguide | Human in the Loop',
+        privacy: 'Privacy Policy | Human in the Loop',
+        terms: 'Terms of Service | Human in the Loop',
+        imprint: 'Imprint | Human in the Loop'
     };
 
     if (page === 'event-detail') {
