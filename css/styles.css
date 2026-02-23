@@ -482,7 +482,11 @@ section {
     margin-top: 12px;
 }
 
-/* === Section (no top padding variant) === */
+/* === Section variants === */
+.section--spaced {
+    padding-top: 120px;
+}
+
 .section--flush {
     padding-top: 0;
 }
