@@ -91,8 +91,8 @@
         "tags": ["Networking", "Community"],
         "image": "events/images/event-networking.jpg",
         "description": [
-            "Connect with fellow HITL graduates, hire top talent, and enjoy an evening of tech talks.",
-            "Our annual winter mixer brings together the best of the HITL community for an evening of lightning talks, networking, and celebration. Whether you're hiring, looking for collaborators, or just want to reconnect — this is the event for you."
+            "Connect with fellow Human in the Loop graduates, hire top talent, and enjoy an evening of tech talks.",
+            "Our annual winter mixer brings together the best of the Human in the Loop community for an evening of lightning talks, networking, and celebration. Whether you're hiring, looking for collaborators, or just want to reconnect — this is the event for you."
         ],
         "learns": [
             "Lightning talks from alumni working at leading tech companies.",
@@ -100,6 +100,6 @@
             "Live demos of alumni side projects and startups.",
             "Panel discussion on career growth in tech for 2027."
         ],
-        "audience": "All HITL alumni and current cohort members. Bring a friend who might be a good fit for the community."
+        "audience": "All Human in the Loop alumni and current cohort members. Bring a friend who might be a good fit for the community."
     }
 ]
