@@ -38,17 +38,31 @@ async function loadEvents() {
 
 // --- Render Helpers ---
 
+function parseEventDate(dateStr) {
+    const parts = dateStr.match(/^(\w+)\s+(\d+)/);
+    if (!parts) return { month: '', day: '' };
+    return { month: parts[1].toUpperCase().slice(0, 3), day: parts[2] };
+}
+
 function createEventCard(event) {
+    const { month, day } = parseEventDate(event.date);
     const card = document.createElement('a');
     card.href = `/event/${event.id}`;
     card.className = 'card event-card';
     card.setAttribute('aria-label', `${event.title} — ${event.date}`);
     card.innerHTML = `
-        <img src="${event.image}" alt="" class="event-image" loading="lazy">
-        <div class="event-content">
-            <div class="event-date">${event.date} &bull; ${event.type}</div>
-            <h3>${event.title}</h3>
-            <p class="event-description">${event.description[0]}</p>
+        <div class="ticket-stub">
+            <span class="ticket-month">${month}</span>
+            <span class="ticket-day">${day}</span>
+            <div class="ticket-perf" aria-hidden="true"></div>
+        </div>
+        <div class="ticket-body">
+            <img src="${event.image}" alt="" class="event-image" loading="lazy">
+            <div class="event-content">
+                <div class="event-date">${event.date} &bull; ${event.type}</div>
+                <h3>${event.title}</h3>
+                <p class="event-description">${event.description[0]}</p>
+            </div>
         </div>
     `;
     return card;
@@ -355,4 +369,141 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadEvents();
     renderAllEventCards();
     renderRoute(getRouteFromPath());
+    initHeroCanvas();
 });
+
+// --- Hero Knowledge Graph Animation ---
+
+function initHeroCanvas() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const hero = canvas.parentElement;
+
+    // Config
+    const NODE_COUNT = 40;
+    const CONNECTION_DIST = 130;
+    const MOUSE_RADIUS = 200;
+    const NODE_SPEED = 0.25;
+    const NODE_SIZE = 2;
+    const ACCENT = [255, 209, 102]; // --accent #FFD166
+
+    let mouse = { x: -9999, y: -9999 };
+    let nodes = [];
+    let animId = null;
+
+    function resize() {
+        const rect = hero.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+    }
+
+    function createNodes() {
+        nodes = [];
+        for (let i = 0; i < NODE_COUNT; i++) {
+            nodes.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * NODE_SPEED * 2,
+                vy: (Math.random() - 0.5) * NODE_SPEED * 2
+            });
+        }
+    }
+
+    function dist(a, b) {
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Update positions
+        for (const node of nodes) {
+            node.x += node.vx;
+            node.y += node.vy;
+
+            if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+            if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+
+            node.x = Math.max(0, Math.min(canvas.width, node.x));
+            node.y = Math.max(0, Math.min(canvas.height, node.y));
+        }
+
+        // Draw connections
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const d = dist(nodes[i], nodes[j]);
+                if (d > CONNECTION_DIST) continue;
+
+                const midX = (nodes[i].x + nodes[j].x) / 2;
+                const midY = (nodes[i].y + nodes[j].y) / 2;
+                const mouseDist = dist({ x: midX, y: midY }, mouse);
+                const fade = 1 - d / CONNECTION_DIST;
+
+                if (mouseDist < MOUSE_RADIUS) {
+                    const glow = 1 - mouseDist / MOUSE_RADIUS;
+                    ctx.strokeStyle = `rgba(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]}, ${fade * 0.3 * glow + fade * 0.05})`;
+                } else {
+                    ctx.strokeStyle = `rgba(0, 0, 0, ${fade * 0.05})`;
+                }
+
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.stroke();
+            }
+        }
+
+        // Draw nodes
+        for (const node of nodes) {
+            const mouseDist = dist(node, mouse);
+            let alpha = 0.1;
+            let size = NODE_SIZE;
+            let r = 0, g = 0, b = 0;
+
+            if (mouseDist < MOUSE_RADIUS) {
+                const glow = 1 - mouseDist / MOUSE_RADIUS;
+                r = ACCENT[0];
+                g = ACCENT[1];
+                b = ACCENT[2];
+                alpha = 0.15 + glow * 0.5;
+                size = NODE_SIZE + glow * 1.5;
+            }
+
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        animId = requestAnimationFrame(draw);
+    }
+
+    // Mouse tracking — translate page coords to hero-relative coords
+    hero.addEventListener('mousemove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+    });
+
+    hero.addEventListener('mouseleave', () => {
+        mouse.x = -9999;
+        mouse.y = -9999;
+    });
+
+    // Enable pointer events on the hero but keep canvas non-interactive
+    hero.style.pointerEvents = 'auto';
+
+    window.addEventListener('resize', () => {
+        resize();
+        createNodes();
+    });
+
+    resize();
+    createNodes();
+    draw();
+}

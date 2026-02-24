@@ -221,6 +221,22 @@ section {
     text-align: center;
     padding-top: 160px;
     padding-bottom: 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+#hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero > *:not(#hero-canvas) {
+    position: relative;
+    z-index: 1;
 }
 
 .hero h1 {
@@ -328,12 +344,14 @@ section {
     margin-bottom: 8px;
 }
 
-/* === Event Cards === */
+/* === Event Cards (Ticket Stub) === */
 .event-card {
     padding: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     text-align: left;
+    overflow: visible;
+    background: var(--bg-base);
 }
 
 .event-card:hover {
@@ -342,9 +360,90 @@ section {
     transform: translateY(-2px);
 }
 
+.event-card:hover .ticket-stub {
+    background: var(--accent);
+}
+
+.event-card:hover .ticket-stub::before,
+.event-card:hover .ticket-stub::after {
+    background: var(--accent);
+}
+
 .event-card:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+}
+
+/* Ticket stub — left date section */
+.ticket-stub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 24px 12px;
+    background: var(--bg-surface);
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+
+/* Semicircle notches */
+.ticket-stub::before,
+.ticket-stub::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    z-index: 2;
+    transition: background 0.2s ease;
+}
+
+.ticket-stub::before {
+    top: -8px;
+}
+
+.ticket-stub::after {
+    bottom: -8px;
+}
+
+/* Perforation line */
+.ticket-perf {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    right: 0;
+    width: 1px;
+    border-right: 2px dashed var(--border-color);
+}
+
+.ticket-month {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    line-height: 1;
+}
+
+.ticket-day {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+/* Ticket body — image + content */
+.ticket-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
 }
 
 .event-image {
@@ -982,6 +1081,15 @@ footer {
 
     .event-card {
         padding: 0;
+    }
+
+    .ticket-stub {
+        min-width: 64px;
+        padding: 16px 8px;
+    }
+
+    .ticket-day {
+        font-size: 24px;
     }
 
     .event-content {
