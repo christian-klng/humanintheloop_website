@@ -40,7 +40,7 @@ async function loadEvents() {
 
 function createEventCard(event) {
     const card = document.createElement('a');
-    card.href = `#event/${event.id}`;
+    card.href = `/event/${event.id}`;
     card.className = 'card event-card';
     card.setAttribute('aria-label', `${event.title} — ${event.date}`);
     card.innerHTML = `
@@ -51,10 +51,6 @@ function createEventCard(event) {
             <p class="event-description">${event.description[0]}</p>
         </div>
     `;
-    card.addEventListener('click', (e) => {
-        e.preventDefault();
-        navigateTo('event-detail', event.id);
-    });
     return card;
 }
 
@@ -149,28 +145,62 @@ function renderAllEventCards() {
     if (eventsGrid) renderEventCards(eventsGrid, events);
 }
 
+// --- Meta Tags ---
+
+function updateMetaTags(title, description) {
+    document.title = title;
+
+    function setMeta(selector, content) {
+        const el = document.querySelector(selector);
+        if (el) el.setAttribute('content', content);
+    }
+
+    setMeta('meta[name="description"]', description);
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', description);
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', window.location.href);
+
+    setMeta('meta[property="og:url"]', window.location.href);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', description);
+}
+
 // --- Router ---
 
-function getRouteFromHash() {
-    const hash = window.location.hash.slice(1) || 'home';
-    if (hash.startsWith('event/')) {
-        const eventId = hash.replace('event/', '');
-        return { page: 'event-detail', eventId };
+function getRouteFromPath() {
+    const path = window.location.pathname;
+
+    if (path === '/' || path === '') {
+        return { page: 'home', eventId: null };
     }
-    return { page: hash, eventId: null };
+
+    const eventMatch = path.match(/^\/event\/(.+?)(?:\/)?$/);
+    if (eventMatch) {
+        return { page: 'event-detail', eventId: eventMatch[1] };
+    }
+
+    const page = path.replace(/^\//, '').replace(/\/$/, '');
+    if (views[page]) {
+        return { page, eventId: null };
+    }
+
+    return { page: 'home', eventId: null };
 }
 
 function navigateTo(page, eventId) {
-    let hash = page;
+    let path = '/';
     if (page === 'event-detail' && eventId) {
-        hash = `event/${eventId}`;
+        path = `/event/${eventId}`;
+    } else if (page !== 'home') {
+        path = `/${page}`;
     }
 
-    if (window.location.hash !== `#${hash}`) {
-        window.location.hash = hash;
-    } else {
-        renderRoute({ page, eventId });
+    if (window.location.pathname !== path) {
+        history.pushState(null, '', path);
     }
+    renderRoute({ page, eventId });
 }
 
 function renderRoute(route) {
@@ -202,22 +232,43 @@ function renderRoute(route) {
         navLinks[page].classList.add('active');
     }
 
-    // Update page title
-    const titles = {
-        home: 'Human in the Loop | Modern Education',
-        events: 'Events & Workshops | Human in the Loop',
-        'event-detail': null,
-        styleguide: 'Styleguide | Human in the Loop',
-        privacy: 'Privacy Policy | Human in the Loop',
-        terms: 'Terms of Service | Human in the Loop',
-        imprint: 'Imprint | Human in the Loop'
+    // Update page title and meta tags
+    const meta = {
+        home: {
+            title: 'Human in the Loop | Modern Education',
+            description: 'Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy. Built for ambitious professionals.'
+        },
+        events: {
+            title: 'Events & Workshops | Human in the Loop',
+            description: 'Register for upcoming live sessions, hackathons, and guest lectures hosted by industry veterans.'
+        },
+        styleguide: {
+            title: 'Styleguide | Human in the Loop',
+            description: 'The design system and component library powering Human in the Loop.'
+        },
+        privacy: {
+            title: 'Privacy Policy | Human in the Loop',
+            description: 'Privacy policy for Human in the Loop. Learn how we collect, use, and protect your data.'
+        },
+        terms: {
+            title: 'Terms of Service | Human in the Loop',
+            description: 'Terms of service for Human in the Loop educational platform.'
+        },
+        imprint: {
+            title: 'Imprint | Human in the Loop',
+            description: 'Legal information and company details for Human in the Loop GmbH.'
+        }
     };
 
     if (page === 'event-detail') {
         const event = events.find((e) => e.id === eventId) || events[0];
-        document.title = `${event.title} | Human in the Loop`;
+        updateMetaTags(
+            `${event.title} | Human in the Loop`,
+            event.description[0]
+        );
     } else {
-        document.title = titles[page] || titles.home;
+        const m = meta[page] || meta.home;
+        updateMetaTags(m.title, m.description);
     }
 }
 
@@ -261,35 +312,47 @@ if (navOverlay) {
 
 // --- Event Listeners ---
 
-// Nav links
-Object.entries(navLinks).forEach(([page, link]) => {
+// Delegated click handler for all internal path-based links
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('a');
     if (!link) return;
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeMenu();
+
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('/')) return;
+    if (link.target === '_blank' || e.ctrlKey || e.metaKey) return;
+
+    e.preventDefault();
+    closeMenu();
+
+    if (href === '/') {
+        navigateTo('home');
+    } else if (href.startsWith('/event/')) {
+        const eventId = href.replace('/event/', '');
+        navigateTo('event-detail', eventId);
+    } else {
+        const page = href.slice(1);
         navigateTo(page);
-    });
+    }
 });
 
-// Logo
-const logo = document.querySelector('.logo');
-if (logo) {
-    logo.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeMenu();
-        navigateTo('home');
-    });
-}
-
 // Back/forward buttons
-window.addEventListener('hashchange', () => {
+window.addEventListener('popstate', () => {
     closeMenu();
-    renderRoute(getRouteFromHash());
+    renderRoute(getRouteFromPath());
 });
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', async () => {
+    // Legacy hash redirect (for old bookmarks like /#events)
+    if (window.location.hash && window.location.hash !== '#app') {
+        const hash = window.location.hash.slice(1);
+        const path = hash === 'home' ? '/' :
+                     hash.startsWith('event/') ? `/${hash}` :
+                     `/${hash}`;
+        history.replaceState(null, '', path);
+    }
+
     await loadEvents();
     renderAllEventCards();
-    renderRoute(getRouteFromHash());
+    renderRoute(getRouteFromPath());
 });

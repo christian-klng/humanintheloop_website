@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Static website for Human in the Loop. No build step, no frameworks — plain HTML, CSS, and vanilla JavaScript served via nginx in a Docker container.
+Static website for Human in the Loop. No frameworks — plain HTML, CSS, and vanilla JavaScript served via nginx in a Docker container. A build-time Node.js script generates per-route HTML for OG meta tags.
 
 ## Tech Stack
 
@@ -14,13 +14,16 @@ Static website for Human in the Loop. No build step, no frameworks — plain HTM
 
 ```
 /
-├── index.html              Main HTML (SPA with hash routing)
+├── index.html              Main HTML template (with OG placeholders)
 ├── css/styles.css          All styles, design system variables
-├── js/app.js               SPA router, event rendering, data fetching
+├── js/app.js               SPA router (History API), event rendering
 ├── events/
 │   ├── events.json         Event data (single source of truth)
 │   └── images/             Event-specific images
-├── Dockerfile              nginx:alpine static serving
+├── scripts/
+│   └── generate-pages.js   Build-time OG meta tag generator
+├── nginx.conf              nginx routing configuration
+├── Dockerfile              Multi-stage: node build + nginx serve
 ├── favicon.ico             Favicons and web manifest
 ├── site.webmanifest
 └── CLAUDE.md
@@ -35,8 +38,9 @@ Static website for Human in the Loop. No build step, no frameworks — plain HTM
 - **No CSS frameworks** — custom CSS with design tokens in `:root` variables
 - **No inline styles** — all styling via classes in css/styles.css (exception: styleguide color swatches)
 - **Events are data-driven** — defined in events/events.json, rendered dynamically by JS
-- **Hash-based SPA routing** — URLs use `#home`, `#events`, `#event/{id}`, `#styleguide`
+- **Path-based SPA routing** — URLs use `/`, `/events`, `/event/{id}`, `/styleguide`, `/privacy`, `/terms`, `/imprint`
 - **Semantic HTML** — use `<a>` and `<button>` (not `<div onclick>`), include ARIA labels
+- **OG meta tags** — generated per-route at Docker build time via `scripts/generate-pages.js`; also updated client-side on navigation
 
 ## Color Palette
 
@@ -55,10 +59,20 @@ Static website for Human in the Loop. No build step, no frameworks — plain HTM
 1. Add an entry to `events/events.json`
 2. Place the event image in `events/images/`
 3. Reference the image path as `events/images/filename.jpg` in the JSON
+4. OG tags are generated automatically at Docker build time from events.json
 
 ## Local Development
 
 ```sh
-python3 -m http.server 8000
-# or any static server — fetch() requires HTTP, not file://
+npx serve -s -l 8000
+# SPA-aware static server — serves index.html for all routes
 ```
+
+## Docker Build
+
+```sh
+docker build --build-arg BASE_URL=https://your-domain.com -t humanintheloop .
+docker run -p 8080:80 humanintheloop
+```
+
+`BASE_URL` is required — it sets the absolute URLs for OG meta tags and canonical links.

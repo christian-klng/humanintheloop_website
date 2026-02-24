@@ -9,5 +9,8 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Build artifacts
+dist/
+
 # Claude Code
 .claude/
