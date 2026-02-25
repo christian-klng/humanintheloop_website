@@ -1,105 +1,105 @@
 [
     {
         "id": "advanced-system-architecture",
-        "title": "Advanced System Architecture",
-        "date": "Oct 12, 2026",
-        "dateFull": "October 12, 2026",
-        "time": "10:00 AM - 3:00 PM (CET)",
-        "location": "Live Stream",
-        "locationNote": "Link provided upon RSVP",
-        "type": "Live Stream",
-        "cost": "Free for Alumni",
+        "title": "Fortgeschrittene Systemarchitektur",
+        "date": "12. Okt. 2026",
+        "dateFull": "12. Oktober 2026",
+        "time": "10:00 – 15:00 Uhr (MEZ)",
+        "location": "Livestream",
+        "locationNote": "Link nach Anmeldung",
+        "type": "Livestream",
+        "cost": "Kostenlos für Alumni",
         "spots": 14,
-        "tags": ["Architecture", "Engineering"],
+        "tags": ["Architektur", "Engineering"],
         "image": "events/images/event-conference.jpg",
         "description": [
-            "As modern applications scale to millions of concurrent users, traditional monoliths begin to break down. This exclusive intensive session dives deep into the realities of migrating to and maintaining distributed architectures at enterprise scale.",
-            "Led by former Principal Engineers from AWS and Netflix, we will dissect real-world case studies, analyze post-mortem outage reports, and build a theoretical high-availability system from scratch during our interactive whiteboarding session."
+            "Wenn moderne Anwendungen auf Millionen gleichzeitiger Nutzer skalieren, stoßen traditionelle Monolithen an ihre Grenzen. Diese exklusive Intensivsitzung taucht tief in die Realität der Migration zu und Wartung von verteilten Architekturen im Enterprise-Maßstab ein.",
+            "Geleitet von ehemaligen Principal Engineers von AWS und Netflix analysieren wir reale Fallstudien, untersuchen Post-Mortem-Ausfallberichte und entwerfen ein theoretisches Hochverfügbarkeitssystem von Grund auf in unserer interaktiven Whiteboard-Session."
         ],
         "learns": [
-            "Identifying the breaking points of monolithic architectures.",
-            "Patterns for reliable asynchronous communication (Eventual consistency, Sagas).",
-            "Designing robust API gateways and implementing rate limiting.",
-            "Data partitioning strategies for globally distributed databases.",
-            "Effective observability and tracing in microservice ecosystems."
+            "Schwachstellen monolithischer Architekturen erkennen.",
+            "Muster für zuverlässige asynchrone Kommunikation (Eventual Consistency, Sagas).",
+            "Robuste API-Gateways entwerfen und Rate Limiting implementieren.",
+            "Datenpartitionierungsstrategien für global verteilte Datenbanken.",
+            "Effektive Observability und Tracing in Microservice-Ökosystemen."
         ],
-        "audience": "This event is strictly tailored for Senior Backend Engineers, Technical Leads, and System Architects looking to modernize their infrastructure. A strong understanding of networking protocols and backend languages (Go, Rust, Node, or Java) is expected."
+        "audience": "Diese Veranstaltung richtet sich gezielt an Senior Backend Engineers, Technical Leads und Systemarchitekten, die ihre Infrastruktur modernisieren möchten. Fundierte Kenntnisse in Netzwerkprotokollen und Backend-Sprachen (Go, Rust, Node oder Java) werden vorausgesetzt."
     },
     {
         "id": "frontend-performance-clinic",
-        "title": "Frontend Performance Clinic",
-        "date": "Oct 24, 2026",
-        "dateFull": "October 24, 2026",
-        "time": "2:00 PM - 6:00 PM (CET)",
+        "title": "Frontend-Performance-Klinik",
+        "date": "24. Okt. 2026",
+        "dateFull": "24. Oktober 2026",
+        "time": "14:00 – 18:00 Uhr (MEZ)",
         "location": "Berlin HQ",
         "locationNote": null,
         "type": "Berlin HQ",
-        "cost": "Free for Alumni",
+        "cost": "Kostenlos für Alumni",
         "spots": 20,
         "tags": ["Frontend", "Performance"],
         "image": "events/images/event-workshop.jpg",
         "description": [
-            "Bring your sluggish web apps. We'll profile, debug, and optimize them live on the big screen.",
-            "This hands-on clinic covers Core Web Vitals, rendering performance, bundle optimization, and modern caching strategies. Bring a real project and leave with measurable improvements."
+            "Bringen Sie Ihre langsamen Web-Apps mit. Wir profilieren, debuggen und optimieren sie live auf der großen Leinwand.",
+            "Diese praxisorientierte Klinik behandelt Core Web Vitals, Rendering-Performance, Bundle-Optimierung und moderne Caching-Strategien. Bringen Sie ein echtes Projekt mit und gehen Sie mit messbaren Verbesserungen nach Hause."
         ],
         "learns": [
-            "Profiling and diagnosing rendering bottlenecks with Chrome DevTools.",
-            "Optimizing Largest Contentful Paint (LCP) and Interaction to Next Paint (INP).",
-            "Code splitting and lazy loading strategies for modern frameworks.",
-            "Effective use of service workers and caching strategies.",
-            "Measuring and monitoring real-user performance metrics."
+            "Profiling und Diagnose von Rendering-Engpässen mit Chrome DevTools.",
+            "Optimierung von Largest Contentful Paint (LCP) und Interaction to Next Paint (INP).",
+            "Code Splitting und Lazy Loading-Strategien für moderne Frameworks.",
+            "Effektiver Einsatz von Service Workern und Caching-Strategien.",
+            "Messung und Monitoring von Real-User-Performance-Metriken."
         ],
-        "audience": "Frontend developers of all levels who want to ship faster, more responsive web applications. Bring a laptop with a project you'd like to optimize."
+        "audience": "Frontend-Entwickler aller Erfahrungsstufen, die schnellere und responsivere Web-Anwendungen ausliefern möchten. Bringen Sie einen Laptop mit einem Projekt mit, das Sie optimieren möchten."
     },
     {
         "id": "figma-prototyping-masterclass",
         "title": "Figma Prototyping Masterclass",
-        "date": "Nov 02, 2026",
-        "dateFull": "November 2, 2026",
-        "time": "11:00 AM - 4:00 PM (CET)",
+        "date": "02. Nov. 2026",
+        "dateFull": "2. November 2026",
+        "time": "11:00 – 16:00 Uhr (MEZ)",
         "location": "Hybrid",
-        "locationNote": "Berlin HQ + Live Stream",
+        "locationNote": "Berlin HQ + Livestream",
         "type": "Hybrid",
-        "cost": "Free for Alumni",
+        "cost": "Kostenlos für Alumni",
         "spots": 30,
         "tags": ["Design", "Prototyping"],
         "image": "events/images/event-prototyping.jpg",
         "description": [
-            "Learn advanced variables, conditionals, and micro-interactions from principal product designers.",
-            "This masterclass goes beyond basic prototyping to cover Figma's latest features including variables, conditionals, and expressions. Build production-ready prototypes that communicate design intent clearly to engineering teams."
+            "Lernen Sie fortgeschrittene Variablen, Bedingungen und Mikro-Interaktionen von erfahrenen Product Designern.",
+            "Diese Masterclass geht über grundlegendes Prototyping hinaus und behandelt die neuesten Figma-Features wie Variablen, Bedingungen und Ausdrücke. Erstellen Sie produktionsreife Prototypen, die Design-Intentionen klar an Engineering-Teams kommunizieren."
         ],
         "learns": [
-            "Figma variables and design token management.",
-            "Conditional logic and expressions in prototypes.",
-            "Micro-interaction design with smart animate.",
-            "Building reusable component libraries with variants.",
-            "Handoff best practices for developer collaboration."
+            "Figma-Variablen und Design-Token-Management.",
+            "Bedingte Logik und Ausdrücke in Prototypen.",
+            "Mikro-Interaktions-Design mit Smart Animate.",
+            "Wiederverwendbare Komponentenbibliotheken mit Varianten erstellen.",
+            "Best Practices für die Übergabe an Entwickler."
         ],
-        "audience": "Product designers and UX engineers who want to level up their Figma prototyping skills. Basic Figma knowledge is expected."
+        "audience": "Product Designer und UX Engineers, die ihre Figma-Prototyping-Fähigkeiten ausbauen möchten. Grundlegende Figma-Kenntnisse werden vorausgesetzt."
     },
     {
         "id": "winter-alumni-mixer",
-        "title": "Winter Alumni Mixer",
-        "date": "Nov 15, 2026",
-        "dateFull": "November 15, 2026",
-        "time": "6:00 PM - 10:00 PM (GMT)",
+        "title": "Winter-Alumni-Treffen",
+        "date": "15. Nov. 2026",
+        "dateFull": "15. November 2026",
+        "time": "18:00 – 22:00 Uhr (GMT)",
         "location": "London",
-        "locationNote": "Venue TBA",
+        "locationNote": "Veranstaltungsort wird noch bekannt gegeben",
         "type": "London",
-        "cost": "Free",
+        "cost": "Kostenlos",
         "spots": 50,
-        "tags": ["Networking", "Community"],
+        "tags": ["Netzwerken", "Community"],
         "image": "events/images/event-networking.jpg",
         "description": [
-            "Connect with fellow Human in the Loop graduates, hire top talent, and enjoy an evening of tech talks.",
-            "Our annual winter mixer brings together the best of the Human in the Loop community for an evening of lightning talks, networking, and celebration. Whether you're hiring, looking for collaborators, or just want to reconnect — this is the event for you."
+            "Vernetzen Sie sich mit Human in the Loop-Absolventen, finden Sie Top-Talente und genießen Sie einen Abend voller Tech-Talks.",
+            "Unser jährliches Winter-Treffen bringt das Beste der Human in the Loop-Community zusammen — für einen Abend mit Lightning Talks, Networking und gemeinsamer Feier. Ob Sie einstellen, Mitstreiter suchen oder einfach alte Kontakte auffrischen möchten — diese Veranstaltung ist für Sie."
         ],
         "learns": [
-            "Lightning talks from alumni working at leading tech companies.",
-            "Structured networking sessions with curated introductions.",
-            "Live demos of alumni side projects and startups.",
-            "Panel discussion on career growth in tech for 2027."
+            "Lightning Talks von Alumni aus führenden Tech-Unternehmen.",
+            "Strukturierte Networking-Sessions mit kuratierten Vorstellungen.",
+            "Live-Demos von Alumni-Nebenprojekten und Startups.",
+            "Podiumsdiskussion über Karriereentwicklung in der Tech-Branche 2027."
         ],
-        "audience": "All Human in the Loop alumni and current cohort members. Bring a friend who might be a good fit for the community."
+        "audience": "Alle Human in the Loop-Alumni und aktuelle Kohorten-Mitglieder. Bringen Sie gerne jemanden mit, der gut in die Community passen könnte."
     }
 ]

@@ -82,44 +82,44 @@ if (DATA_SOURCE === 'volume') {
 const routes = [
     {
         path: '/',
-        title: 'Human in the Loop | Modern Education',
-        description: 'Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy. Built for ambitious professionals.',
+        title: 'Human in the Loop | Moderne Bildung',
+        description: 'Erlernen Sie die Fähigkeiten von morgen mit branchenführenden Kursen in Engineering, Design und Produktstrategie. Für ambitionierte Fachkräfte.',
         image: DEFAULT_IMAGE
     },
     {
         path: '/events',
-        title: 'Events & Workshops | Human in the Loop',
-        description: 'Register for upcoming live sessions, hackathons, and guest lectures hosted by industry veterans.',
+        title: 'Veranstaltungen & Workshops | Human in the Loop',
+        description: 'Melden Sie sich für kommende Live-Sessions, Hackathons und Gastvorträge von Branchenexperten an.',
         image: DEFAULT_IMAGE
     },
     {
         path: '/library',
-        title: 'Library | Human in the Loop',
-        description: 'Articles, image galleries, and video resources from the Human in the Loop community.',
+        title: 'Bibliothek | Human in the Loop',
+        description: 'Artikel, Bildergalerien und Videoressourcen aus der Human in the Loop-Community.',
         image: DEFAULT_IMAGE
     },
     {
         path: '/styleguide',
         title: 'Styleguide | Human in the Loop',
-        description: 'The design system and component library powering Human in the Loop.',
+        description: 'Das Designsystem und die Komponentenbibliothek von Human in the Loop.',
         image: DEFAULT_IMAGE
     },
     {
         path: '/privacy',
-        title: 'Privacy Policy | Human in the Loop',
-        description: 'Privacy policy for Human in the Loop. Learn how we collect, use, and protect your data.',
+        title: 'Datenschutzerklärung | Human in the Loop',
+        description: 'Datenschutzerklärung von Human in the Loop. Erfahren Sie, wie wir Ihre Daten erheben, nutzen und schützen.',
         image: DEFAULT_IMAGE
     },
     {
         path: '/terms',
-        title: 'Terms of Service | Human in the Loop',
-        description: 'Terms of service for Human in the Loop educational platform.',
+        title: 'Nutzungsbedingungen | Human in the Loop',
+        description: 'Nutzungsbedingungen der Bildungsplattform Human in the Loop.',
         image: DEFAULT_IMAGE
     },
     {
         path: '/imprint',
-        title: 'Imprint | Human in the Loop',
-        description: 'Legal information and company details for Human in the Loop GmbH.',
+        title: 'Impressum | Human in the Loop',
+        description: 'Rechtliche Informationen und Unternehmensdaten der Human in the Loop GmbH.',
         image: DEFAULT_IMAGE
     }
 ];

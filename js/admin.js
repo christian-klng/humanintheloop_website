@@ -28,7 +28,7 @@ async function adminFetch(url, opts = {}) {
     if (response.status === 401) {
         clearAdminToken();
         navigateTo('admin');
-        throw new Error('Session expired');
+        throw new Error('Sitzung abgelaufen');
     }
 
     return response;
@@ -60,7 +60,7 @@ function initAdminLogin() {
             const data = await res.json();
 
             if (!res.ok) {
-                errorEl.textContent = data.error || 'Login failed';
+                errorEl.textContent = data.error || 'Anmeldung fehlgeschlagen';
                 errorEl.hidden = false;
                 return;
             }
@@ -69,7 +69,7 @@ function initAdminLogin() {
             passwordInput.value = '';
             navigateTo('admin-dashboard');
         } catch (err) {
-            errorEl.textContent = 'Connection error. Please try again.';
+            errorEl.textContent = 'Verbindungsfehler. Bitte versuchen Sie es erneut.';
             errorEl.hidden = false;
         } finally {
             loginBtn.disabled = false;
@@ -107,8 +107,8 @@ async function renderAdminDashboard() {
 
     if (!eventsList || !resourcesList) return;
 
-    eventsList.innerHTML = '<p class="text-muted">Loading...</p>';
-    resourcesList.innerHTML = '<p class="text-muted">Loading...</p>';
+    eventsList.innerHTML = '<p class="text-muted">Laden...</p>';
+    resourcesList.innerHTML = '<p class="text-muted">Laden...</p>';
 
     try {
         const [eventsRes, resourcesRes] = await Promise.all([
@@ -122,14 +122,14 @@ async function renderAdminDashboard() {
         renderAdminList(eventsList, eventsData, 'event');
         renderAdminList(resourcesList, resourcesData, 'resource');
     } catch (err) {
-        eventsList.innerHTML = '<p class="admin-error">Failed to load data.</p>';
+        eventsList.innerHTML = '<p class="admin-error">Daten konnten nicht geladen werden.</p>';
         resourcesList.innerHTML = '';
     }
 }
 
 function renderAdminList(container, items, type) {
     if (items.length === 0) {
-        container.innerHTML = '<p class="text-muted">No items yet.</p>';
+        container.innerHTML = '<p class="text-muted">Noch keine Einträge vorhanden.</p>';
         return;
     }
 
@@ -140,7 +140,7 @@ function renderAdminList(container, items, type) {
                 <span class="admin-item-id text-muted">${escapeHTML(item.id)}</span>
             </div>
             <div class="admin-item-actions">
-                <a href="/admin/${type}/${item.id}" class="btn btn-sm">Edit</a>
+                <a href="/admin/${type}/${item.id}" class="btn btn-sm">Bearbeiten</a>
             </div>
         </div>
     `).join('');
@@ -173,13 +173,13 @@ async function renderAdminEditor(type, id, isNew) {
     errorEl.hidden = true;
 
     if (isNew) {
-        titleEl.textContent = `New ${type === 'event' ? 'Event' : 'Resource'}`;
+        titleEl.textContent = `Neue ${type === 'event' ? 'Veranstaltung' : 'Ressource'}`;
         deleteBtn.style.display = 'none';
         textarea.value = JSON.stringify(getTemplate(type), null, 4);
     } else {
-        titleEl.textContent = `Edit ${type === 'event' ? 'Event' : 'Resource'}`;
+        titleEl.textContent = `${type === 'event' ? 'Veranstaltung' : 'Ressource'} bearbeiten`;
         deleteBtn.style.display = '';
-        textarea.value = 'Loading...';
+        textarea.value = 'Laden...';
 
         try {
             const endpoint = type === 'event' ? `/api/events/${id}` : `/api/resources/${id}`;
@@ -189,7 +189,7 @@ async function renderAdminEditor(type, id, isNew) {
             textarea.value = JSON.stringify(data, null, 4);
         } catch (err) {
             textarea.value = '';
-            errorEl.textContent = 'Failed to load item.';
+            errorEl.textContent = 'Element konnte nicht geladen werden.';
             errorEl.hidden = false;
         }
     }
@@ -198,30 +198,30 @@ async function renderAdminEditor(type, id, isNew) {
 function getTemplate(type) {
     if (type === 'event') {
         return {
-            id: 'new-event-slug',
-            title: 'New Event Title',
-            date: 'Mar 15, 2026',
-            dateFull: 'March 15, 2026',
-            time: '10:00 AM - 3:00 PM (CET)',
-            location: 'Live Stream',
-            locationNote: 'Link provided upon RSVP',
-            type: 'Live Stream',
-            cost: 'Free for Alumni',
+            id: 'neue-veranstaltung',
+            title: 'Neue Veranstaltung',
+            date: '15. Mär. 2026',
+            dateFull: '15. März 2026',
+            time: '10:00 – 15:00 Uhr (MEZ)',
+            location: 'Livestream',
+            locationNote: 'Link nach Anmeldung',
+            type: 'Livestream',
+            cost: 'Kostenlos für Alumni',
             spots: 20,
             tags: [],
             image: 'events/images/event-conference.jpg',
-            description: ['Description paragraph 1.'],
-            learns: ['Learning point 1.'],
-            audience: 'Target audience description.'
+            description: ['Beschreibung Absatz 1.'],
+            learns: ['Lernpunkt 1.'],
+            audience: 'Beschreibung der Zielgruppe.'
         };
     }
 
     return {
-        id: 'new-resource-slug',
-        title: 'New Resource Title',
+        id: 'neue-ressource',
+        title: 'Neue Ressource',
         date: new Date().toISOString().split('T')[0],
-        author: 'Author Name',
-        description: ['Description paragraph 1.'],
+        author: 'Autorenname',
+        description: ['Beschreibung Absatz 1.'],
         tags: [],
         thumbnail: null,
         images: [],
@@ -242,13 +242,13 @@ async function adminSave() {
     try {
         data = JSON.parse(textarea.value);
     } catch (err) {
-        errorEl.textContent = `Invalid JSON: ${err.message}`;
+        errorEl.textContent = `Ungültiges JSON: ${err.message}`;
         errorEl.hidden = false;
         return;
     }
 
     if (!data.id || typeof data.id !== 'string') {
-        errorEl.textContent = 'JSON must contain a valid "id" field.';
+        errorEl.textContent = 'JSON muss ein gültiges "id"-Feld enthalten.';
         errorEl.hidden = false;
         return;
     }
@@ -283,7 +283,7 @@ async function adminSave() {
         const result = await res.json();
 
         if (!res.ok) {
-            errorEl.textContent = result.error || 'Save failed.';
+            errorEl.textContent = result.error || 'Speichern fehlgeschlagen.';
             errorEl.hidden = false;
             return;
         }
@@ -306,7 +306,8 @@ async function adminSave() {
 async function adminDelete() {
     if (!currentEditId || currentEditIsNew) return;
 
-    const confirmed = confirm(`Are you sure you want to delete this ${currentEditType}? This cannot be undone.`);
+    const typeLabel = currentEditType === 'event' ? 'diese Veranstaltung' : 'diese Ressource';
+    const confirmed = confirm(`Möchten Sie ${typeLabel} wirklich löschen? Dies kann nicht rückgängig gemacht werden.`);
     if (!confirmed) return;
 
     const errorEl = document.getElementById('admin-edit-error');
@@ -323,7 +324,7 @@ async function adminDelete() {
 
         if (!res.ok) {
             const result = await res.json();
-            errorEl.textContent = result.error || 'Delete failed.';
+            errorEl.textContent = result.error || 'Löschen fehlgeschlagen.';
             errorEl.hidden = false;
             return;
         }

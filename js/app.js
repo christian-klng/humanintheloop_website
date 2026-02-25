@@ -58,9 +58,9 @@ async function loadResources() {
 // --- Render Helpers ---
 
 function parseEventDate(dateStr) {
-    const parts = dateStr.match(/^(\w+)\s+(\d+)/);
+    const parts = dateStr.match(/^(\d+)\.\s*(\w+)/);
     if (!parts) return { month: '', day: '' };
-    return { month: parts[1].toUpperCase().slice(0, 3), day: parts[2] };
+    return { month: parts[2].toUpperCase().slice(0, 3), day: parts[1] };
 }
 
 function createEventCard(event) {
@@ -100,62 +100,62 @@ function renderEventDetail(event) {
 
     container.innerHTML = `
         <div class="page-header page-header--borderless container">
-            <button class="back-link" id="back-to-events" aria-label="Back to events">
+            <button class="back-link" id="back-to-events" aria-label="Zurück zu Veranstaltungen">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                Back to events
+                Zurück zu Veranstaltungen
             </button>
 
             <h1 class="mb-md">${event.title}</h1>
 
             <div class="tag-list">
-                <div class="badge inline"><span class="badge-dot" aria-hidden="true"></span> Upcoming</div>
+                <div class="badge inline"><span class="badge-dot" aria-hidden="true"></span> Bevorstehend</div>
                 ${event.tags.map((tag) => `<div class="badge inline">${tag}</div>`).join('')}
             </div>
         </div>
 
         <section class="container section--flush">
-            <img src="${event.image}" alt="${event.title} event cover" class="event-cover-img" loading="lazy">
+            <img src="${event.image}" alt="${event.title} Veranstaltungsbild" class="event-cover-img" loading="lazy">
 
             <div class="detail-layout">
                 <div class="detail-main">
-                    <h3>About this event</h3>
+                    <h3>Über diese Veranstaltung</h3>
                     ${event.description.map((p) => `<p>${p}</p>`).join('')}
 
-                    <h3>What you will learn</h3>
+                    <h3>Was Sie lernen werden</h3>
                     <ul>
                         ${event.learns.map((item) => `<li>${item}</li>`).join('')}
                     </ul>
 
-                    <h3>Who should attend?</h3>
+                    <h3>Für wen ist diese Veranstaltung?</h3>
                     <p>${event.audience}</p>
                 </div>
 
                 <aside class="detail-sidebar">
                     <div class="card">
-                        <h3>Event Details</h3>
+                        <h3>Veranstaltungsdetails</h3>
 
                         <div class="info-row">
-                            <span class="info-label">Date</span>
+                            <span class="info-label">Datum</span>
                             <span class="info-value">${event.dateFull}</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Time</span>
+                            <span class="info-label">Uhrzeit</span>
                             <span class="info-value">${event.time}</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Location</span>
+                            <span class="info-label">Ort</span>
                             <span class="info-value">
                                 ${event.location}
                                 ${event.locationNote ? `<small>${event.locationNote}</small>` : ''}
                             </span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Cost</span>
+                            <span class="info-label">Kosten</span>
                             <span class="info-value">${event.cost}</span>
                         </div>
 
-                        <button class="btn btn-block">Reserve your spot</button>
-                        <p class="text-muted spots-remaining">Only ${event.spots} spots remaining.</p>
+                        <button class="btn btn-block">Jetzt Platz reservieren</button>
+                        <p class="text-muted spots-remaining">Nur noch ${event.spots} Plätze verfügbar.</p>
                     </div>
                 </aside>
             </div>
@@ -182,7 +182,7 @@ function renderAllEventCards() {
 
 function formatResourceDate(isoDate) {
     const d = new Date(isoDate);
-    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return d.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 function createResourceCard(resource) {
@@ -193,10 +193,10 @@ function createResourceCard(resource) {
 
     const hasVideo = resource.video !== null;
     const hasImages = resource.images && resource.images.length > 0;
-    const mediaType = hasVideo && hasImages ? 'Gallery & Video'
+    const mediaType = hasVideo && hasImages ? 'Galerie & Video'
                     : hasVideo ? 'Video'
-                    : hasImages ? 'Gallery'
-                    : 'Article';
+                    : hasImages ? 'Galerie'
+                    : 'Artikel';
 
     card.innerHTML = `
         ${resource.thumbnail ? `<img src="${resource.thumbnail}" alt="" class="resource-card-img" loading="lazy">` : ''}
@@ -239,7 +239,7 @@ function renderResourceDetail(resource) {
     let galleryHTML = '';
     if (hasImages) {
         galleryHTML = `
-            <h3>Gallery</h3>
+            <h3>Galerie</h3>
             <div class="gallery-grid">
                 ${resource.images.map((img, i) => `
                     <img
@@ -248,7 +248,7 @@ function renderResourceDetail(resource) {
                         class="gallery-thumb"
                         tabindex="0"
                         role="button"
-                        aria-label="View image ${i + 1}: ${img.alt}"
+                        aria-label="Bild ${i + 1} ansehen: ${img.alt}"
                         data-gallery-index="${i}"
                         loading="lazy"
                     >
@@ -288,9 +288,9 @@ function renderResourceDetail(resource) {
 
     container.innerHTML = `
         <div class="page-header page-header--borderless container">
-            <button class="back-link" id="back-to-library" aria-label="Back to library">
+            <button class="back-link" id="back-to-library" aria-label="Zurück zur Bibliothek">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-                Back to library
+                Zurück zur Bibliothek
             </button>
 
             <h1 class="mb-md">${resource.title}</h1>
@@ -303,7 +303,7 @@ function renderResourceDetail(resource) {
         <section class="container section--flush">
             <div class="detail-layout">
                 <div class="detail-main">
-                    <h3>About this resource</h3>
+                    <h3>Über diese Ressource</h3>
                     ${resource.description.map(p => `<p>${p}</p>`).join('')}
 
                     ${videoHTML}
@@ -312,22 +312,22 @@ function renderResourceDetail(resource) {
 
                 <aside class="detail-sidebar">
                     <div class="card">
-                        <h3>Resource Details</h3>
+                        <h3>Ressourcendetails</h3>
 
                         <div class="info-row">
-                            <span class="info-label">Author</span>
+                            <span class="info-label">Autor</span>
                             <span class="info-value">${resource.author}</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Published</span>
+                            <span class="info-label">Veröffentlicht</span>
                             <span class="info-value">${formatResourceDate(resource.date)}</span>
                         </div>
                         <div class="info-row">
-                            <span class="info-label">Media</span>
+                            <span class="info-label">Medien</span>
                             <span class="info-value">${[
-                                hasImages ? `${resource.images.length} image${resource.images.length > 1 ? 's' : ''}` : '',
-                                hasVideo ? '1 video' : ''
-                            ].filter(Boolean).join(', ') || 'Article only'}</span>
+                                hasImages ? `${resource.images.length} Bild${resource.images.length > 1 ? 'er' : ''}` : '',
+                                hasVideo ? '1 Video' : ''
+                            ].filter(Boolean).join(', ') || 'Nur Artikel'}</span>
                         </div>
                     </div>
                 </aside>
@@ -582,44 +582,44 @@ function renderRoute(route) {
     // Update page title and meta tags
     const meta = {
         home: {
-            title: 'Human in the Loop | Modern Education',
-            description: 'Master the skills of tomorrow with industry-leading courses in engineering, design, and product strategy. Built for ambitious professionals.'
+            title: 'Human in the Loop | Moderne Bildung',
+            description: 'Erlernen Sie die Fähigkeiten von morgen mit branchenführenden Kursen in Engineering, Design und Produktstrategie. Für ambitionierte Fachkräfte.'
         },
         events: {
-            title: 'Events & Workshops | Human in the Loop',
-            description: 'Register for upcoming live sessions, hackathons, and guest lectures hosted by industry veterans.'
+            title: 'Veranstaltungen & Workshops | Human in the Loop',
+            description: 'Melden Sie sich für kommende Live-Sessions, Hackathons und Gastvorträge von Branchenexperten an.'
         },
         library: {
-            title: 'Library | Human in the Loop',
-            description: 'Articles, image galleries, and video resources from the Human in the Loop community.'
+            title: 'Bibliothek | Human in the Loop',
+            description: 'Artikel, Bildergalerien und Videoressourcen aus der Human in the Loop-Community.'
         },
         styleguide: {
             title: 'Styleguide | Human in the Loop',
-            description: 'The design system and component library powering Human in the Loop.'
+            description: 'Das Designsystem und die Komponentenbibliothek von Human in the Loop.'
         },
         privacy: {
-            title: 'Privacy Policy | Human in the Loop',
-            description: 'Privacy policy for Human in the Loop. Learn how we collect, use, and protect your data.'
+            title: 'Datenschutzerklärung | Human in the Loop',
+            description: 'Datenschutzerklärung von Human in the Loop. Erfahren Sie, wie wir Ihre Daten erheben, nutzen und schützen.'
         },
         terms: {
-            title: 'Terms of Service | Human in the Loop',
-            description: 'Terms of service for Human in the Loop educational platform.'
+            title: 'Nutzungsbedingungen | Human in the Loop',
+            description: 'Nutzungsbedingungen der Bildungsplattform Human in the Loop.'
         },
         imprint: {
-            title: 'Imprint | Human in the Loop',
-            description: 'Legal information and company details for Human in the Loop GmbH.'
+            title: 'Impressum | Human in the Loop',
+            description: 'Rechtliche Informationen und Unternehmensdaten der Human in the Loop GmbH.'
         },
         admin: {
             title: 'Admin | Human in the Loop',
-            description: 'Admin panel for managing events and resources.'
+            description: 'Admin-Bereich zur Verwaltung von Veranstaltungen und Ressourcen.'
         },
         'admin-dashboard': {
-            title: 'Admin Dashboard | Human in the Loop',
-            description: 'Manage events and resources.'
+            title: 'Admin-Dashboard | Human in the Loop',
+            description: 'Veranstaltungen und Ressourcen verwalten.'
         },
         'admin-edit': {
-            title: 'Admin Editor | Human in the Loop',
-            description: 'Edit event or resource data.'
+            title: 'Admin-Editor | Human in the Loop',
+            description: 'Veranstaltungs- oder Ressourcendaten bearbeiten.'
         }
     };
 

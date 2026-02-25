@@ -1,31 +1,31 @@
 [
     {
         "id": "designing-human-centered-ai",
-        "title": "Designing Human-Centered AI Interfaces",
+        "title": "Gestaltung menschenzentrierter KI-Interfaces",
         "date": "2026-02-18",
         "author": "Sarah Chen",
         "description": [
-            "As AI becomes more integrated into everyday tools, the challenge shifts from technical capability to human understanding. This resource explores the principles behind designing interfaces that keep humans informed, in control, and confident when working alongside AI systems.",
-            "We walk through real-world examples of AI-assisted design tools, code editors, and decision-support dashboards — examining what makes some feel intuitive while others create friction. Topics include progressive disclosure of AI reasoning, calibrated confidence indicators, and graceful fallback patterns.",
-            "Whether you are a designer, product manager, or engineer, these principles will help you build AI features that earn user trust rather than erode it."
+            "Da KI zunehmend in alltägliche Werkzeuge integriert wird, verlagert sich die Herausforderung von der technischen Fähigkeit zum menschlichen Verständnis. Diese Ressource untersucht die Prinzipien hinter der Gestaltung von Interfaces, die Menschen informiert, in Kontrolle und selbstbewusst halten, wenn sie mit KI-Systemen arbeiten.",
+            "Wir gehen reale Beispiele von KI-gestützten Design-Tools, Code-Editoren und Entscheidungsunterstützungs-Dashboards durch — und untersuchen, was einige intuitiv wirken lässt, während andere Reibung erzeugen. Themen sind unter anderem die schrittweise Offenlegung von KI-Begründungen, kalibrierte Konfidenzindikatoren und elegante Fallback-Muster.",
+            "Ob Sie Designer, Product Manager oder Engineer sind — diese Prinzipien helfen Ihnen, KI-Features zu entwickeln, die das Vertrauen der Nutzer stärken statt es zu untergraben."
         ],
-        "tags": ["AI", "UX Design", "Product"],
+        "tags": ["KI", "UX-Design", "Produkt"],
         "thumbnail": "events/images/event-conference.jpg",
         "images": [
             {
                 "src": "events/images/event-conference.jpg",
-                "alt": "Conference presentation on human-centered AI design",
-                "caption": "Keynote session at the Human in the Loop Summit 2026"
+                "alt": "Konferenzpräsentation über menschenzentriertes KI-Design",
+                "caption": "Keynote beim Human in the Loop Summit 2026"
             },
             {
                 "src": "events/images/event-workshop.jpg",
-                "alt": "Workshop participants collaborating on AI interface prototypes",
-                "caption": "Hands-on workshop: Designing trust patterns for AI"
+                "alt": "Workshop-Teilnehmer arbeiten gemeinsam an KI-Interface-Prototypen",
+                "caption": "Praxis-Workshop: Vertrauensmuster für KI gestalten"
             },
             {
                 "src": "events/images/event-prototyping.jpg",
-                "alt": "Figma prototyping session for AI-powered tools",
-                "caption": "Prototyping AI interactions in Figma"
+                "alt": "Figma-Prototyping-Session für KI-gestützte Tools",
+                "caption": "Prototyping von KI-Interaktionen in Figma"
             }
         ],
         "video": {
@@ -36,47 +36,47 @@
     },
     {
         "id": "frontend-performance-deep-dive",
-        "title": "Frontend Performance: From Metrics to Mastery",
+        "title": "Frontend-Performance: Von Metriken zur Meisterschaft",
         "date": "2026-01-25",
         "author": "Marcus Weber",
         "description": [
-            "Performance is not just about speed — it is about user perception, business outcomes, and engineering discipline. This deep dive covers the full spectrum of frontend performance, from Core Web Vitals and Lighthouse auditing to advanced optimization techniques.",
-            "You will learn how to set meaningful performance budgets, identify bottlenecks using browser DevTools and real-user monitoring (RUM), and apply targeted fixes like code splitting, image optimization, and render-blocking resource elimination.",
-            "Includes practical before-and-after case studies from production applications that achieved 40-60% improvements in Largest Contentful Paint."
+            "Performance bedeutet nicht nur Geschwindigkeit — es geht um Nutzerwahrnehmung, Geschäftsergebnisse und Engineering-Disziplin. Dieser Deep Dive deckt das gesamte Spektrum der Frontend-Performance ab, von Core Web Vitals und Lighthouse-Auditing bis hin zu fortgeschrittenen Optimierungstechniken.",
+            "Sie lernen, wie Sie aussagekräftige Performance-Budgets setzen, Engpässe mit Browser-DevTools und Real-User-Monitoring (RUM) identifizieren und gezielte Maßnahmen wie Code Splitting, Bildoptimierung und die Beseitigung renderblokkierender Ressourcen anwenden.",
+            "Enthält praktische Vorher-Nachher-Fallstudien von Produktionsanwendungen, die 40–60 % Verbesserungen beim Largest Contentful Paint erzielt haben."
         ],
         "tags": ["Engineering", "Performance", "Frontend"],
         "thumbnail": "events/images/event-workshop.jpg",
         "images": [
             {
                 "src": "events/images/event-workshop.jpg",
-                "alt": "Performance optimization workshop session",
-                "caption": "Live profiling session with Chrome DevTools"
+                "alt": "Performance-Optimierungs-Workshop-Session",
+                "caption": "Live-Profiling-Session mit Chrome DevTools"
             },
             {
                 "src": "events/images/event-conference.jpg",
-                "alt": "Performance metrics dashboard on screen",
-                "caption": "Real-user monitoring dashboard showing improvements"
+                "alt": "Performance-Metriken-Dashboard auf dem Bildschirm",
+                "caption": "Real-User-Monitoring-Dashboard mit Verbesserungen"
             }
         ],
         "video": null
     },
     {
         "id": "building-design-systems-at-scale",
-        "title": "Building Design Systems at Scale",
+        "title": "Design Systems im großen Maßstab aufbauen",
         "date": "2026-02-10",
         "author": "Lena Hartmann",
         "description": [
-            "A design system is more than a component library — it is a shared language between design and engineering. This resource documents the journey of building and scaling a design system across multiple product teams, from initial token definitions to governed contribution workflows.",
-            "We cover the technical architecture (CSS custom properties, component APIs, documentation tooling) as well as the organizational challenges: getting buy-in, managing breaking changes, and measuring adoption. Practical examples drawn from the Human in the Loop platform itself.",
-            "Ideal for teams that have outgrown ad-hoc UI patterns and want to invest in a systematic approach to design consistency."
+            "Ein Design System ist mehr als eine Komponentenbibliothek — es ist eine gemeinsame Sprache zwischen Design und Engineering. Diese Ressource dokumentiert den Weg des Aufbaus und der Skalierung eines Design Systems über mehrere Produktteams hinweg, von ersten Token-Definitionen bis hin zu gesteuerten Beitragsworkflows.",
+            "Wir behandeln die technische Architektur (CSS Custom Properties, Komponenten-APIs, Dokumentations-Tooling) sowie die organisatorischen Herausforderungen: Buy-in gewinnen, Breaking Changes managen und Adoption messen. Praktische Beispiele stammen von der Human in the Loop-Plattform selbst.",
+            "Ideal für Teams, die Ad-hoc-UI-Muster hinter sich lassen und in einen systematischen Ansatz für Design-Konsistenz investieren möchten."
         ],
         "tags": ["Design Systems", "Engineering", "CSS"],
         "thumbnail": "events/images/event-prototyping.jpg",
         "images": [
             {
                 "src": "events/images/event-prototyping.jpg",
-                "alt": "Design system component overview in Figma",
-                "caption": "Component inventory in Figma"
+                "alt": "Design-System-Komponentenübersicht in Figma",
+                "caption": "Komponenteninventar in Figma"
             }
         ],
         "video": {

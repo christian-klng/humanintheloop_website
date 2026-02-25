@@ -67,13 +67,13 @@ function checkLoginRate(ip) {
 function requireAuth(req, res, next) {
     const auth = req.headers.authorization;
     if (!auth || !auth.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'Unauthorized' });
+        return res.status(401).json({ error: 'Nicht autorisiert' });
     }
     const token = auth.slice(7);
     const data = tokens.get(token);
     if (!data || Date.now() - data.createdAt > TOKEN_TTL) {
         tokens.delete(token);
-        return res.status(401).json({ error: 'Token expired or invalid' });
+        return res.status(401).json({ error: 'Token abgelaufen oder ungültig' });
     }
     next();
 }
@@ -91,12 +91,12 @@ function isValidId(id) {
 app.post('/api/login', (req, res) => {
     const ip = req.headers['x-real-ip'] || req.ip;
     if (!checkLoginRate(ip)) {
-        return res.status(429).json({ error: 'Too many login attempts. Try again later.' });
+        return res.status(429).json({ error: 'Zu viele Anmeldeversuche. Bitte später erneut versuchen.' });
     }
 
     const { password } = req.body;
     if (!password || password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ error: 'Invalid password' });
+        return res.status(401).json({ error: 'Ungültiges Passwort' });
     }
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -138,36 +138,36 @@ app.get('/api/events', (req, res) => {
 
 app.get('/api/events/:id', (req, res) => {
     const { id } = req.params;
-    if (!isValidId(id)) return res.status(400).json({ error: 'Invalid ID' });
+    if (!isValidId(id)) return res.status(400).json({ error: 'Ungültige ID' });
 
     const filePath = path.join(EVENTS_DIR, `${id}.json`);
     if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'Event not found' });
+        return res.status(404).json({ error: 'Veranstaltung nicht gefunden' });
     }
 
     try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         res.json(data);
     } catch (err) {
-        res.status(500).json({ error: 'Failed to read event' });
+        res.status(500).json({ error: 'Veranstaltung konnte nicht gelesen werden' });
     }
 });
 
 app.put('/api/events/:id', requireAuth, (req, res) => {
     const { id } = req.params;
-    if (!isValidId(id)) return res.status(400).json({ error: 'Invalid ID' });
+    if (!isValidId(id)) return res.status(400).json({ error: 'Ungültige ID' });
 
     const filePath = path.join(EVENTS_DIR, `${id}.json`);
     if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'Event not found' });
+        return res.status(404).json({ error: 'Veranstaltung nicht gefunden' });
     }
 
     const data = req.body;
     if (!data || typeof data !== 'object' || !data.id) {
-        return res.status(400).json({ error: 'Invalid JSON: must be an object with an id field' });
+        return res.status(400).json({ error: 'Ungültiges JSON: muss ein Objekt mit einem id-Feld sein' });
     }
     if (data.id !== id) {
-        return res.status(400).json({ error: 'ID in body must match URL parameter' });
+        return res.status(400).json({ error: 'ID im Body muss mit dem URL-Parameter übereinstimmen' });
     }
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 4), 'utf-8');
@@ -177,15 +177,15 @@ app.put('/api/events/:id', requireAuth, (req, res) => {
 app.post('/api/events', requireAuth, (req, res) => {
     const data = req.body;
     if (!data || typeof data !== 'object' || !data.id) {
-        return res.status(400).json({ error: 'Invalid JSON: must be an object with an id field' });
+        return res.status(400).json({ error: 'Ungültiges JSON: muss ein Objekt mit einem id-Feld sein' });
     }
     if (!isValidId(data.id)) {
-        return res.status(400).json({ error: 'Invalid ID format (use lowercase alphanumeric with hyphens)' });
+        return res.status(400).json({ error: 'Ungültiges ID-Format (Kleinbuchstaben, Zahlen und Bindestriche verwenden)' });
     }
 
     const filePath = path.join(EVENTS_DIR, `${data.id}.json`);
     if (fs.existsSync(filePath)) {
-        return res.status(409).json({ error: 'Event with this ID already exists' });
+        return res.status(409).json({ error: 'Veranstaltung mit dieser ID existiert bereits' });
     }
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 4), 'utf-8');
@@ -194,11 +194,11 @@ app.post('/api/events', requireAuth, (req, res) => {
 
 app.delete('/api/events/:id', requireAuth, (req, res) => {
     const { id } = req.params;
-    if (!isValidId(id)) return res.status(400).json({ error: 'Invalid ID' });
+    if (!isValidId(id)) return res.status(400).json({ error: 'Ungültige ID' });
 
     const filePath = path.join(EVENTS_DIR, `${id}.json`);
     if (!fs.existsSync(filePath)) {
-        return res.status(404).json({ error: 'Event not found' });
+        return res.status(404).json({ error: 'Veranstaltung nicht gefunden' });
     }
 
     fs.unlinkSync(filePath);
@@ -233,37 +233,37 @@ app.get('/api/resources', (req, res) => {
 
 app.get('/api/resources/:id', (req, res) => {
     const { id } = req.params;
-    if (!isValidId(id)) return res.status(400).json({ error: 'Invalid ID' });
+    if (!isValidId(id)) return res.status(400).json({ error: 'Ungültige ID' });
 
     const jsonPath = path.join(LIBRARY_DIR, id, 'resource.json');
     if (!fs.existsSync(jsonPath)) {
-        return res.status(404).json({ error: 'Resource not found' });
+        return res.status(404).json({ error: 'Ressource nicht gefunden' });
     }
 
     try {
         const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
         res.json(data);
     } catch (err) {
-        res.status(500).json({ error: 'Failed to read resource' });
+        res.status(500).json({ error: 'Ressource konnte nicht gelesen werden' });
     }
 });
 
 app.put('/api/resources/:id', requireAuth, (req, res) => {
     const { id } = req.params;
-    if (!isValidId(id)) return res.status(400).json({ error: 'Invalid ID' });
+    if (!isValidId(id)) return res.status(400).json({ error: 'Ungültige ID' });
 
     const dirPath = path.join(LIBRARY_DIR, id);
     const jsonPath = path.join(dirPath, 'resource.json');
     if (!fs.existsSync(jsonPath)) {
-        return res.status(404).json({ error: 'Resource not found' });
+        return res.status(404).json({ error: 'Ressource nicht gefunden' });
     }
 
     const data = req.body;
     if (!data || typeof data !== 'object' || !data.id) {
-        return res.status(400).json({ error: 'Invalid JSON: must be an object with an id field' });
+        return res.status(400).json({ error: 'Ungültiges JSON: muss ein Objekt mit einem id-Feld sein' });
     }
     if (data.id !== id) {
-        return res.status(400).json({ error: 'ID in body must match URL parameter' });
+        return res.status(400).json({ error: 'ID im Body muss mit dem URL-Parameter übereinstimmen' });
     }
 
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 4), 'utf-8');
@@ -273,10 +273,10 @@ app.put('/api/resources/:id', requireAuth, (req, res) => {
 app.post('/api/resources', requireAuth, (req, res) => {
     const data = req.body;
     if (!data || typeof data !== 'object' || !data.id) {
-        return res.status(400).json({ error: 'Invalid JSON: must be an object with an id field' });
+        return res.status(400).json({ error: 'Ungültiges JSON: muss ein Objekt mit einem id-Feld sein' });
     }
     if (!isValidId(data.id)) {
-        return res.status(400).json({ error: 'Invalid ID format (use lowercase alphanumeric with hyphens)' });
+        return res.status(400).json({ error: 'Ungültiges ID-Format (Kleinbuchstaben, Zahlen und Bindestriche verwenden)' });
     }
 
     const dirPath = path.join(LIBRARY_DIR, data.id);
@@ -285,7 +285,7 @@ app.post('/api/resources', requireAuth, (req, res) => {
     fs.mkdirSync(dirPath, { recursive: true });
 
     if (fs.existsSync(jsonPath)) {
-        return res.status(409).json({ error: 'Resource with this ID already exists' });
+        return res.status(409).json({ error: 'Ressource mit dieser ID existiert bereits' });
     }
 
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 4), 'utf-8');
@@ -294,12 +294,12 @@ app.post('/api/resources', requireAuth, (req, res) => {
 
 app.delete('/api/resources/:id', requireAuth, (req, res) => {
     const { id } = req.params;
-    if (!isValidId(id)) return res.status(400).json({ error: 'Invalid ID' });
+    if (!isValidId(id)) return res.status(400).json({ error: 'Ungültige ID' });
 
     const dirPath = path.join(LIBRARY_DIR, id);
     const jsonPath = path.join(dirPath, 'resource.json');
     if (!fs.existsSync(jsonPath)) {
-        return res.status(404).json({ error: 'Resource not found' });
+        return res.status(404).json({ error: 'Ressource nicht gefunden' });
     }
 
     fs.unlinkSync(jsonPath);
