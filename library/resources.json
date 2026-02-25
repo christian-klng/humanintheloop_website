@@ -1,0 +1,88 @@
+[
+    {
+        "id": "designing-human-centered-ai",
+        "title": "Designing Human-Centered AI Interfaces",
+        "date": "2026-02-18",
+        "author": "Sarah Chen",
+        "description": [
+            "As AI becomes more integrated into everyday tools, the challenge shifts from technical capability to human understanding. This resource explores the principles behind designing interfaces that keep humans informed, in control, and confident when working alongside AI systems.",
+            "We walk through real-world examples of AI-assisted design tools, code editors, and decision-support dashboards — examining what makes some feel intuitive while others create friction. Topics include progressive disclosure of AI reasoning, calibrated confidence indicators, and graceful fallback patterns.",
+            "Whether you are a designer, product manager, or engineer, these principles will help you build AI features that earn user trust rather than erode it."
+        ],
+        "tags": ["AI", "UX Design", "Product"],
+        "thumbnail": "events/images/event-conference.jpg",
+        "images": [
+            {
+                "src": "events/images/event-conference.jpg",
+                "alt": "Conference presentation on human-centered AI design",
+                "caption": "Keynote session at the Human in the Loop Summit 2026"
+            },
+            {
+                "src": "events/images/event-workshop.jpg",
+                "alt": "Workshop participants collaborating on AI interface prototypes",
+                "caption": "Hands-on workshop: Designing trust patterns for AI"
+            },
+            {
+                "src": "events/images/event-prototyping.jpg",
+                "alt": "Figma prototyping session for AI-powered tools",
+                "caption": "Prototyping AI interactions in Figma"
+            }
+        ],
+        "video": {
+            "type": "youtube",
+            "src": "dQw4w9WgXcQ",
+            "poster": null
+        }
+    },
+    {
+        "id": "frontend-performance-deep-dive",
+        "title": "Frontend Performance: From Metrics to Mastery",
+        "date": "2026-01-25",
+        "author": "Marcus Weber",
+        "description": [
+            "Performance is not just about speed — it is about user perception, business outcomes, and engineering discipline. This deep dive covers the full spectrum of frontend performance, from Core Web Vitals and Lighthouse auditing to advanced optimization techniques.",
+            "You will learn how to set meaningful performance budgets, identify bottlenecks using browser DevTools and real-user monitoring (RUM), and apply targeted fixes like code splitting, image optimization, and render-blocking resource elimination.",
+            "Includes practical before-and-after case studies from production applications that achieved 40-60% improvements in Largest Contentful Paint."
+        ],
+        "tags": ["Engineering", "Performance", "Frontend"],
+        "thumbnail": "events/images/event-workshop.jpg",
+        "images": [
+            {
+                "src": "events/images/event-workshop.jpg",
+                "alt": "Performance optimization workshop session",
+                "caption": "Live profiling session with Chrome DevTools"
+            },
+            {
+                "src": "events/images/event-conference.jpg",
+                "alt": "Performance metrics dashboard on screen",
+                "caption": "Real-user monitoring dashboard showing improvements"
+            }
+        ],
+        "video": null
+    },
+    {
+        "id": "building-design-systems-at-scale",
+        "title": "Building Design Systems at Scale",
+        "date": "2026-02-10",
+        "author": "Lena Hartmann",
+        "description": [
+            "A design system is more than a component library — it is a shared language between design and engineering. This resource documents the journey of building and scaling a design system across multiple product teams, from initial token definitions to governed contribution workflows.",
+            "We cover the technical architecture (CSS custom properties, component APIs, documentation tooling) as well as the organizational challenges: getting buy-in, managing breaking changes, and measuring adoption. Practical examples drawn from the Human in the Loop platform itself.",
+            "Ideal for teams that have outgrown ad-hoc UI patterns and want to invest in a systematic approach to design consistency."
+        ],
+        "tags": ["Design Systems", "Engineering", "CSS"],
+        "thumbnail": "events/images/event-prototyping.jpg",
+        "images": [
+            {
+                "src": "events/images/event-prototyping.jpg",
+                "alt": "Design system component overview in Figma",
+                "caption": "Component inventory in Figma"
+            }
+        ],
+        "video": {
+            "type": "youtube",
+            "src": "dQw4w9WgXcQ",
+            "poster": null
+        }
+    }
+]

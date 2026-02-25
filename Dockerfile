@@ -3,6 +3,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 COPY index.html ./
 COPY events/events.json ./events/
+COPY library/resources.json ./library/
 COPY scripts/generate-pages.js ./scripts/
 ARG BASE_URL
 ENV BASE_URL=${BASE_URL}

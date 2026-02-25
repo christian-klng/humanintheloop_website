@@ -27,6 +27,9 @@ const template = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-
 const eventsData = JSON.parse(
     fs.readFileSync(path.join(__dirname, '..', 'events', 'events.json'), 'utf-8')
 );
+const resourcesData = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '..', 'library', 'resources.json'), 'utf-8')
+);
 
 // Static page routes
 const routes = [
@@ -40,6 +43,12 @@ const routes = [
         path: '/events',
         title: 'Events & Workshops | Human in the Loop',
         description: 'Register for upcoming live sessions, hackathons, and guest lectures hosted by industry veterans.',
+        image: DEFAULT_IMAGE
+    },
+    {
+        path: '/library',
+        title: 'Library | Human in the Loop',
+        description: 'Articles, image galleries, and video resources from the Human in the Loop community.',
         image: DEFAULT_IMAGE
     },
     {
@@ -78,6 +87,19 @@ eventsData.forEach((event) => {
         title: `${event.title} | Human in the Loop`,
         description: truncated,
         image: `${baseUrl}/${event.image}`
+    });
+});
+
+// Add resource detail routes from resources.json
+resourcesData.forEach((resource) => {
+    const desc = resource.description[0];
+    const truncated = desc.length > 160 ? desc.substring(0, 157) + '...' : desc;
+
+    routes.push({
+        path: `/resource/${resource.id}`,
+        title: `${resource.title} | Human in the Loop`,
+        description: truncated,
+        image: resource.thumbnail ? `${baseUrl}${resource.thumbnail}` : DEFAULT_IMAGE
     });
 });
 

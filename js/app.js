@@ -4,6 +4,7 @@
 
 // --- State ---
 let events = [];
+let resources = [];
 
 // --- DOM References ---
 const app = document.getElementById('app');
@@ -11,6 +12,8 @@ const views = {
     home: document.getElementById('home-view'),
     events: document.getElementById('events-view'),
     'event-detail': document.getElementById('event-detail-view'),
+    library: document.getElementById('library-view'),
+    'resource-detail': document.getElementById('resource-detail-view'),
     styleguide: document.getElementById('styleguide-view'),
     privacy: document.getElementById('privacy-view'),
     terms: document.getElementById('terms-view'),
@@ -20,6 +23,7 @@ const views = {
 const navLinks = {
     home: document.getElementById('nav-home'),
     events: document.getElementById('nav-events'),
+    library: document.getElementById('nav-library'),
     styleguide: document.getElementById('nav-styleguide')
 };
 
@@ -33,6 +37,18 @@ async function loadEvents() {
     } catch (err) {
         console.error('Failed to load events:', err);
         events = [];
+    }
+}
+
+async function loadResources() {
+    try {
+        const response = await fetch('library/resources.json');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        resources = await response.json();
+        resources.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } catch (err) {
+        console.error('Failed to load resources:', err);
+        resources = [];
     }
 }
 
@@ -159,6 +175,257 @@ function renderAllEventCards() {
     if (eventsGrid) renderEventCards(eventsGrid, events);
 }
 
+// --- Resource Render Helpers ---
+
+function formatResourceDate(isoDate) {
+    const d = new Date(isoDate);
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function createResourceCard(resource) {
+    const card = document.createElement('a');
+    card.href = `/resource/${resource.id}`;
+    card.className = 'card resource-card';
+    card.setAttribute('aria-label', `${resource.title} — ${resource.author}`);
+
+    const hasVideo = resource.video !== null;
+    const hasImages = resource.images && resource.images.length > 0;
+    const mediaType = hasVideo && hasImages ? 'Gallery & Video'
+                    : hasVideo ? 'Video'
+                    : hasImages ? 'Gallery'
+                    : 'Article';
+
+    card.innerHTML = `
+        ${resource.thumbnail ? `<img src="${resource.thumbnail}" alt="" class="resource-card-img" loading="lazy">` : ''}
+        <div class="resource-card-body">
+            <div class="resource-card-meta">${formatResourceDate(resource.date)} &bull; ${mediaType}</div>
+            <h3>${resource.title}</h3>
+            <p>${resource.description[0]}</p>
+        </div>
+        ${resource.tags.length ? `
+            <div class="resource-card-tags">
+                ${resource.tags.map(tag => `<div class="badge inline">${tag}</div>`).join('')}
+            </div>
+        ` : ''}
+    `;
+    return card;
+}
+
+function renderResourceCards(container, resourceList) {
+    container.innerHTML = '';
+    resourceList.forEach(resource => {
+        container.appendChild(createResourceCard(resource));
+    });
+}
+
+function renderAllResourceCards() {
+    const homeGrid = document.getElementById('home-resources-grid');
+    if (homeGrid) renderResourceCards(homeGrid, resources.slice(0, 3));
+
+    const libraryGrid = document.getElementById('library-grid');
+    if (libraryGrid) renderResourceCards(libraryGrid, resources);
+}
+
+function renderResourceDetail(resource) {
+    const container = document.getElementById('resource-detail-content');
+    if (!container || !resource) return;
+
+    const hasVideo = resource.video !== null;
+    const hasImages = resource.images && resource.images.length > 0;
+
+    let galleryHTML = '';
+    if (hasImages) {
+        galleryHTML = `
+            <h3>Gallery</h3>
+            <div class="gallery-grid">
+                ${resource.images.map((img, i) => `
+                    <img
+                        src="${img.src}"
+                        alt="${img.alt}"
+                        class="gallery-thumb"
+                        tabindex="0"
+                        role="button"
+                        aria-label="View image ${i + 1}: ${img.alt}"
+                        data-gallery-index="${i}"
+                        loading="lazy"
+                    >
+                `).join('')}
+            </div>
+        `;
+    }
+
+    let videoHTML = '';
+    if (hasVideo) {
+        const v = resource.video;
+        if (v.type === 'html5') {
+            videoHTML = `
+                <h3>Video</h3>
+                <div class="resource-video">
+                    <video id="resource-player" playsinline controls${v.poster ? ` poster="${v.poster}"` : ''}>
+                        <source src="${v.src}" type="video/mp4">
+                    </video>
+                </div>
+            `;
+        } else if (v.type === 'youtube') {
+            videoHTML = `
+                <h3>Video</h3>
+                <div class="resource-video">
+                    <div id="resource-player" data-plyr-provider="youtube" data-plyr-embed-id="${v.src}"></div>
+                </div>
+            `;
+        } else if (v.type === 'vimeo') {
+            videoHTML = `
+                <h3>Video</h3>
+                <div class="resource-video">
+                    <div id="resource-player" data-plyr-provider="vimeo" data-plyr-embed-id="${v.src}"></div>
+                </div>
+            `;
+        }
+    }
+
+    container.innerHTML = `
+        <div class="page-header page-header--borderless container">
+            <button class="back-link" id="back-to-library" aria-label="Back to library">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                Back to library
+            </button>
+
+            <h1 class="mb-md">${resource.title}</h1>
+
+            <div class="tag-list">
+                ${resource.tags.map(tag => `<div class="badge inline">${tag}</div>`).join('')}
+            </div>
+        </div>
+
+        <section class="container section--flush">
+            <div class="detail-layout">
+                <div class="detail-main">
+                    <h3>About this resource</h3>
+                    ${resource.description.map(p => `<p>${p}</p>`).join('')}
+
+                    ${videoHTML}
+                    ${galleryHTML}
+                </div>
+
+                <aside class="detail-sidebar">
+                    <div class="card">
+                        <h3>Resource Details</h3>
+
+                        <div class="info-row">
+                            <span class="info-label">Author</span>
+                            <span class="info-value">${resource.author}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Published</span>
+                            <span class="info-value">${formatResourceDate(resource.date)}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Media</span>
+                            <span class="info-value">${[
+                                hasImages ? `${resource.images.length} image${resource.images.length > 1 ? 's' : ''}` : '',
+                                hasVideo ? '1 video' : ''
+                            ].filter(Boolean).join(', ') || 'Article only'}</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    `;
+
+    document.getElementById('back-to-library').addEventListener('click', () => {
+        navigateTo('library');
+    });
+
+    // Initialize Plyr if video exists
+    if (hasVideo && typeof Plyr !== 'undefined') {
+        new Plyr('#resource-player', {
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
+        });
+    }
+
+    // Bind gallery thumbnails to lightbox
+    if (hasImages) {
+        const thumbs = container.querySelectorAll('.gallery-thumb');
+        thumbs.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                openLightbox(resource.images, parseInt(thumb.dataset.galleryIndex, 10));
+            });
+            thumb.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openLightbox(resource.images, parseInt(thumb.dataset.galleryIndex, 10));
+                }
+            });
+        });
+    }
+}
+
+// --- Lightbox ---
+
+let lightboxImages = [];
+let lightboxIndex = 0;
+
+function openLightbox(images, startIndex) {
+    lightboxImages = images;
+    lightboxIndex = startIndex;
+    const lb = document.getElementById('lightbox');
+    lb.hidden = false;
+    document.body.classList.add('menu-open');
+    updateLightbox();
+    lb.querySelector('.lightbox-close').focus();
+}
+
+function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.hidden = true;
+    document.body.classList.remove('menu-open');
+    lightboxImages = [];
+}
+
+function updateLightbox() {
+    const img = lightboxImages[lightboxIndex];
+    const lb = document.getElementById('lightbox');
+    lb.querySelector('.lightbox-img').src = img.src;
+    lb.querySelector('.lightbox-img').alt = img.alt;
+    lb.querySelector('.lightbox-caption').textContent = img.caption || '';
+    lb.querySelector('.lightbox-counter').textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
+    lb.querySelector('.lightbox-prev').style.display = lightboxImages.length > 1 ? '' : 'none';
+    lb.querySelector('.lightbox-next').style.display = lightboxImages.length > 1 ? '' : 'none';
+}
+
+function initLightbox() {
+    const lb = document.getElementById('lightbox');
+    if (!lb) return;
+
+    lb.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+
+    lb.querySelector('.lightbox-prev').addEventListener('click', () => {
+        lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+        updateLightbox();
+    });
+
+    lb.querySelector('.lightbox-next').addEventListener('click', () => {
+        lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+        updateLightbox();
+    });
+
+    lb.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') {
+            lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+            updateLightbox();
+        }
+        if (e.key === 'ArrowRight') {
+            lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+            updateLightbox();
+        }
+    });
+
+    lb.addEventListener('click', (e) => {
+        if (e.target === lb) closeLightbox();
+    });
+}
+
 // --- Meta Tags ---
 
 function updateMetaTags(title, description) {
@@ -192,21 +459,28 @@ function getRouteFromPath() {
 
     const eventMatch = path.match(/^\/event\/(.+?)(?:\/)?$/);
     if (eventMatch) {
-        return { page: 'event-detail', eventId: eventMatch[1] };
+        return { page: 'event-detail', detailId: eventMatch[1] };
+    }
+
+    const resourceMatch = path.match(/^\/resource\/(.+?)(?:\/)?$/);
+    if (resourceMatch) {
+        return { page: 'resource-detail', detailId: resourceMatch[1] };
     }
 
     const page = path.replace(/^\//, '').replace(/\/$/, '');
     if (views[page]) {
-        return { page, eventId: null };
+        return { page, detailId: null };
     }
 
-    return { page: 'home', eventId: null };
+    return { page: 'home', detailId: null };
 }
 
-function navigateTo(page, eventId) {
+function navigateTo(page, detailId) {
     let path = '/';
-    if (page === 'event-detail' && eventId) {
-        path = `/event/${eventId}`;
+    if (page === 'event-detail' && detailId) {
+        path = `/event/${detailId}`;
+    } else if (page === 'resource-detail' && detailId) {
+        path = `/resource/${detailId}`;
     } else if (page !== 'home') {
         path = `/${page}`;
     }
@@ -214,7 +488,7 @@ function navigateTo(page, eventId) {
     if (window.location.pathname !== path) {
         history.pushState(null, '', path);
     }
-    renderRoute({ page, eventId });
+    renderRoute({ page, detailId });
 }
 
 function renderRoute(route) {
@@ -230,7 +504,7 @@ function renderRoute(route) {
         if (link) link.classList.remove('active');
     });
 
-    const { page, eventId } = route;
+    const { page, detailId } = route;
 
     // Show target view
     if (views[page]) {
@@ -240,8 +514,12 @@ function renderRoute(route) {
     // Set active nav
     if (page === 'event-detail') {
         navLinks.events?.classList.add('active');
-        const event = events.find((e) => e.id === eventId) || events[0];
+        const event = events.find((e) => e.id === detailId) || events[0];
         renderEventDetail(event);
+    } else if (page === 'resource-detail') {
+        navLinks.library?.classList.add('active');
+        const resource = resources.find(r => r.id === detailId) || resources[0];
+        renderResourceDetail(resource);
     } else if (navLinks[page]) {
         navLinks[page].classList.add('active');
     }
@@ -255,6 +533,10 @@ function renderRoute(route) {
         events: {
             title: 'Events & Workshops | Human in the Loop',
             description: 'Register for upcoming live sessions, hackathons, and guest lectures hosted by industry veterans.'
+        },
+        library: {
+            title: 'Library | Human in the Loop',
+            description: 'Articles, image galleries, and video resources from the Human in the Loop community.'
         },
         styleguide: {
             title: 'Styleguide | Human in the Loop',
@@ -275,10 +557,16 @@ function renderRoute(route) {
     };
 
     if (page === 'event-detail') {
-        const event = events.find((e) => e.id === eventId) || events[0];
+        const event = events.find((e) => e.id === detailId) || events[0];
         updateMetaTags(
             `${event.title} | Human in the Loop`,
             event.description[0]
+        );
+    } else if (page === 'resource-detail') {
+        const resource = resources.find(r => r.id === detailId) || resources[0];
+        updateMetaTags(
+            `${resource.title} | Human in the Loop`,
+            resource.description[0]
         );
     } else {
         const m = meta[page] || meta.home;
@@ -341,8 +629,11 @@ document.addEventListener('click', (e) => {
     if (href === '/') {
         navigateTo('home');
     } else if (href.startsWith('/event/')) {
-        const eventId = href.replace('/event/', '');
-        navigateTo('event-detail', eventId);
+        const detailId = href.replace('/event/', '');
+        navigateTo('event-detail', detailId);
+    } else if (href.startsWith('/resource/')) {
+        const detailId = href.replace('/resource/', '');
+        navigateTo('resource-detail', detailId);
     } else {
         const page = href.slice(1);
         navigateTo(page);
@@ -362,12 +653,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hash = window.location.hash.slice(1);
         const path = hash === 'home' ? '/' :
                      hash.startsWith('event/') ? `/${hash}` :
+                     hash.startsWith('resource/') ? `/${hash}` :
                      `/${hash}`;
         history.replaceState(null, '', path);
     }
 
-    await loadEvents();
+    await Promise.all([loadEvents(), loadResources()]);
     renderAllEventCards();
+    renderAllResourceCards();
+    initLightbox();
     renderRoute(getRouteFromPath());
     initHeroCanvas();
 });
