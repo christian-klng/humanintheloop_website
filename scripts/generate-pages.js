@@ -28,6 +28,11 @@ const DEFAULT_IMAGE = `${baseUrl}/events/images/event-conference.jpg`;
 const DATA_SOURCE = process.env.DATA_SOURCE || 'bundled';
 const FILES_DIR = process.env.FILES_DIR || '/files';
 
+// HTML_ROOT: where index.html template lives and dist/ output goes.
+// Defaults to parent of scripts/ dir (works for both build-time and local dev).
+// Set to /usr/share/nginx/html at container runtime.
+const HTML_ROOT = process.env.HTML_ROOT || path.join(__dirname, '..');
+
 function loadEventsFromVolume() {
     const eventsDir = path.join(FILES_DIR, 'events');
     if (!fs.existsSync(eventsDir)) return [];
@@ -55,7 +60,7 @@ function loadResourcesFromVolume() {
 }
 
 // Read template
-const template = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-8');
+const template = fs.readFileSync(path.join(HTML_ROOT, 'index.html'), 'utf-8');
 
 // Read data from bundled JSON or volume individual files
 let eventsData, resourcesData;
@@ -66,10 +71,10 @@ if (DATA_SOURCE === 'volume') {
     resourcesData = loadResourcesFromVolume();
 } else {
     eventsData = JSON.parse(
-        fs.readFileSync(path.join(__dirname, '..', 'events', 'events.json'), 'utf-8')
+        fs.readFileSync(path.join(HTML_ROOT, 'events', 'events.json'), 'utf-8')
     );
     resourcesData = JSON.parse(
-        fs.readFileSync(path.join(__dirname, '..', 'library', 'resources.json'), 'utf-8')
+        fs.readFileSync(path.join(HTML_ROOT, 'library', 'resources.json'), 'utf-8')
     );
 }
 
@@ -155,7 +160,9 @@ function escapeAttr(str) {
 }
 
 // Generate per-route HTML
-const distDir = path.join(__dirname, '..', 'dist');
+// OUTPUT_DIR: at build time, writes to dist/ (later overlaid onto HTML root).
+// At runtime, writes directly into the HTML root so nginx serves them.
+const distDir = process.env.OUTPUT_DIR || path.join(HTML_ROOT, 'dist');
 
 routes.forEach((route) => {
     const url = route.path === '/'
@@ -176,4 +183,4 @@ routes.forEach((route) => {
     fs.writeFileSync(path.join(outDir, 'index.html'), html);
 });
 
-console.log(`Generated ${routes.length} pages in dist/`);
+console.log(`Generated ${routes.length} pages in ${distDir}`);
