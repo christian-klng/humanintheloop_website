@@ -17,7 +17,10 @@ const views = {
     styleguide: document.getElementById('styleguide-view'),
     privacy: document.getElementById('privacy-view'),
     terms: document.getElementById('terms-view'),
-    imprint: document.getElementById('imprint-view')
+    imprint: document.getElementById('imprint-view'),
+    admin: document.getElementById('admin-view'),
+    'admin-dashboard': document.getElementById('admin-dashboard-view'),
+    'admin-edit': document.getElementById('admin-edit-view')
 };
 
 const navLinks = {
@@ -31,7 +34,7 @@ const navLinks = {
 
 async function loadEvents() {
     try {
-        const response = await fetch('events/events.json');
+        const response = await fetch('/api/events');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         events = await response.json();
     } catch (err) {
@@ -42,7 +45,7 @@ async function loadEvents() {
 
 async function loadResources() {
     try {
-        const response = await fetch('library/resources.json');
+        const response = await fetch('/api/resources');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         resources = await response.json();
         resources.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -467,6 +470,30 @@ function getRouteFromPath() {
         return { page: 'resource-detail', detailId: resourceMatch[1] };
     }
 
+    // Admin routes
+    const adminEditEventMatch = path.match(/^\/admin\/event\/(.+?)(?:\/)?$/);
+    if (adminEditEventMatch) {
+        return { page: 'admin-edit', detailId: adminEditEventMatch[1], editType: 'event' };
+    }
+
+    const adminEditResourceMatch = path.match(/^\/admin\/resource\/(.+?)(?:\/)?$/);
+    if (adminEditResourceMatch) {
+        return { page: 'admin-edit', detailId: adminEditResourceMatch[1], editType: 'resource' };
+    }
+
+    const adminNewMatch = path.match(/^\/admin\/new\/(event|resource)(?:\/)?$/);
+    if (adminNewMatch) {
+        return { page: 'admin-edit', detailId: null, editType: adminNewMatch[1], isNew: true };
+    }
+
+    if (path === '/admin' || path === '/admin/') {
+        return { page: 'admin', detailId: null };
+    }
+
+    if (path === '/admin/dashboard' || path === '/admin/dashboard/') {
+        return { page: 'admin-dashboard', detailId: null };
+    }
+
     const page = path.replace(/^\//, '').replace(/\/$/, '');
     if (views[page]) {
         return { page, detailId: null };
@@ -475,12 +502,20 @@ function getRouteFromPath() {
     return { page: 'home', detailId: null };
 }
 
-function navigateTo(page, detailId) {
+function navigateTo(page, detailId, opts) {
     let path = '/';
     if (page === 'event-detail' && detailId) {
         path = `/event/${detailId}`;
     } else if (page === 'resource-detail' && detailId) {
         path = `/resource/${detailId}`;
+    } else if (page === 'admin-edit' && opts) {
+        if (opts.isNew) {
+            path = `/admin/new/${opts.editType}`;
+        } else {
+            path = `/admin/${opts.editType}/${detailId}`;
+        }
+    } else if (page === 'admin-dashboard') {
+        path = '/admin/dashboard';
     } else if (page !== 'home') {
         path = `/${page}`;
     }
@@ -488,7 +523,7 @@ function navigateTo(page, detailId) {
     if (window.location.pathname !== path) {
         history.pushState(null, '', path);
     }
-    renderRoute({ page, detailId });
+    renderRoute({ page, detailId, ...(opts || {}) });
 }
 
 function renderRoute(route) {
@@ -520,6 +555,26 @@ function renderRoute(route) {
         navLinks.library?.classList.add('active');
         const resource = resources.find(r => r.id === detailId) || resources[0];
         renderResourceDetail(resource);
+    } else if (page === 'admin') {
+        // If already authenticated, redirect to dashboard
+        if (typeof getAdminToken === 'function' && getAdminToken()) {
+            navigateTo('admin-dashboard');
+            return;
+        }
+    } else if (page === 'admin-dashboard') {
+        if (typeof getAdminToken === 'function' && !getAdminToken()) {
+            navigateTo('admin');
+            return;
+        }
+        if (typeof renderAdminDashboard === 'function') renderAdminDashboard();
+    } else if (page === 'admin-edit') {
+        if (typeof getAdminToken === 'function' && !getAdminToken()) {
+            navigateTo('admin');
+            return;
+        }
+        if (typeof renderAdminEditor === 'function') {
+            renderAdminEditor(route.editType, detailId, route.isNew);
+        }
     } else if (navLinks[page]) {
         navLinks[page].classList.add('active');
     }
@@ -553,6 +608,18 @@ function renderRoute(route) {
         imprint: {
             title: 'Imprint | Human in the Loop',
             description: 'Legal information and company details for Human in the Loop GmbH.'
+        },
+        admin: {
+            title: 'Admin | Human in the Loop',
+            description: 'Admin panel for managing events and resources.'
+        },
+        'admin-dashboard': {
+            title: 'Admin Dashboard | Human in the Loop',
+            description: 'Manage events and resources.'
+        },
+        'admin-edit': {
+            title: 'Admin Editor | Human in the Loop',
+            description: 'Edit event or resource data.'
         }
     };
 
@@ -628,6 +695,17 @@ document.addEventListener('click', (e) => {
 
     if (href === '/') {
         navigateTo('home');
+    } else if (href.startsWith('/admin/new/')) {
+        const editType = href.replace('/admin/new/', '').replace(/\/$/, '');
+        navigateTo('admin-edit', null, { editType, isNew: true });
+    } else if (href.startsWith('/admin/event/')) {
+        const detailId = href.replace('/admin/event/', '').replace(/\/$/, '');
+        navigateTo('admin-edit', detailId, { editType: 'event' });
+    } else if (href.startsWith('/admin/resource/')) {
+        const detailId = href.replace('/admin/resource/', '').replace(/\/$/, '');
+        navigateTo('admin-edit', detailId, { editType: 'resource' });
+    } else if (href === '/admin/dashboard') {
+        navigateTo('admin-dashboard');
     } else if (href.startsWith('/event/')) {
         const detailId = href.replace('/event/', '');
         navigateTo('event-detail', detailId);

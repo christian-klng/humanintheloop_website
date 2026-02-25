@@ -1084,6 +1084,141 @@ footer {
     border: 1px solid var(--border-color);
 }
 
+/* === Admin === */
+
+.admin-login-form {
+    max-width: 400px;
+}
+
+.admin-login-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.admin-input {
+    width: 100%;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.admin-input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.admin-error {
+    color: var(--warning);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.admin-section {
+    margin-bottom: 64px;
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.admin-section-header h2 {
+    margin: 0;
+}
+
+.admin-list {
+    border-top: 1px solid var(--border-color);
+}
+
+.admin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+    gap: 16px;
+}
+
+.admin-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.admin-item-title {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-item-id {
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+.admin-item-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+.admin-editor {
+    max-width: 900px;
+}
+
+.admin-textarea {
+    width: 100%;
+    min-height: 500px;
+    padding: 16px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    resize: vertical;
+    tab-size: 4;
+    box-sizing: border-box;
+}
+
+.admin-textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.admin-editor-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-danger {
+    background: var(--warning);
+    color: #ffffff;
+    border: 1px solid var(--warning);
+}
+
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
 /* === Responsive === */
 
 /* Tablet */

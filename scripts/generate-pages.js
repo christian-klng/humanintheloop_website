@@ -1,11 +1,14 @@
 /**
  * Build-time page generator for OG meta tags.
  *
- * Reads index.html (with __OG_*__ placeholders) and events/events.json,
+ * Reads index.html (with __OG_*__ placeholders) and event/resource data,
  * then generates per-route HTML files with correct meta tags baked in.
  *
  * Usage:
  *   BASE_URL=https://example.com node scripts/generate-pages.js
+ *
+ * Set DATA_SOURCE=volume to read individual files from /files/ volume
+ * instead of bundled JSON arrays (used at container startup after migration).
  */
 
 const fs = require('fs');
@@ -22,14 +25,53 @@ if (!BASE_URL) {
 const baseUrl = BASE_URL.replace(/\/+$/, '');
 const DEFAULT_IMAGE = `${baseUrl}/events/images/event-conference.jpg`;
 
-// Read template and event data
+const DATA_SOURCE = process.env.DATA_SOURCE || 'bundled';
+const FILES_DIR = process.env.FILES_DIR || '/files';
+
+function loadEventsFromVolume() {
+    const eventsDir = path.join(FILES_DIR, 'events');
+    if (!fs.existsSync(eventsDir)) return [];
+    return fs.readdirSync(eventsDir)
+        .filter(f => f.endsWith('.json'))
+        .map(f => {
+            try { return JSON.parse(fs.readFileSync(path.join(eventsDir, f), 'utf-8')); }
+            catch { return null; }
+        })
+        .filter(Boolean);
+}
+
+function loadResourcesFromVolume() {
+    const libraryDir = path.join(FILES_DIR, 'library');
+    if (!fs.existsSync(libraryDir)) return [];
+    return fs.readdirSync(libraryDir, { withFileTypes: true })
+        .filter(e => e.isDirectory())
+        .map(e => {
+            const jsonPath = path.join(libraryDir, e.name, 'resource.json');
+            if (!fs.existsSync(jsonPath)) return null;
+            try { return JSON.parse(fs.readFileSync(jsonPath, 'utf-8')); }
+            catch { return null; }
+        })
+        .filter(Boolean);
+}
+
+// Read template
 const template = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-8');
-const eventsData = JSON.parse(
-    fs.readFileSync(path.join(__dirname, '..', 'events', 'events.json'), 'utf-8')
-);
-const resourcesData = JSON.parse(
-    fs.readFileSync(path.join(__dirname, '..', 'library', 'resources.json'), 'utf-8')
-);
+
+// Read data from bundled JSON or volume individual files
+let eventsData, resourcesData;
+
+if (DATA_SOURCE === 'volume') {
+    console.log('Reading data from volume individual files...');
+    eventsData = loadEventsFromVolume();
+    resourcesData = loadResourcesFromVolume();
+} else {
+    eventsData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, '..', 'events', 'events.json'), 'utf-8')
+    );
+    resourcesData = JSON.parse(
+        fs.readFileSync(path.join(__dirname, '..', 'library', 'resources.json'), 'utf-8')
+    );
+}
 
 // Static page routes
 const routes = [
