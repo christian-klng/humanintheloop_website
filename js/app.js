@@ -279,9 +279,12 @@ function renderEventDetail(event) {
                         </div>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         <button class="btn btn-block">Jetzt Platz reservieren</button>
                         <p class="text-muted spots-remaining">Nur noch ${event.spots} Plätze verfügbar.</p>
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
                         ${buildRegistrationBlock(event)}
 
@@ -290,6 +293,9 @@ function renderEventDetail(event) {
                         <button class="btn btn-block">Jetzt Platz reservieren</button>
                         <p class="text-muted spots-remaining">Nur noch ${event.spots} Plätze verfügbar.</p>
 >>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     </div>
                 </aside>

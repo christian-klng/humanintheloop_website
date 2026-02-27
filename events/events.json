@@ -11,8 +11,11 @@
         "cost": "Kostenlos für Alumni",
         "spots": 14,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         "tags": ["Architektur", "Engineering"],
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
         "pricing": "free",
         "stripeLink": null,
@@ -22,6 +25,9 @@
 =======
         "tags": ["Architektur", "Engineering"],
 >>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         "image": "events/images/event-conference.jpg",
         "description": [
@@ -109,8 +115,11 @@
         "cost": "Kostenlos",
         "spots": 50,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         "tags": ["Netzwerken", "Community"],
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
         "pricing": "free",
         "stripeLink": null,
@@ -120,6 +129,9 @@
 =======
         "tags": ["Netzwerken", "Community"],
 >>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         "image": "events/images/event-networking.jpg",
         "description": [
