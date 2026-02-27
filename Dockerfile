@@ -7,6 +7,8 @@ COPY library/resources.json ./library/
 COPY scripts/generate-pages.js ./scripts/
 ARG BASE_URL
 ENV BASE_URL=${BASE_URL}
+ARG N8N_WEBHOOK_URL
+ENV N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
 RUN node scripts/generate-pages.js
 
 # Stage 2: Install API server dependencies

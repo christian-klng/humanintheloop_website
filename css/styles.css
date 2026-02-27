@@ -888,6 +888,16 @@ footer {
     top: 16px;
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+/* === Event Registration Form === */
+
+.reg-label {
+    display: block;
+    font-size: 13px;
+=======
+>>>>>>> Stashed changes
 /* === Resource Cards === */
 
 .resource-card {
@@ -923,10 +933,98 @@ footer {
 
 .resource-card-meta {
     font-size: 12px;
+<<<<<<< Updated upstream
+=======
+>>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
+>>>>>>> Stashed changes
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.reg-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.reg-input:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(7, 59, 76, 0.08);
+}
+
+.reg-input:invalid:not(:placeholder-shown) {
+    border-color: var(--warning);
+}
+
+.registration-form .btn-block {
+    margin-top: 12px;
+}
+
+.reg-status {
+    font-size: 13px;
+    margin-top: 10px;
+    min-height: 20px;
+    line-height: 1.4;
+}
+
+.reg-status:empty {
+    display: none;
+}
+
+.reg-status--error {
+    color: var(--warning);
+}
+
+.reg-note {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.reg-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    background: rgba(6, 214, 160, 0.08);
+    border: 1px solid rgba(6, 214, 160, 0.3);
+    border-radius: var(--radius-sm);
+    margin-top: 16px;
+}
+
+.reg-success-icon {
+    flex-shrink: 0;
+    color: var(--success);
+    margin-top: 1px;
+}
+
+.reg-success p {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+=======
+>>>>>>> Stashed changes
     margin-bottom: 8px;
 }
 
@@ -1217,6 +1315,10 @@ footer {
 
 .btn-danger:hover {
     opacity: 0.9;
+<<<<<<< Updated upstream
+=======
+>>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
+>>>>>>> Stashed changes
 }
 
 /* === Responsive === */

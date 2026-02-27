@@ -2,6 +2,13 @@
    Human in the Loop — Application Logic
    ============================================ */
 
+// --- Config ---
+const WEBHOOK_URL = (
+    window.__CONFIG__ &&
+    window.__CONFIG__.webhookUrl &&
+    !window.__CONFIG__.webhookUrl.startsWith('__')
+) ? window.__CONFIG__.webhookUrl : null;
+
 // --- State ---
 let events = [];
 let resources = [];
@@ -94,6 +101,123 @@ function renderEventCards(container, eventList) {
     });
 }
 
+function buildRegistrationBlock(event) {
+    if (event.pricing === 'paid') {
+        return `
+            <div class="registration-form" id="registration-form">
+                <label for="reg-email" class="reg-label">E-Mail-Adresse</label>
+                <input type="email" id="reg-email" class="reg-input"
+                    placeholder="name@example.com" autocomplete="email" required>
+                <button type="button" class="btn btn-block" id="reg-submit">
+                    Jetzt buchen
+                </button>
+                <p class="reg-note text-muted">Sie werden zu Stripe weitergeleitet.</p>
+            </div>`;
+    }
+
+    return `
+        <div class="registration-form" id="registration-form">
+            <label for="reg-email" class="reg-label">E-Mail-Adresse</label>
+            <input type="email" id="reg-email" class="reg-input"
+                placeholder="name@example.com" autocomplete="email"
+                aria-describedby="reg-status" required>
+            <button type="button" class="btn btn-block" id="reg-submit">
+                Kostenlos anmelden
+            </button>
+            <div id="reg-status" class="reg-status" aria-live="polite" aria-atomic="true"></div>
+        </div>`;
+}
+
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function setRegStatus(el, type, message) {
+    if (!el) return;
+    el.textContent = message;
+    el.className = 'reg-status' + (type ? ` reg-status--${type}` : '');
+}
+
+function handlePaidRedirect(event, emailInput) {
+    const email = emailInput.value.trim();
+
+    if (!isValidEmail(email)) {
+        emailInput.focus();
+        emailInput.setCustomValidity('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+        emailInput.reportValidity();
+        return;
+    }
+    emailInput.setCustomValidity('');
+
+    const url = new URL(event.stripeLink);
+    url.searchParams.set('client_reference_id', event.id);
+    url.searchParams.set('prefilled_email', email);
+
+    window.location.href = url.toString();
+}
+
+async function handleFreeRegistration(event, emailInput, submitBtn) {
+    const email = emailInput.value.trim();
+    const statusEl = document.getElementById('reg-status');
+
+    if (!isValidEmail(email)) {
+        emailInput.focus();
+        emailInput.setCustomValidity('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+        emailInput.reportValidity();
+        return;
+    }
+    emailInput.setCustomValidity('');
+
+    if (!WEBHOOK_URL) {
+        console.warn('Webhook URL not configured.');
+        setRegStatus(statusEl, 'error', 'Anmeldung momentan nicht verfügbar. Bitte versuchen Sie es später erneut.');
+        return;
+    }
+
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wird gesendet\u2026';
+    setRegStatus(statusEl, '', '');
+
+    const payload = {
+        eventId: event.id,
+        eventTitle: event.title,
+        eventDate: event.dateFull,
+        eventTime: event.time,
+        email: email,
+        onlineLink: event.onlineLink || null,
+        confirmationText: event.confirmationText || null
+    };
+
+    try {
+        const res = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const form = document.getElementById('registration-form');
+        if (form) {
+            form.innerHTML = `
+                <div class="reg-success" role="status">
+                    <svg class="reg-success-icon" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
+                    <p>Anmeldung erfolgreich! Sie erhalten in Kürze eine Bestätigungs-E-Mail.</p>
+                </div>`;
+        }
+    } catch (err) {
+        console.error('Registration failed:', err);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Kostenlos anmelden';
+        setRegStatus(statusEl, 'error', 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+    }
+}
+
 function renderEventDetail(event) {
     const container = document.getElementById('event-detail-content');
     if (!container || !event) return;
@@ -154,8 +278,19 @@ function renderEventDetail(event) {
                             <span class="info-value">${event.cost}</span>
                         </div>
 
+<<<<<<< Updated upstream
                         <button class="btn btn-block">Jetzt Platz reservieren</button>
                         <p class="text-muted spots-remaining">Nur noch ${event.spots} Plätze verfügbar.</p>
+=======
+<<<<<<< HEAD
+                        ${buildRegistrationBlock(event)}
+
+                        <p class="text-muted spots-remaining">Only ${event.spots} spots remaining.</p>
+=======
+                        <button class="btn btn-block">Jetzt Platz reservieren</button>
+                        <p class="text-muted spots-remaining">Nur noch ${event.spots} Plätze verfügbar.</p>
+>>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
+>>>>>>> Stashed changes
                     </div>
                 </aside>
             </div>
@@ -166,6 +301,24 @@ function renderEventDetail(event) {
     document.getElementById('back-to-events').addEventListener('click', () => {
         navigateTo('events');
     });
+
+    // Bind registration form
+    const submitBtn = document.getElementById('reg-submit');
+    const emailInput = document.getElementById('reg-email');
+
+    if (submitBtn && emailInput) {
+        submitBtn.addEventListener('click', () => {
+            if (event.pricing === 'paid') {
+                handlePaidRedirect(event, emailInput);
+            } else {
+                handleFreeRegistration(event, emailInput, submitBtn);
+            }
+        });
+
+        emailInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') submitBtn.click();
+        });
+    }
 }
 
 function renderAllEventCards() {

@@ -21,6 +21,11 @@ if (!BASE_URL) {
     process.exit(1);
 }
 
+const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || '';
+if (!N8N_WEBHOOK_URL) {
+    console.warn('WARNING: N8N_WEBHOOK_URL not set — free event registration will not work.');
+}
+
 // Remove trailing slash if present
 const baseUrl = BASE_URL.replace(/\/+$/, '');
 const DEFAULT_IMAGE = `${baseUrl}/events/images/event-conference.jpg`;
@@ -173,7 +178,8 @@ routes.forEach((route) => {
         .replace(/__OG_TITLE__/g, escapeAttr(route.title))
         .replace(/__OG_DESCRIPTION__/g, escapeAttr(route.description))
         .replace(/__OG_IMAGE__/g, route.image)
-        .replace(/__OG_URL__/g, url);
+        .replace(/__OG_URL__/g, url)
+        .replace(/__WEBHOOK_URL__/g, N8N_WEBHOOK_URL);
 
     const outDir = route.path === '/'
         ? distDir
