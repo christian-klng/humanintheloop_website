@@ -153,6 +153,66 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 
 **Via files**: Create `/files/events/{event-id}.json` on the Northflank volume.
 
+### Event JSON Schema
+
+```json
+{
+    "id": "url-safe-slug",
+    "title": "Event Title",
+    "date": "12. Okt. 2026",
+    "dateFull": "12. Oktober 2026",
+    "time": "10:00 – 15:00 Uhr (MEZ)",
+    "location": "Livestream",
+    "locationNote": "Link nach Anmeldung",
+    "type": "Livestream",
+    "cost": "Kostenlos für Alumni",
+    "spots": 14,
+    "pricing": "free",
+    "stripeLink": null,
+    "onlineLink": "https://zoom.us/j/...",
+    "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Link kurz vor der Session.",
+    "tags": ["Tag1", "Tag2"],
+    "image": "events/images/event-conference.jpg",
+    "description": ["Paragraph 1", "Paragraph 2"],
+    "learns": ["Point 1", "Point 2"],
+    "audience": "Target audience description."
+}
+```
+
+- `pricing`: `"free"` (webhook registration) or `"paid"` (Stripe redirect)
+- `stripeLink`: Full Stripe Payment Link URL for paid events (one link per event series), `null` for free events
+- `onlineLink`: Event URL (Zoom etc.), sent via webhook to n8n for confirmation emails, `null` if not applicable
+- `confirmationText`: Custom text for confirmation emails sent by n8n
+
+## Event Registration
+
+Events support two registration modes controlled by the `pricing` field:
+
+**Free events** (`pricing: "free"`): User enters email → POST to n8n webhook with event details + email + `onlineLink` + `confirmationText` → n8n sends confirmation email.
+
+**Paid events** (`pricing: "paid"`): User enters email → Redirect to Stripe Payment Link with `client_reference_id={event.id}` and `prefilled_email={email}`. One Stripe Payment Link is created per event series; `client_reference_id` identifies the specific event instance.
+
+### Webhook Configuration
+
+The n8n webhook URL is injected at build time via the `N8N_WEBHOOK_URL` build argument:
+- In `index.html`: `<script>window.__CONFIG__={webhookUrl:"__WEBHOOK_URL__"};</script>`
+- `generate-pages.js` replaces `__WEBHOOK_URL__` with the actual URL
+- `app.js` reads it from `window.__CONFIG__.webhookUrl`
+- Without the build step (local dev), the placeholder remains and registration shows a "not available" message
+
+### Webhook Payload (free events)
+
+```json
+{
+    "eventId": "advanced-system-architecture",
+    "eventTitle": "Fortgeschrittene Systemarchitektur",
+    "eventDate": "12. Oktober 2026",
+    "eventTime": "10:00 – 15:00 Uhr (MEZ)",
+    "email": "user@example.com",
+    "onlineLink": "https://zoom.us/j/...",
+    "confirmationText": "Dein Platz ist bestätigt! ..."
+}
+
 ## Local Development
 
 ```sh
