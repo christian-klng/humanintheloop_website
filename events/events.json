@@ -10,25 +10,11 @@
         "type": "Livestream",
         "cost": "Kostenlos für Alumni",
         "spots": 14,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        "tags": ["Architektur", "Engineering"],
-=======
-=======
->>>>>>> Stashed changes
-<<<<<<< HEAD
         "pricing": "free",
         "stripeLink": null,
         "onlineLink": "https://zoom.us/j/placeholder",
-        "confirmationText": "Your spot is confirmed! You will receive the event link shortly before the session.",
-        "tags": ["Architecture", "Engineering"],
-=======
+        "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Veranstaltungslink kurz vor der Session.",
         "tags": ["Architektur", "Engineering"],
->>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         "image": "events/images/event-conference.jpg",
         "description": [
             "Wenn moderne Anwendungen auf Millionen gleichzeitiger Nutzer skalieren, stoßen traditionelle Monolithen an ihre Grenzen. Diese exklusive Intensivsitzung taucht tief in die Realität der Migration zu und Wartung von verteilten Architekturen im Enterprise-Maßstab ein.",
@@ -57,7 +43,7 @@
         "pricing": "free",
         "stripeLink": null,
         "onlineLink": "https://zoom.us/j/placeholder",
-        "confirmationText": "Your spot is confirmed! You will receive the event link shortly before the session.",
+        "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Veranstaltungslink kurz vor der Session.",
         "tags": ["Frontend", "Performance"],
         "image": "events/images/event-workshop.jpg",
         "description": [
@@ -87,7 +73,7 @@
         "pricing": "free",
         "stripeLink": null,
         "onlineLink": "https://zoom.us/j/placeholder",
-        "confirmationText": "Your spot is confirmed! You will receive the event link shortly before the session.",
+        "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Veranstaltungslink kurz vor der Session.",
         "tags": ["Design", "Prototyping"],
         "image": "events/images/event-prototyping.jpg",
         "description": [
@@ -114,25 +100,11 @@
         "type": "London",
         "cost": "Kostenlos",
         "spots": 50,
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        "tags": ["Netzwerken", "Community"],
-=======
-=======
->>>>>>> Stashed changes
-<<<<<<< HEAD
         "pricing": "free",
         "stripeLink": null,
         "onlineLink": null,
-        "confirmationText": "Your spot is confirmed! Venue details will be shared closer to the event.",
-        "tags": ["Networking", "Community"],
-=======
+        "confirmationText": "Dein Platz ist bestätigt! Details zum Veranstaltungsort werden rechtzeitig bekannt gegeben.",
         "tags": ["Netzwerken", "Community"],
->>>>>>> 2f1040d3cfc4c0297726ef00c1878dd47a7ba26d
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         "image": "events/images/event-networking.jpg",
         "description": [
             "Vernetzen Sie sich mit Human in the Loop-Absolventen, finden Sie Top-Talente und genießen Sie einen Abend voller Tech-Talks.",
