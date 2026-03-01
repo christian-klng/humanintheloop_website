@@ -70,6 +70,29 @@ function parseEventDate(dateStr) {
     return { month: parts[2].toUpperCase().slice(0, 3), day: parts[1] };
 }
 
+function parseGermanDate(dateStr) {
+    const months = {
+        'jan': 0, 'feb': 1, 'mär': 2, 'mar': 2, 'apr': 3, 'mai': 4, 'jun': 5,
+        'jul': 6, 'aug': 7, 'sep': 8, 'okt': 9, 'nov': 10, 'dez': 11
+    };
+    const match = dateStr.match(/(\d+)\.\s*(\w+)\.?\s*(\d{4})/);
+    if (!match) return null;
+    const day = parseInt(match[1], 10);
+    const monthKey = match[2].toLowerCase().slice(0, 3);
+    const year = parseInt(match[3], 10);
+    const month = months[monthKey];
+    if (month === undefined) return null;
+    return new Date(year, month, day);
+}
+
+function isUpcomingEvent(event) {
+    const eventDate = parseGermanDate(event.date);
+    if (!eventDate) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return eventDate > today;
+}
+
 function createEventCard(event) {
     const { month, day } = parseEventDate(event.date);
     const card = document.createElement('a');
@@ -246,9 +269,14 @@ function renderEventDetail(event) {
                     ${event.description.map((p) => `<p>${p}</p>`).join('')}
 
                     <h3>Was Sie lernen werden</h3>
-                    <ul>
-                        ${event.learns.map((item) => `<li>${item}</li>`).join('')}
-                    </ul>
+                    <ol class="agenda-timeline">
+                        ${event.learns.map((item, i) => `
+                            <li class="agenda-step">
+                                <span class="agenda-number">${i + 1}</span>
+                                <span class="agenda-content">${item}</span>
+                            </li>
+                        `).join('')}
+                    </ol>
 
                     <h3>Für wen ist diese Veranstaltung?</h3>
                     <p>${event.audience}</p>
@@ -273,14 +301,18 @@ function renderEventDetail(event) {
                                 ${event.locationNote ? `<small>${event.locationNote}</small>` : ''}
                             </span>
                         </div>
+                        ${event.spots ? `
+                        <div class="info-row">
+                            <span class="info-label">Gruppengröße</span>
+                            <span class="info-value">${event.spots}</span>
+                        </div>
+                        ` : ''}
                         <div class="info-row">
                             <span class="info-label">Kosten</span>
                             <span class="info-value">${event.cost}</span>
                         </div>
 
                         ${buildRegistrationBlock(event)}
-
-                        <p class="text-muted spots-remaining">Nur noch ${event.spots} Plätze verfügbar.</p>
                     </div>
                 </aside>
             </div>
@@ -312,13 +344,15 @@ function renderEventDetail(event) {
 }
 
 function renderAllEventCards() {
-    // Home page — show first 2 events
-    const homeGrid = document.getElementById('home-events-grid');
-    if (homeGrid) renderEventCards(homeGrid, events.slice(0, 2));
+    const upcoming = events.filter(isUpcomingEvent);
 
-    // Events page — show all events
+    // Home page — show first 2 upcoming events
+    const homeGrid = document.getElementById('home-events-grid');
+    if (homeGrid) renderEventCards(homeGrid, upcoming.slice(0, 2));
+
+    // Events page — show all upcoming events
     const eventsGrid = document.getElementById('events-grid');
-    if (eventsGrid) renderEventCards(eventsGrid, events);
+    if (eventsGrid) renderEventCards(eventsGrid, upcoming);
 }
 
 // --- Resource Render Helpers ---

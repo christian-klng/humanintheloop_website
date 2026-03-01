@@ -172,7 +172,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
     "locationNote": "Link nach Anmeldung",
     "type": "Livestream",
     "cost": "Kostenlos für Alumni",
-    "spots": 14,
+    "spots": "maximal 6",
     "pricing": "free",
     "stripeLink": null,
     "onlineLink": "https://zoom.us/j/...",
