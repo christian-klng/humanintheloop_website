@@ -20,8 +20,8 @@ RUN npm install --production
 # Stage 3: Runtime — nginx + Node.js
 FROM node:20-alpine
 
-# Install nginx
-RUN apk add --no-cache nginx
+# Install nginx and vips runtime (required by sharp for image processing)
+RUN apk add --no-cache nginx vips
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/http.d/default.conf
@@ -35,6 +35,7 @@ COPY --from=builder /app/dist/ /usr/share/nginx/html/
 # Copy API server + dependencies
 COPY --from=api-deps /app/server/node_modules /app/server/node_modules
 COPY server/api.js /app/server/
+COPY server/image-variants.js /app/server/
 COPY server/package.json /app/server/
 
 # Copy scripts for runtime migration + OG regeneration
@@ -45,6 +46,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 EXPOSE 80
+ENV ADMIN_USER=""
 ENV ADMIN_PASSWORD=""
 ENV BASE_URL=""
 

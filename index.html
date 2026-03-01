@@ -501,12 +501,14 @@
             </div>
 
             <section class="container section--flush">
-                <div class="admin-login-form">
+                <form class="admin-login-form" id="admin-login-form" autocomplete="on">
+                    <label for="admin-username">Benutzername</label>
+                    <input type="text" id="admin-username" class="admin-input" placeholder="Benutzername eingeben" autocomplete="username">
                     <label for="admin-password">Passwort</label>
-                    <input type="password" id="admin-password" class="admin-input" placeholder="Admin-Passwort eingeben">
+                    <input type="password" id="admin-password" class="admin-input" placeholder="Admin-Passwort eingeben" autocomplete="current-password">
                     <p id="admin-login-error" class="admin-error" hidden></p>
-                    <button id="admin-login-btn" class="btn" type="button">Anmelden</button>
-                </div>
+                    <button id="admin-login-btn" class="btn" type="submit">Anmelden</button>
+                </form>
             </section>
         </main>
 
@@ -602,17 +604,8 @@
                     </a>
                     <p class="text-muted footer-tagline">Bildung f&uuml;r die moderne Welt.</p>
                     <div class="footer-social">
-                        <a href="#" aria-label="LinkedIn" class="social-link">
+                        <a href="https://www.linkedin.com/in/christianklang/" aria-label="Christian Klang bei LinkedIn" class="social-link">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                        </a>
-                        <a href="#" aria-label="X (Twitter)" class="social-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
-                        </a>
-                        <a href="#" aria-label="GitHub" class="social-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                        </a>
-                        <a href="#" aria-label="YouTube" class="social-link">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
                         </a>
                     </div>
                 </div>
@@ -649,7 +642,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 Human in the Loop. Alle Rechte vorbehalten.</p>
+                <p>&copy; 2026 Human in the Loop Academy</p>
             </div>
         </div>
     </footer>

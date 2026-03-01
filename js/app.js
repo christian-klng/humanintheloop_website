@@ -62,6 +62,23 @@ async function loadResources() {
     }
 }
 
+// --- Responsive Image Helpers ---
+
+function responsiveImgAttrs(imageUrl, sizesHint) {
+    if (!imageUrl) return '';
+    if (!/\.(jpg|jpeg|png|webp)$/i.test(imageUrl)) return '';
+
+    const dotIndex = imageUrl.lastIndexOf('.');
+    const base = imageUrl.substring(0, dotIndex);
+    const widths = [640, 1280, 1920];
+
+    const srcset = widths
+        .map(w => `${base}-${w}w.webp ${w}w`)
+        .join(', ');
+
+    return ` srcset="${srcset}" sizes="${sizesHint}"`;
+}
+
 // --- Render Helpers ---
 
 function parseEventDate(dateStr) {
@@ -106,7 +123,7 @@ function createEventCard(event) {
             <div class="ticket-perf" aria-hidden="true"></div>
         </div>
         <div class="ticket-body">
-            <img src="${event.image}" alt="" class="event-image" loading="lazy">
+            <img src="${event.image}" alt="" class="event-image" loading="lazy"${responsiveImgAttrs(event.image, '(max-width: 768px) 100vw, 600px')}>
             <div class="event-content">
                 <div class="event-date">${event.date} &bull; ${event.type}</div>
                 <h3>${event.title}</h3>
@@ -261,7 +278,7 @@ function renderEventDetail(event) {
         </div>
 
         <section class="container section--flush">
-            <img src="${event.image}" alt="${event.title} Veranstaltungsbild" class="event-cover-img" loading="lazy">
+            <img src="${event.image}" alt="${event.title} Veranstaltungsbild" class="event-cover-img" loading="lazy"${responsiveImgAttrs(event.image, '(max-width: 768px) 100vw, 1200px')}>
 
             <div class="detail-layout">
                 <div class="detail-main">
@@ -376,7 +393,7 @@ function createResourceCard(resource) {
                     : 'Artikel';
 
     card.innerHTML = `
-        ${resource.thumbnail ? `<img src="${resource.thumbnail}" alt="" class="resource-card-img" loading="lazy">` : ''}
+        ${resource.thumbnail ? `<img src="${resource.thumbnail}" alt="" class="resource-card-img" loading="lazy"${responsiveImgAttrs(resource.thumbnail, '(max-width: 768px) 100vw, 600px')}>` : ''}
         <div class="resource-card-body">
             <div class="resource-card-meta">${formatResourceDate(resource.date)} &bull; ${mediaType}</div>
             <h3>${resource.title}</h3>
@@ -427,7 +444,7 @@ function renderResourceDetail(resource) {
                         role="button"
                         aria-label="Bild ${i + 1} ansehen: ${img.alt}"
                         data-gallery-index="${i}"
-                        loading="lazy"
+                        loading="lazy"${responsiveImgAttrs(img.src, '(max-width: 768px) 50vw, 400px')}
                     >
                 `).join('')}
             </div>

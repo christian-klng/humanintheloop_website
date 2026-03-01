@@ -37,24 +37,27 @@ async function adminFetch(url, opts = {}) {
 // --- Login ---
 
 function initAdminLogin() {
-    const loginBtn = document.getElementById('admin-login-btn');
+    const loginForm = document.getElementById('admin-login-form');
+    const usernameInput = document.getElementById('admin-username');
     const passwordInput = document.getElementById('admin-password');
     const errorEl = document.getElementById('admin-login-error');
 
-    if (!loginBtn) return;
+    if (!loginForm) return;
 
     async function doLogin() {
+        const username = usernameInput.value;
         const password = passwordInput.value;
-        if (!password) return;
+        if (!username || !password) return;
 
         errorEl.hidden = true;
+        const loginBtn = document.getElementById('admin-login-btn');
         loginBtn.disabled = true;
 
         try {
             const res = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password })
+                body: JSON.stringify({ username, password })
             });
 
             const data = await res.json();
@@ -66,6 +69,7 @@ function initAdminLogin() {
             }
 
             setAdminToken(data.token);
+            usernameInput.value = '';
             passwordInput.value = '';
             navigateTo('admin-dashboard');
         } catch (err) {
@@ -76,9 +80,9 @@ function initAdminLogin() {
         }
     }
 
-    loginBtn.addEventListener('click', doLogin);
-    passwordInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') doLogin();
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        doLogin();
     });
 }
 

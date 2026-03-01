@@ -5,6 +5,7 @@
  * Reads/writes individual JSON files on the /files/ volume.
  *
  * Environment variables:
+ *   ADMIN_USER      — required, the admin login username
  *   ADMIN_PASSWORD  — required, the admin login password
  *   FILES_DIR       — optional, defaults to /files
  */
@@ -14,13 +15,15 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { execFile } = require('child_process');
+const { generateVariants, deleteVariants } = require('./image-variants');
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
 
+const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-if (!ADMIN_PASSWORD) {
-    console.error('ERROR: ADMIN_PASSWORD environment variable is required.');
+if (!ADMIN_USER || !ADMIN_PASSWORD) {
+    console.error('ERROR: ADMIN_USER and ADMIN_PASSWORD environment variables are required.');
     process.exit(1);
 }
 
@@ -128,9 +131,9 @@ app.post('/api/login', (req, res) => {
         return res.status(429).json({ error: 'Zu viele Anmeldeversuche. Bitte später erneut versuchen.' });
     }
 
-    const { password } = req.body;
-    if (!password || password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ error: 'Ungültiges Passwort' });
+    const { username, password } = req.body;
+    if (!username || !password || username !== ADMIN_USER || password !== ADMIN_PASSWORD) {
+        return res.status(401).json({ error: 'Ungültiger Benutzername oder Passwort' });
     }
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -451,12 +454,25 @@ app.post('/api/uploads', requireAuth, async (req, res) => {
             finalName = `${Date.now()}-${sanitized}`;
         }
 
-        fs.writeFileSync(path.join(targetDir, finalName), buffer);
+        const savedPath = path.join(targetDir, finalName);
+        fs.writeFileSync(savedPath, buffer);
+
+        // Generate responsive image variants (WebP at multiple widths)
+        let variants = [];
+        try {
+            variants = await generateVariants(savedPath);
+            if (variants.length > 0) {
+                console.log(`Generated ${variants.length} responsive variant(s) for ${finalName}`);
+            }
+        } catch (err) {
+            console.error(`Variant generation error for ${finalName}:`, err.message);
+        }
 
         res.status(201).json({
             filename: finalName,
             url: `${urlPrefix}/${encodeURIComponent(finalName)}`,
-            size: buffer.length
+            size: buffer.length,
+            variants
         });
     } catch (err) {
         if (err.message === 'File too large') {
@@ -478,6 +494,9 @@ app.get('/api/uploads', requireAuth, (req, res) => {
     const files = [];
 
     for (const name of entries) {
+        // Skip responsive image variants (e.g. photo-640w.webp)
+        if (/-\d+w\.webp$/.test(name)) continue;
+
         const filePath = path.join(targetDir, name);
         try {
             const stat = fs.statSync(filePath);
@@ -511,6 +530,7 @@ app.delete('/api/uploads/:filename', requireAuth, (req, res) => {
         return res.status(404).json({ error: 'Datei nicht gefunden' });
     }
 
+    deleteVariants(filePath);
     fs.unlinkSync(filePath);
     res.json({ ok: true });
 });

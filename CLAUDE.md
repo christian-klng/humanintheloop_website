@@ -88,7 +88,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 ## Admin Panel
 
 - **Access**: Navigate to `/admin` (no link in public navigation)
-- **Authentication**: Simple password login via `ADMIN_PASSWORD` environment variable (Northflank secret group)
+- **Authentication**: Username + password login via `ADMIN_USER` and `ADMIN_PASSWORD` environment variables (Northflank secret group)
 - **Features**: Edit (raw JSON), add, and delete events and resources; upload media files (images/videos) with folder tabs, URL copy, and lightbox preview
 - **API server**: Express.js on port 3000 (proxied by nginx at `/api/*`)
 - **Session**: Bearer token stored in `sessionStorage`, 24h expiry
@@ -231,8 +231,9 @@ npx serve -s -l 8000
 
 ```sh
 docker build --build-arg BASE_URL=https://your-domain.com -t humanintheloop .
-docker run -p 8080:80 -e ADMIN_PASSWORD=yourpassword -v ./test-files:/files humanintheloop
+docker run -p 8080:80 -e ADMIN_USER=admin -e ADMIN_PASSWORD=yourpassword -v ./test-files:/files humanintheloop
 ```
 
 `BASE_URL` is required — it sets the absolute URLs for OG meta tags and canonical links.
+`ADMIN_USER` is required — it sets the admin login username.
 `ADMIN_PASSWORD` is required — it sets the admin login password.
