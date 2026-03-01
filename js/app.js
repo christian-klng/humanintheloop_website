@@ -361,13 +361,19 @@ function renderEventDetail(event) {
 }
 
 function renderAllEventCards() {
-    const upcoming = events.filter(isUpcomingEvent);
+    const upcoming = events.filter(isUpcomingEvent).sort((a, b) => {
+        const dateA = parseGermanDate(a.date);
+        const dateB = parseGermanDate(b.date);
+        if (!dateA) return 1;
+        if (!dateB) return -1;
+        return dateA - dateB;
+    });
 
-    // Home page — show first 2 upcoming events
+    // Home page — show first 2 upcoming events (soonest first)
     const homeGrid = document.getElementById('home-events-grid');
     if (homeGrid) renderEventCards(homeGrid, upcoming.slice(0, 2));
 
-    // Events page — show all upcoming events
+    // Events page — show all upcoming events (soonest first)
     const eventsGrid = document.getElementById('events-grid');
     if (eventsGrid) renderEventCards(eventsGrid, upcoming);
 }
