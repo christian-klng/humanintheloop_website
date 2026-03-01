@@ -1335,6 +1335,7 @@ footer {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
+    margin-bottom: 24px;
 }
 
 .admin-upload-item {
@@ -1388,6 +1389,21 @@ footer {
     display: flex;
     gap: 6px;
     flex-shrink: 0;
+}
+
+.admin-upload-thumb[data-preview-url] {
+    cursor: pointer;
+}
+
+.admin-upload-thumb[data-preview-url]:hover {
+    opacity: 0.8;
+}
+
+.admin-lightbox-video {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: var(--radius-sm);
+    outline: none;
 }
 
 @media (max-width: 768px) {

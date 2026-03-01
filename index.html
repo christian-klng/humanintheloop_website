@@ -546,6 +546,7 @@
                         <button class="admin-upload-tab" role="tab" aria-selected="false" data-folder="events" type="button">Veranstaltungen</button>
                         <button class="admin-upload-tab" role="tab" aria-selected="false" data-folder="library" type="button">Ressourcen</button>
                     </div>
+                    <div id="admin-uploads-list" class="admin-uploads-grid"></div>
                     <div id="admin-upload-area" class="admin-upload-area" role="button" tabindex="0" aria-label="Dateien hier ablegen oder klicken zum Hochladen">
                         <input type="file" id="admin-upload-input" class="admin-upload-input" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.mp4,.webm">
                         <div class="admin-upload-content">
@@ -561,7 +562,6 @@
                         <p id="admin-upload-progress-text" class="text-muted">Hochladen...</p>
                     </div>
                     <p id="admin-upload-error" class="admin-error" hidden></p>
-                    <div id="admin-uploads-list" class="admin-uploads-grid"></div>
                 </div>
             </section>
         </main>
@@ -670,6 +670,18 @@
             <figcaption class="lightbox-caption"></figcaption>
         </figure>
         <div class="lightbox-counter" aria-live="polite"></div>
+    </div>
+
+    <!-- Admin Media Lightbox -->
+    <div id="admin-lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Medienvorschau" hidden>
+        <button class="lightbox-close" type="button" aria-label="Schlie&szlig;en">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <figure class="lightbox-content">
+            <img class="lightbox-img admin-lightbox-img" src="" alt="" hidden>
+            <video class="admin-lightbox-video" controls playsinline hidden></video>
+            <figcaption class="lightbox-caption"></figcaption>
+        </figure>
     </div>
 
     <!-- Plyr video player -->

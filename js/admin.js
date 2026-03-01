@@ -373,10 +373,13 @@ async function renderAdminUploads() {
         list.innerHTML = files.map(file => {
             const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.filename);
             const isVideo = /\.(mp4|webm)$/i.test(file.filename);
+            const previewAttr = (isImage || isVideo)
+                ? ` data-preview-url="${file.url}" data-preview-type="${isImage ? 'image' : 'video'}" role="button" tabindex="0" aria-label="Vorschau: ${escapeHTML(file.filename)}"`
+                : '';
             const preview = isImage
-                ? `<img src="${file.url}" alt="${escapeHTML(file.filename)}" class="admin-upload-thumb" loading="lazy">`
+                ? `<img src="${file.url}" alt="${escapeHTML(file.filename)}" class="admin-upload-thumb"${previewAttr} loading="lazy">`
                 : isVideo
-                    ? `<div class="admin-upload-thumb admin-upload-thumb--video"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>`
+                    ? `<div class="admin-upload-thumb admin-upload-thumb--video"${previewAttr}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>`
                     : `<div class="admin-upload-thumb admin-upload-thumb--generic"></div>`;
 
             return `
@@ -537,11 +540,74 @@ function initUploadTabs() {
     });
 }
 
+function openAdminLightbox(url, type, filename) {
+    const lb = document.getElementById('admin-lightbox');
+    if (!lb) return;
+
+    const img = lb.querySelector('.admin-lightbox-img');
+    const video = lb.querySelector('.admin-lightbox-video');
+    const caption = lb.querySelector('.lightbox-caption');
+
+    if (type === 'image') {
+        img.src = url;
+        img.alt = filename;
+        img.hidden = false;
+        video.hidden = true;
+        video.src = '';
+    } else {
+        video.src = url;
+        video.hidden = false;
+        img.hidden = true;
+        img.src = '';
+    }
+
+    caption.textContent = filename;
+    lb.hidden = false;
+    document.body.classList.add('menu-open');
+    lb.querySelector('.lightbox-close').focus();
+}
+
+function closeAdminLightbox() {
+    const lb = document.getElementById('admin-lightbox');
+    if (!lb) return;
+
+    lb.hidden = true;
+    document.body.classList.remove('menu-open');
+
+    const video = lb.querySelector('.admin-lightbox-video');
+    video.pause();
+    video.src = '';
+    video.hidden = true;
+
+    const img = lb.querySelector('.admin-lightbox-img');
+    img.src = '';
+    img.hidden = true;
+}
+
+function initAdminLightbox() {
+    const lb = document.getElementById('admin-lightbox');
+    if (!lb) return;
+
+    lb.querySelector('.lightbox-close').addEventListener('click', closeAdminLightbox);
+    lb.addEventListener('click', (e) => {
+        if (e.target === lb) closeAdminLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !lb.hidden) closeAdminLightbox();
+    });
+}
+
 function initUploadActions() {
     const list = document.getElementById('admin-uploads-list');
     if (!list) return;
 
     list.addEventListener('click', async (e) => {
+        const thumb = e.target.closest('[data-preview-url]');
+        if (thumb) {
+            openAdminLightbox(thumb.dataset.previewUrl, thumb.dataset.previewType, thumb.getAttribute('alt') || thumb.getAttribute('aria-label') || '');
+            return;
+        }
+
         const copyBtn = e.target.closest('.admin-copy-url-btn');
         if (copyBtn) {
             const url = window.location.origin + copyBtn.dataset.url;
@@ -595,6 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAdminUploads();
     initUploadTabs();
     initUploadActions();
+    initAdminLightbox();
 
     const saveBtn = document.getElementById('admin-save-btn');
     if (saveBtn) saveBtn.addEventListener('click', adminSave);
