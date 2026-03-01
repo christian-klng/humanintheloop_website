@@ -536,6 +536,28 @@
                     </div>
                     <div id="admin-resources-list" class="admin-list"></div>
                 </div>
+
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2>Medien</h2>
+                    </div>
+                    <div id="admin-upload-area" class="admin-upload-area" role="button" tabindex="0" aria-label="Dateien hier ablegen oder klicken zum Hochladen">
+                        <input type="file" id="admin-upload-input" class="admin-upload-input" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.mp4,.webm">
+                        <div class="admin-upload-content">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <p>Dateien hierher ziehen oder <span class="admin-upload-browse">durchsuchen</span></p>
+                            <p class="text-muted admin-upload-hint">JPG, PNG, GIF, WebP, SVG, MP4, WebM &mdash; max. 50 MB</p>
+                        </div>
+                    </div>
+                    <div id="admin-upload-progress" class="admin-upload-progress" hidden>
+                        <div class="admin-upload-progress-bar"><div id="admin-upload-progress-fill" class="admin-upload-progress-fill"></div></div>
+                        <p id="admin-upload-progress-text" class="text-muted">Hochladen...</p>
+                    </div>
+                    <p id="admin-upload-error" class="admin-error" hidden></p>
+                    <div id="admin-uploads-list" class="admin-uploads-grid"></div>
+                </div>
             </section>
         </main>
 

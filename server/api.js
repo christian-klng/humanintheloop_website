@@ -13,6 +13,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { execFile } = require('child_process');
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
@@ -26,10 +27,17 @@ if (!ADMIN_PASSWORD) {
 const FILES_DIR = process.env.FILES_DIR || '/files';
 const EVENTS_DIR = path.join(FILES_DIR, 'events');
 const LIBRARY_DIR = path.join(FILES_DIR, 'library');
+const UPLOADS_DIR = path.join(FILES_DIR, 'uploads');
 
 // Ensure directories exist
 fs.mkdirSync(EVENTS_DIR, { recursive: true });
 fs.mkdirSync(LIBRARY_DIR, { recursive: true });
+fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+
+// --- File upload constants ---
+
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.mp4', '.webm']);
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
 // --- Token store (in-memory, 24h expiry) ---
 
@@ -84,6 +92,29 @@ const VALID_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function isValidId(id) {
     return VALID_ID.test(id) && !id.includes('..');
+}
+
+// --- OG page regeneration ---
+
+const GENERATE_SCRIPT = path.join(__dirname, '..', 'scripts', 'generate-pages.js');
+const HTML_ROOT = process.env.HTML_ROOT || '/usr/share/nginx/html';
+
+function regenerateOGPages() {
+    const env = {
+        ...process.env,
+        DATA_SOURCE: 'volume',
+        FILES_DIR,
+        HTML_ROOT,
+        OUTPUT_DIR: HTML_ROOT
+    };
+    execFile(process.execPath, [GENERATE_SCRIPT], { env }, (err, stdout, stderr) => {
+        if (err) {
+            console.error('OG page regeneration failed:', err.message);
+            if (stderr) console.error(stderr);
+        } else {
+            console.log('OG pages regenerated:', stdout.trim());
+        }
+    });
 }
 
 // --- Auth endpoints ---
@@ -171,6 +202,7 @@ app.put('/api/events/:id', requireAuth, (req, res) => {
     }
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 4), 'utf-8');
+    regenerateOGPages();
     res.json(data);
 });
 
@@ -189,6 +221,7 @@ app.post('/api/events', requireAuth, (req, res) => {
     }
 
     fs.writeFileSync(filePath, JSON.stringify(data, null, 4), 'utf-8');
+    regenerateOGPages();
     res.status(201).json(data);
 });
 
@@ -202,6 +235,7 @@ app.delete('/api/events/:id', requireAuth, (req, res) => {
     }
 
     fs.unlinkSync(filePath);
+    regenerateOGPages();
     res.json({ ok: true });
 });
 
@@ -267,6 +301,7 @@ app.put('/api/resources/:id', requireAuth, (req, res) => {
     }
 
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 4), 'utf-8');
+    regenerateOGPages();
     res.json(data);
 });
 
@@ -289,6 +324,7 @@ app.post('/api/resources', requireAuth, (req, res) => {
     }
 
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 4), 'utf-8');
+    regenerateOGPages();
     res.status(201).json(data);
 });
 
@@ -303,6 +339,149 @@ app.delete('/api/resources/:id', requireAuth, (req, res) => {
     }
 
     fs.unlinkSync(jsonPath);
+    regenerateOGPages();
+    res.json({ ok: true });
+});
+
+// --- File upload helpers ---
+
+function sanitizeFilename(name) {
+    const clean = name.replace(/[/\\:\0]/g, '').trim();
+    if (!clean || clean.startsWith('.')) return null;
+    return clean;
+}
+
+function parseMultipartFile(req) {
+    return new Promise((resolve, reject) => {
+        const contentType = req.headers['content-type'] || '';
+        const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^\s;]+))/);
+        if (!boundaryMatch) return reject(new Error('No multipart boundary'));
+
+        const boundary = boundaryMatch[1] || boundaryMatch[2];
+        const chunks = [];
+        let totalSize = 0;
+
+        req.on('data', (chunk) => {
+            totalSize += chunk.length;
+            if (totalSize > MAX_FILE_SIZE + 1024 * 10) { // file + headers overhead
+                req.destroy();
+                return reject(new Error('File too large'));
+            }
+            chunks.push(chunk);
+        });
+
+        req.on('error', reject);
+
+        req.on('end', () => {
+            const buffer = Buffer.concat(chunks);
+            const boundaryBuf = Buffer.from('--' + boundary);
+
+            // Find the first part (skip preamble)
+            let start = buffer.indexOf(boundaryBuf);
+            if (start === -1) return reject(new Error('Invalid multipart body'));
+            start += boundaryBuf.length + 2; // skip boundary + CRLF
+
+            // Find end of this part
+            const end = buffer.indexOf(boundaryBuf, start);
+            if (end === -1) return reject(new Error('Invalid multipart body'));
+
+            const part = buffer.slice(start, end - 2); // -2 for CRLF before boundary
+
+            // Split headers from body (separated by double CRLF)
+            const headerEnd = part.indexOf('\r\n\r\n');
+            if (headerEnd === -1) return reject(new Error('Invalid multipart part'));
+
+            const headers = part.slice(0, headerEnd).toString('utf-8');
+            const fileBuffer = part.slice(headerEnd + 4);
+
+            // Extract filename from Content-Disposition
+            const filenameMatch = headers.match(/filename="([^"]+)"/);
+            if (!filenameMatch) return reject(new Error('No filename in upload'));
+
+            resolve({ filename: filenameMatch[1], buffer: fileBuffer });
+        });
+    });
+}
+
+// --- Upload endpoints ---
+
+app.post('/api/uploads', requireAuth, async (req, res) => {
+    try {
+        const { filename, buffer } = await parseMultipartFile(req);
+        const sanitized = sanitizeFilename(filename);
+        if (!sanitized) {
+            return res.status(400).json({ error: 'Ungültiger Dateiname' });
+        }
+
+        const ext = path.extname(sanitized).toLowerCase();
+        if (!ALLOWED_EXTENSIONS.has(ext)) {
+            return res.status(400).json({ error: 'Dateityp nicht erlaubt. Erlaubt: JPG, PNG, GIF, WebP, SVG, MP4, WebM' });
+        }
+
+        if (buffer.length > MAX_FILE_SIZE) {
+            return res.status(413).json({ error: 'Datei zu groß (max. 50 MB)' });
+        }
+
+        // Avoid overwriting: prepend timestamp if file exists
+        let finalName = sanitized;
+        if (fs.existsSync(path.join(UPLOADS_DIR, finalName))) {
+            finalName = `${Date.now()}-${sanitized}`;
+        }
+
+        fs.writeFileSync(path.join(UPLOADS_DIR, finalName), buffer);
+
+        res.status(201).json({
+            filename: finalName,
+            url: `/files/uploads/${encodeURIComponent(finalName)}`,
+            size: buffer.length
+        });
+    } catch (err) {
+        if (err.message === 'File too large') {
+            return res.status(413).json({ error: 'Datei zu groß (max. 50 MB)' });
+        }
+        console.error('Upload error:', err.message);
+        res.status(500).json({ error: 'Upload fehlgeschlagen' });
+    }
+});
+
+app.get('/api/uploads', requireAuth, (req, res) => {
+    if (!fs.existsSync(UPLOADS_DIR)) return res.json([]);
+
+    const entries = fs.readdirSync(UPLOADS_DIR);
+    const files = [];
+
+    for (const name of entries) {
+        const filePath = path.join(UPLOADS_DIR, name);
+        try {
+            const stat = fs.statSync(filePath);
+            if (!stat.isFile()) continue;
+            files.push({
+                filename: name,
+                url: `/files/uploads/${encodeURIComponent(name)}`,
+                size: stat.size,
+                modified: stat.mtimeMs
+            });
+        } catch {
+            // skip files we can't stat
+        }
+    }
+
+    files.sort((a, b) => b.modified - a.modified);
+    res.json(files);
+});
+
+app.delete('/api/uploads/:filename', requireAuth, (req, res) => {
+    const { filename } = req.params;
+    if (filename.includes('/') || filename.includes('\\') || filename.includes('..') || filename.includes('\0')) {
+        return res.status(400).json({ error: 'Ungültiger Dateiname' });
+    }
+
+    const filePath = path.join(UPLOADS_DIR, filename);
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: 'Datei nicht gefunden' });
+    }
+
+    fs.unlinkSync(filePath);
     res.json({ ok: true });
 });
 

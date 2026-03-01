@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served via nginx + Node.js API in a Docker container. A build-time Node.js script generates per-route HTML for OG meta tags. An admin panel allows editing events and resources via the browser.
+Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served via nginx + Node.js API in a Docker container. A build-time Node.js script generates per-route HTML for OG meta tags; the API server regenerates them automatically after every admin change. An admin panel allows editing events and resources via the browser.
 
 ## Tech Stack
 
@@ -51,7 +51,7 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
 - **Media files served from `/files/` volume** — Northflank volume mounted at `/files/`, referenced as `/files/library/...` in resource JSON
 - **Path-based SPA routing** — URLs use `/`, `/events`, `/event/{id}`, `/library`, `/resource/{id}`, `/styleguide`, `/privacy`, `/terms`, `/imprint`, `/admin`
 - **Semantic HTML** — use `<a>` and `<button>` (not `<div onclick>`), include ARIA labels
-- **OG meta tags** — generated per-route at Docker build time via `scripts/generate-pages.js`; regenerated at container startup from volume data; also updated client-side on navigation
+- **OG meta tags** — generated per-route at Docker build time via `scripts/generate-pages.js`; regenerated at container startup from volume data; also regenerated automatically by the API server after every admin write operation (create/update/delete); also updated client-side on navigation
 
 ## Color Palette
 
@@ -78,6 +78,8 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
   │   │   ├── thumb.jpg             Media files
   │   │   └── ...
   │   └── ...
+  ├── uploads/                      Admin-uploaded media files
+  │   └── ...
 ```
 
 On first container startup, `migrate-to-individual.js` splits the bundled `events.json` and `resources.json` into individual files on the volume (idempotent).
@@ -86,7 +88,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 
 - **Access**: Navigate to `/admin` (no link in public navigation)
 - **Authentication**: Simple password login via `ADMIN_PASSWORD` environment variable (Northflank secret group)
-- **Features**: Edit (raw JSON), add, and delete events and resources
+- **Features**: Edit (raw JSON), add, and delete events and resources; upload media files (images/videos) with URL copy
 - **API server**: Express.js on port 3000 (proxied by nginx at `/api/*`)
 - **Session**: Bearer token stored in `sessionStorage`, 24h expiry
 
@@ -118,6 +120,9 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 | `PUT` | `/api/resources/:id` | Yes | Update resource |
 | `POST` | `/api/resources` | Yes | Create resource |
 | `DELETE` | `/api/resources/:id` | Yes | Delete resource |
+| `GET` | `/api/uploads` | Yes | List uploaded media files |
+| `POST` | `/api/uploads` | Yes | Upload file (multipart/form-data, max 50 MB) |
+| `DELETE` | `/api/uploads/:filename` | Yes | Delete uploaded file |
 
 ## Adding a New Resource
 

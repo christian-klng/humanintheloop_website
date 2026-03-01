@@ -125,6 +125,8 @@ async function renderAdminDashboard() {
         eventsList.innerHTML = '<p class="admin-error">Daten konnten nicht geladen werden.</p>';
         resourcesList.innerHTML = '';
     }
+
+    renderAdminUploads();
 }
 
 function renderAdminList(container, items, type) {
@@ -342,11 +344,231 @@ async function adminDelete() {
     }
 }
 
+// --- Media Uploads ---
+
+function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+async function renderAdminUploads() {
+    const list = document.getElementById('admin-uploads-list');
+    if (!list) return;
+
+    list.innerHTML = '<p class="text-muted">Laden...</p>';
+
+    try {
+        const res = await adminFetch('/api/uploads');
+        const files = await res.json();
+
+        if (files.length === 0) {
+            list.innerHTML = '<p class="text-muted">Noch keine Dateien hochgeladen.</p>';
+            return;
+        }
+
+        list.innerHTML = files.map(file => {
+            const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.filename);
+            const isVideo = /\.(mp4|webm)$/i.test(file.filename);
+            const preview = isImage
+                ? `<img src="${file.url}" alt="${escapeHTML(file.filename)}" class="admin-upload-thumb" loading="lazy">`
+                : isVideo
+                    ? `<div class="admin-upload-thumb admin-upload-thumb--video"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>`
+                    : `<div class="admin-upload-thumb admin-upload-thumb--generic"></div>`;
+
+            return `
+                <div class="admin-upload-item">
+                    ${preview}
+                    <div class="admin-upload-item-info">
+                        <span class="admin-upload-item-name" title="${escapeHTML(file.filename)}">${escapeHTML(file.filename)}</span>
+                        <span class="text-muted admin-upload-item-size">${formatFileSize(file.size)}</span>
+                    </div>
+                    <div class="admin-upload-item-actions">
+                        <button class="btn btn-sm admin-copy-url-btn" data-url="${file.url}" type="button">URL kopieren</button>
+                        <button class="btn btn-sm btn-danger admin-delete-upload-btn" data-filename="${escapeHTML(file.filename)}" type="button" aria-label="Löschen">&times;</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch {
+        list.innerHTML = '<p class="admin-error">Dateien konnten nicht geladen werden.</p>';
+    }
+}
+
+async function uploadFile(file) {
+    const errorEl = document.getElementById('admin-upload-error');
+    const progressEl = document.getElementById('admin-upload-progress');
+    const progressFill = document.getElementById('admin-upload-progress-fill');
+    const progressText = document.getElementById('admin-upload-progress-text');
+
+    errorEl.hidden = true;
+
+    const allowedExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.mp4', '.webm'];
+    const ext = '.' + file.name.split('.').pop().toLowerCase();
+    if (!allowedExts.includes(ext)) {
+        errorEl.textContent = `Dateityp "${ext}" nicht erlaubt.`;
+        errorEl.hidden = false;
+        return false;
+    }
+
+    if (file.size > 50 * 1024 * 1024) {
+        errorEl.textContent = `Datei "${file.name}" ist zu groß (max. 50 MB).`;
+        errorEl.hidden = false;
+        return false;
+    }
+
+    progressEl.hidden = false;
+    progressFill.style.width = '0%';
+    progressText.textContent = `Hochladen: ${file.name}...`;
+
+    try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', (e) => {
+                if (e.lengthComputable) {
+                    const pct = Math.round((e.loaded / e.total) * 100);
+                    progressFill.style.width = pct + '%';
+                    progressText.textContent = `Hochladen: ${file.name} (${pct}%)`;
+                }
+            });
+
+            xhr.addEventListener('load', () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    resolve();
+                } else {
+                    try {
+                        const err = JSON.parse(xhr.responseText);
+                        reject(new Error(err.error || 'Upload fehlgeschlagen'));
+                    } catch {
+                        reject(new Error('Upload fehlgeschlagen'));
+                    }
+                }
+            });
+
+            xhr.addEventListener('error', () => reject(new Error('Verbindungsfehler')));
+
+            xhr.open('POST', '/api/uploads');
+            xhr.setRequestHeader('Authorization', `Bearer ${getAdminToken()}`);
+            xhr.send(formData);
+        });
+
+        return true;
+    } catch (err) {
+        errorEl.textContent = err.message;
+        errorEl.hidden = false;
+        return false;
+    } finally {
+        progressEl.hidden = true;
+    }
+}
+
+async function uploadFiles(fileList) {
+    for (const file of fileList) {
+        await uploadFile(file);
+    }
+    renderAdminUploads();
+}
+
+function initAdminUploads() {
+    const area = document.getElementById('admin-upload-area');
+    const input = document.getElementById('admin-upload-input');
+    if (!area || !input) return;
+
+    area.addEventListener('click', (e) => {
+        if (e.target !== input) input.click();
+    });
+    area.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            input.click();
+        }
+    });
+
+    input.addEventListener('change', () => {
+        if (input.files.length > 0) {
+            uploadFiles(input.files);
+            input.value = '';
+        }
+    });
+
+    area.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        area.classList.add('admin-upload-area--dragover');
+    });
+
+    area.addEventListener('dragleave', () => {
+        area.classList.remove('admin-upload-area--dragover');
+    });
+
+    area.addEventListener('drop', (e) => {
+        e.preventDefault();
+        area.classList.remove('admin-upload-area--dragover');
+        if (e.dataTransfer.files.length > 0) {
+            uploadFiles(e.dataTransfer.files);
+        }
+    });
+}
+
+function initUploadActions() {
+    const list = document.getElementById('admin-uploads-list');
+    if (!list) return;
+
+    list.addEventListener('click', async (e) => {
+        const copyBtn = e.target.closest('.admin-copy-url-btn');
+        if (copyBtn) {
+            const url = window.location.origin + copyBtn.dataset.url;
+            try {
+                await navigator.clipboard.writeText(url);
+            } catch {
+                const tmp = document.createElement('input');
+                tmp.value = url;
+                document.body.appendChild(tmp);
+                tmp.select();
+                document.execCommand('copy');
+                document.body.removeChild(tmp);
+            }
+            const original = copyBtn.textContent;
+            copyBtn.textContent = 'Kopiert!';
+            setTimeout(() => { copyBtn.textContent = original; }, 2000);
+            return;
+        }
+
+        const deleteBtn = e.target.closest('.admin-delete-upload-btn');
+        if (deleteBtn) {
+            const filename = deleteBtn.dataset.filename;
+            if (!confirm(`Datei "${filename}" wirklich löschen?`)) return;
+
+            deleteBtn.disabled = true;
+            try {
+                const res = await adminFetch(`/api/uploads/${encodeURIComponent(filename)}`, {
+                    method: 'DELETE'
+                });
+                if (res.ok) {
+                    renderAdminUploads();
+                } else {
+                    const data = await res.json();
+                    alert(data.error || 'Löschen fehlgeschlagen.');
+                }
+            } catch {
+                alert('Verbindungsfehler.');
+            } finally {
+                deleteBtn.disabled = false;
+            }
+        }
+    });
+}
+
 // --- Init ---
 
 document.addEventListener('DOMContentLoaded', () => {
     initAdminLogin();
     initAdminLogout();
+    initAdminUploads();
+    initUploadActions();
 
     const saveBtn = document.getElementById('admin-save-btn');
     if (saveBtn) saveBtn.addEventListener('click', adminSave);
