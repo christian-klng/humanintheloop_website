@@ -211,7 +211,7 @@ function getTemplate(type) {
             cost: 'Kostenlos für Alumni',
             spots: 20,
             tags: [],
-            image: 'events/images/event-conference.jpg',
+            image: null,
             description: ['Beschreibung Absatz 1.'],
             learns: ['Lernpunkt 1.'],
             audience: 'Beschreibung der Zielgruppe.'
@@ -346,6 +346,8 @@ async function adminDelete() {
 
 // --- Media Uploads ---
 
+let currentUploadFolder = '';
+
 function formatFileSize(bytes) {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
@@ -359,7 +361,8 @@ async function renderAdminUploads() {
     list.innerHTML = '<p class="text-muted">Laden...</p>';
 
     try {
-        const res = await adminFetch('/api/uploads');
+        const folderParam = currentUploadFolder ? `?folder=${currentUploadFolder}` : '';
+        const res = await adminFetch(`/api/uploads${folderParam}`);
         const files = await res.json();
 
         if (files.length === 0) {
@@ -451,7 +454,8 @@ async function uploadFile(file) {
 
             xhr.addEventListener('error', () => reject(new Error('Verbindungsfehler')));
 
-            xhr.open('POST', '/api/uploads');
+            const folderParam = currentUploadFolder ? `?folder=${currentUploadFolder}` : '';
+            xhr.open('POST', `/api/uploads${folderParam}`);
             xhr.setRequestHeader('Authorization', `Bearer ${getAdminToken()}`);
             xhr.send(formData);
         });
@@ -513,6 +517,26 @@ function initAdminUploads() {
     });
 }
 
+function initUploadTabs() {
+    const tabList = document.getElementById('admin-upload-tabs');
+    if (!tabList) return;
+
+    tabList.addEventListener('click', (e) => {
+        const tab = e.target.closest('.admin-upload-tab');
+        if (!tab) return;
+
+        tabList.querySelectorAll('.admin-upload-tab').forEach(t => {
+            t.classList.remove('is-active');
+            t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+
+        currentUploadFolder = tab.dataset.folder;
+        renderAdminUploads();
+    });
+}
+
 function initUploadActions() {
     const list = document.getElementById('admin-uploads-list');
     if (!list) return;
@@ -544,7 +568,8 @@ function initUploadActions() {
 
             deleteBtn.disabled = true;
             try {
-                const res = await adminFetch(`/api/uploads/${encodeURIComponent(filename)}`, {
+                const folderParam = currentUploadFolder ? `?folder=${currentUploadFolder}` : '';
+                const res = await adminFetch(`/api/uploads/${encodeURIComponent(filename)}${folderParam}`, {
                     method: 'DELETE'
                 });
                 if (res.ok) {
@@ -568,6 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAdminLogin();
     initAdminLogout();
     initAdminUploads();
+    initUploadTabs();
     initUploadActions();
 
     const saveBtn = document.getElementById('admin-save-btn');

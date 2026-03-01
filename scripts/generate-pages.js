@@ -28,7 +28,7 @@ if (!N8N_WEBHOOK_URL) {
 
 // Remove trailing slash if present
 const baseUrl = BASE_URL.replace(/\/+$/, '');
-const DEFAULT_IMAGE = `${baseUrl}/events/images/event-conference.jpg`;
+const DEFAULT_IMAGE = `${baseUrl}/images/logo.png`;
 
 const DATA_SOURCE = process.env.DATA_SOURCE || 'bundled';
 const FILES_DIR = process.env.FILES_DIR || '/files';

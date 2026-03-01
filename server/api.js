@@ -28,11 +28,14 @@ const FILES_DIR = process.env.FILES_DIR || '/files';
 const EVENTS_DIR = path.join(FILES_DIR, 'events');
 const LIBRARY_DIR = path.join(FILES_DIR, 'library');
 const UPLOADS_DIR = path.join(FILES_DIR, 'uploads');
+const UPLOAD_SUBDIRS = { events: 'events', library: 'library' };
 
 // Ensure directories exist
 fs.mkdirSync(EVENTS_DIR, { recursive: true });
 fs.mkdirSync(LIBRARY_DIR, { recursive: true });
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+fs.mkdirSync(path.join(UPLOADS_DIR, 'events'), { recursive: true });
+fs.mkdirSync(path.join(UPLOADS_DIR, 'library'), { recursive: true });
 
 // --- File upload constants ---
 
@@ -403,10 +406,30 @@ function parseMultipartFile(req) {
     });
 }
 
+// --- Upload helpers ---
+
+function resolveUploadDir(folder) {
+    if (folder && UPLOAD_SUBDIRS[folder]) {
+        return path.join(UPLOADS_DIR, UPLOAD_SUBDIRS[folder]);
+    }
+    return UPLOADS_DIR;
+}
+
+function resolveUploadUrlPrefix(folder) {
+    if (folder && UPLOAD_SUBDIRS[folder]) {
+        return `/files/uploads/${UPLOAD_SUBDIRS[folder]}`;
+    }
+    return '/files/uploads';
+}
+
 // --- Upload endpoints ---
 
 app.post('/api/uploads', requireAuth, async (req, res) => {
     try {
+        const folder = req.query.folder || '';
+        const targetDir = resolveUploadDir(folder);
+        const urlPrefix = resolveUploadUrlPrefix(folder);
+
         const { filename, buffer } = await parseMultipartFile(req);
         const sanitized = sanitizeFilename(filename);
         if (!sanitized) {
@@ -424,15 +447,15 @@ app.post('/api/uploads', requireAuth, async (req, res) => {
 
         // Avoid overwriting: prepend timestamp if file exists
         let finalName = sanitized;
-        if (fs.existsSync(path.join(UPLOADS_DIR, finalName))) {
+        if (fs.existsSync(path.join(targetDir, finalName))) {
             finalName = `${Date.now()}-${sanitized}`;
         }
 
-        fs.writeFileSync(path.join(UPLOADS_DIR, finalName), buffer);
+        fs.writeFileSync(path.join(targetDir, finalName), buffer);
 
         res.status(201).json({
             filename: finalName,
-            url: `/files/uploads/${encodeURIComponent(finalName)}`,
+            url: `${urlPrefix}/${encodeURIComponent(finalName)}`,
             size: buffer.length
         });
     } catch (err) {
@@ -445,19 +468,23 @@ app.post('/api/uploads', requireAuth, async (req, res) => {
 });
 
 app.get('/api/uploads', requireAuth, (req, res) => {
-    if (!fs.existsSync(UPLOADS_DIR)) return res.json([]);
+    const folder = req.query.folder || '';
+    const targetDir = resolveUploadDir(folder);
+    const urlPrefix = resolveUploadUrlPrefix(folder);
 
-    const entries = fs.readdirSync(UPLOADS_DIR);
+    if (!fs.existsSync(targetDir)) return res.json([]);
+
+    const entries = fs.readdirSync(targetDir);
     const files = [];
 
     for (const name of entries) {
-        const filePath = path.join(UPLOADS_DIR, name);
+        const filePath = path.join(targetDir, name);
         try {
             const stat = fs.statSync(filePath);
             if (!stat.isFile()) continue;
             files.push({
                 filename: name,
-                url: `/files/uploads/${encodeURIComponent(name)}`,
+                url: `${urlPrefix}/${encodeURIComponent(name)}`,
                 size: stat.size,
                 modified: stat.mtimeMs
             });
@@ -471,12 +498,15 @@ app.get('/api/uploads', requireAuth, (req, res) => {
 });
 
 app.delete('/api/uploads/:filename', requireAuth, (req, res) => {
+    const folder = req.query.folder || '';
+    const targetDir = resolveUploadDir(folder);
+
     const { filename } = req.params;
     if (filename.includes('/') || filename.includes('\\') || filename.includes('..') || filename.includes('\0')) {
         return res.status(400).json({ error: 'Ungültiger Dateiname' });
     }
 
-    const filePath = path.join(UPLOADS_DIR, filename);
+    const filePath = path.join(targetDir, filename);
     if (!fs.existsSync(filePath)) {
         return res.status(404).json({ error: 'Datei nicht gefunden' });
     }

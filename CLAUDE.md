@@ -20,8 +20,7 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
 ├── js/app.js               SPA router (History API), event rendering
 ├── js/admin.js             Admin panel UI logic
 ├── events/
-│   ├── events.json         Bundled event data (migration seed)
-│   └── images/             Event-specific images
+│   └── events.json         Bundled event data (migration seed)
 ├── library/
 │   └── resources.json      Bundled resource data (migration seed)
 ├── server/
@@ -79,6 +78,8 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
   │   │   └── ...
   │   └── ...
   ├── uploads/                      Admin-uploaded media files
+  │   ├── events/                 Event-related uploads
+  │   ├── library/                Resource-related uploads
   │   └── ...
 ```
 
@@ -120,9 +121,9 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 | `PUT` | `/api/resources/:id` | Yes | Update resource |
 | `POST` | `/api/resources` | Yes | Create resource |
 | `DELETE` | `/api/resources/:id` | Yes | Delete resource |
-| `GET` | `/api/uploads` | Yes | List uploaded media files |
-| `POST` | `/api/uploads` | Yes | Upload file (multipart/form-data, max 50 MB) |
-| `DELETE` | `/api/uploads/:filename` | Yes | Delete uploaded file |
+| `GET` | `/api/uploads?folder=` | Yes | List uploaded media files (folder: `events`, `library`, or empty for root) |
+| `POST` | `/api/uploads?folder=` | Yes | Upload file (multipart/form-data, max 50 MB) |
+| `DELETE` | `/api/uploads/:filename?folder=` | Yes | Delete uploaded file |
 
 ## Adding a New Resource
 
@@ -177,7 +178,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
     "onlineLink": "https://zoom.us/j/...",
     "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Link kurz vor der Session.",
     "tags": ["Tag1", "Tag2"],
-    "image": "events/images/event-conference.jpg",
+    "image": "/files/uploads/events/event-photo.jpg",
     "description": ["Paragraph 1", "Paragraph 2"],
     "learns": ["Point 1", "Point 2"],
     "audience": "Target audience description."

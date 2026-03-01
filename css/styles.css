@@ -1221,6 +1221,42 @@ footer {
 
 /* --- Admin Media Uploads --- */
 
+.admin-upload-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.admin-upload-tab {
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px;
+}
+
+.admin-upload-tab:hover {
+    color: var(--text-primary);
+}
+
+.admin-upload-tab.is-active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent);
+}
+
+.admin-upload-tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
 .admin-upload-area {
     border: 2px dashed var(--border-color);
     border-radius: var(--radius-md);

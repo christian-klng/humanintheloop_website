@@ -15,7 +15,7 @@
         "onlineLink": "https://zoom.us/j/placeholder",
         "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Veranstaltungslink kurz vor der Session.",
         "tags": ["Architektur", "Engineering"],
-        "image": "events/images/event-conference.jpg",
+        "image": null,
         "description": [
             "Wenn moderne Anwendungen auf Millionen gleichzeitiger Nutzer skalieren, stoßen traditionelle Monolithen an ihre Grenzen. Diese exklusive Intensivsitzung taucht tief in die Realität der Migration zu und Wartung von verteilten Architekturen im Enterprise-Maßstab ein.",
             "Geleitet von ehemaligen Principal Engineers von AWS und Netflix analysieren wir reale Fallstudien, untersuchen Post-Mortem-Ausfallberichte und entwerfen ein theoretisches Hochverfügbarkeitssystem von Grund auf in unserer interaktiven Whiteboard-Session."
@@ -45,7 +45,7 @@
         "onlineLink": "https://zoom.us/j/placeholder",
         "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Veranstaltungslink kurz vor der Session.",
         "tags": ["Frontend", "Performance"],
-        "image": "events/images/event-workshop.jpg",
+        "image": null,
         "description": [
             "Bringen Sie Ihre langsamen Web-Apps mit. Wir profilieren, debuggen und optimieren sie live auf der großen Leinwand.",
             "Diese praxisorientierte Klinik behandelt Core Web Vitals, Rendering-Performance, Bundle-Optimierung und moderne Caching-Strategien. Bringen Sie ein echtes Projekt mit und gehen Sie mit messbaren Verbesserungen nach Hause."
@@ -75,7 +75,7 @@
         "onlineLink": "https://zoom.us/j/placeholder",
         "confirmationText": "Dein Platz ist bestätigt! Du erhältst den Veranstaltungslink kurz vor der Session.",
         "tags": ["Design", "Prototyping"],
-        "image": "events/images/event-prototyping.jpg",
+        "image": null,
         "description": [
             "Lernen Sie fortgeschrittene Variablen, Bedingungen und Mikro-Interaktionen von erfahrenen Product Designern.",
             "Diese Masterclass geht über grundlegendes Prototyping hinaus und behandelt die neuesten Figma-Features wie Variablen, Bedingungen und Ausdrücke. Erstellen Sie produktionsreife Prototypen, die Design-Intentionen klar an Engineering-Teams kommunizieren."
@@ -105,7 +105,7 @@
         "onlineLink": null,
         "confirmationText": "Dein Platz ist bestätigt! Details zum Veranstaltungsort werden rechtzeitig bekannt gegeben.",
         "tags": ["Netzwerken", "Community"],
-        "image": "events/images/event-networking.jpg",
+        "image": null,
         "description": [
             "Vernetzen Sie sich mit Human in the Loop-Absolventen, finden Sie Top-Talente und genießen Sie einen Abend voller Tech-Talks.",
             "Unser jährliches Winter-Treffen bringt das Beste der Human in the Loop-Community zusammen — für einen Abend mit Lightning Talks, Networking und gemeinsamer Feier. Ob Sie einstellen, Mitstreiter suchen oder einfach alte Kontakte auffrischen möchten — diese Veranstaltung ist für Sie."

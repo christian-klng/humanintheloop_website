@@ -10,20 +10,20 @@
             "Ob Sie Designer, Product Manager oder Engineer sind — diese Prinzipien helfen Ihnen, KI-Features zu entwickeln, die das Vertrauen der Nutzer stärken statt es zu untergraben."
         ],
         "tags": ["KI", "UX-Design", "Produkt"],
-        "thumbnail": "events/images/event-conference.jpg",
+        "thumbnail": null,
         "images": [
             {
-                "src": "events/images/event-conference.jpg",
+                "src": null,
                 "alt": "Konferenzpräsentation über menschenzentriertes KI-Design",
                 "caption": "Keynote beim Human in the Loop Summit 2026"
             },
             {
-                "src": "events/images/event-workshop.jpg",
+                "src": null,
                 "alt": "Workshop-Teilnehmer arbeiten gemeinsam an KI-Interface-Prototypen",
                 "caption": "Praxis-Workshop: Vertrauensmuster für KI gestalten"
             },
             {
-                "src": "events/images/event-prototyping.jpg",
+                "src": null,
                 "alt": "Figma-Prototyping-Session für KI-gestützte Tools",
                 "caption": "Prototyping von KI-Interaktionen in Figma"
             }
@@ -45,15 +45,15 @@
             "Enthält praktische Vorher-Nachher-Fallstudien von Produktionsanwendungen, die 40–60 % Verbesserungen beim Largest Contentful Paint erzielt haben."
         ],
         "tags": ["Engineering", "Performance", "Frontend"],
-        "thumbnail": "events/images/event-workshop.jpg",
+        "thumbnail": null,
         "images": [
             {
-                "src": "events/images/event-workshop.jpg",
+                "src": null,
                 "alt": "Performance-Optimierungs-Workshop-Session",
                 "caption": "Live-Profiling-Session mit Chrome DevTools"
             },
             {
-                "src": "events/images/event-conference.jpg",
+                "src": null,
                 "alt": "Performance-Metriken-Dashboard auf dem Bildschirm",
                 "caption": "Real-User-Monitoring-Dashboard mit Verbesserungen"
             }
@@ -71,10 +71,10 @@
             "Ideal für Teams, die Ad-hoc-UI-Muster hinter sich lassen und in einen systematischen Ansatz für Design-Konsistenz investieren möchten."
         ],
         "tags": ["Design Systems", "Engineering", "CSS"],
-        "thumbnail": "events/images/event-prototyping.jpg",
+        "thumbnail": null,
         "images": [
             {
-                "src": "events/images/event-prototyping.jpg",
+                "src": null,
                 "alt": "Design-System-Komponentenübersicht in Figma",
                 "caption": "Komponenteninventar in Figma"
             }
