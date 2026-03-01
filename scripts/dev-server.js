@@ -74,11 +74,20 @@ const server = http.createServer((req, res) => {
 
     // Serve static files with SPA fallback
     let urlPath = req.url.split('?')[0];
-    let filePath = path.join(ROOT, urlPath);
+
+    // Map /files/* to FILES_DIR (mirrors nginx alias /files/)
+    const FILES_DIR = process.env.FILES_DIR || '/tmp/hitl-test-files';
+    let filePath = urlPath.startsWith('/files/')
+        ? path.join(FILES_DIR, urlPath.slice('/files'.length))
+        : path.join(ROOT, urlPath);
 
     // Try exact file, then directory/index.html, then SPA fallback
+    // For /files/* paths: serve file or 404 (no SPA fallback, mirrors nginx)
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
         serveFile(filePath, res);
+    } else if (urlPath.startsWith('/files/')) {
+        res.writeHead(404);
+        res.end('Not found');
     } else if (fs.existsSync(path.join(filePath, 'index.html'))) {
         serveFile(path.join(filePath, 'index.html'), res);
     } else {
