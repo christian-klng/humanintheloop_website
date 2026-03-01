@@ -796,8 +796,8 @@ function renderRoute(route) {
             description: 'Datenschutzerklärung von Human in the Loop. Erfahren Sie, wie wir Ihre Daten erheben, nutzen und schützen.'
         },
         terms: {
-            title: 'Nutzungsbedingungen | Human in the Loop',
-            description: 'Nutzungsbedingungen der Bildungsplattform Human in the Loop.'
+            title: 'AGB | Human in the Loop',
+            description: 'Allgemeine Geschäftsbedingungen der Bildungsplattform Human in the Loop.'
         },
         imprint: {
             title: 'Impressum | Human in the Loop',

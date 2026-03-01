@@ -117,8 +117,8 @@ const routes = [
     },
     {
         path: '/terms',
-        title: 'Nutzungsbedingungen | Human in the Loop',
-        description: 'Nutzungsbedingungen der Bildungsplattform Human in the Loop.',
+        title: 'AGB | Human in the Loop',
+        description: 'Allgemeine Geschäftsbedingungen der Bildungsplattform Human in the Loop.',
         image: DEFAULT_IMAGE
     },
     {
