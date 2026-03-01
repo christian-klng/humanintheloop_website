@@ -89,7 +89,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 
 - **Access**: Navigate to `/admin` (no link in public navigation)
 - **Authentication**: Simple password login via `ADMIN_PASSWORD` environment variable (Northflank secret group)
-- **Features**: Edit (raw JSON), add, and delete events and resources; upload media files (images/videos) with URL copy
+- **Features**: Edit (raw JSON), add, and delete events and resources; upload media files (images/videos) with folder tabs, URL copy, and lightbox preview
 - **API server**: Express.js on port 3000 (proxied by nginx at `/api/*`)
 - **Session**: Bearer token stored in `sessionStorage`, 24h expiry
 
