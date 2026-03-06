@@ -1,0 +1,25 @@
+{
+  "id": "ki-qualitaet",
+  "title": "Die beste KI auf dem Markt",
+  "aspect_ratio": "3:2",
+  "resolution": "324x216px (display at 162x108px @2x)",
+  "style": {
+    "aesthetic": "flat minimal UI, fine-line borders, clean tech illustration inspired by modern SaaS design (Linear, Vercel aesthetic)",
+    "rendering": "clean vector style, flat surfaces with 1px borders, no gradients on surfaces, sharp but refined edges, subtle depth through layering and thin shadows only",
+    "mood": "empowering, productive, approachable, modern"
+  },
+  "background": "#FFFFFF (pure white, no grid, no pattern, no texture)",
+  "description": "A compact illustration showing a simplified ranking visualization: three horizontal bars of decreasing length, the topmost bar is filled in #FFD166 (gold — first place) and is noticeably longer than the others, second bar in light #D1D5DB at 70% width, third bar in light #D1D5DB at 55% width. A small golden star icon sits at the left end of the top bar. Below the bars, a tiny pill badge reading 'Claude' in 11px semibold #073B4C with a #FFD166 left dot, border-radius 999px. The illustration conveys: Claude ist die fuehrende KI — without technical jargon, just a visual quality ranking.",
+  "color_palette": {
+    "background": "#FFFFFF",
+    "text_primary": "#111111",
+    "text_secondary": "#8A8F98",
+    "accent": "#FFD166",
+    "secondary": "#073B4C",
+    "info": "#118AB2",
+    "surface": "#F5F5F5",
+    "border": "#E5E7EB",
+    "lines": "#D1D5DB"
+  },
+  "no": "3d perspective, photorealism, people, hands, faces, stock photo elements, real brand logos, terminal/command line, code editors, programming syntax, glassmorphism, glow effects, gradient fills, dark backgrounds, English text — all visible text must be German"
+}

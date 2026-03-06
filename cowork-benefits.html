@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Cowork – Vorteile</title>
+<style>
+  @import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Switzer', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #111;
+  }
+
+  .cowork-benefits {
+    position: relative;
+    width: 800px;
+    aspect-ratio: 4 / 3;
+    /* outline: 1px dashed #eee; */
+  }
+
+  /* ── Central App Window ── */
+  .app-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    width: 260px;
+    height: 200px;
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .app-titlebar {
+    height: 22px;
+    background: #F5F5F5;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 5px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  .app-titlebar .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .app-titlebar .dot.red { background: #EF476F; }
+  .app-titlebar .dot.yellow { background: #FFD166; }
+  .app-titlebar .dot.green { background: #06D6A0; }
+
+  .app-body {
+    display: flex;
+    height: calc(100% - 22px);
+  }
+
+  .app-sidebar {
+    width: 52px;
+    background: #FAFAFA;
+    border-right: 1px solid #E5E7EB;
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-item {
+    height: 6px;
+    border-radius: 3px;
+    background: #E5E7EB;
+  }
+  .sidebar-item.active {
+    border-left: 2px solid #FFD166;
+    background: #F0EDE6;
+  }
+
+  .app-chat {
+    flex: 1;
+    padding: 12px 10px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .msg-user {
+    align-self: flex-end;
+    background: #F5F5F5;
+    border-radius: 8px;
+    padding: 5px 8px;
+    max-width: 70%;
+  }
+  .msg-user .line {
+    height: 4px;
+    border-radius: 2px;
+    background: #D1D5DB;
+    width: 48px;
+  }
+
+  .msg-claude {
+    align-self: flex-start;
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 6px 8px;
+    max-width: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .msg-claude .spark {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+  }
+  .msg-claude .spark svg { display: block; }
+
+  .msg-claude .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .msg-claude .lines .line {
+    height: 4px;
+    border-radius: 2px;
+    background: #E5E7EB;
+  }
+  .msg-claude .lines .line:nth-child(1) { width: 100%; }
+  .msg-claude .lines .line:nth-child(2) { width: 85%; }
+  .msg-claude .lines .line:nth-child(3) { width: 60%; }
+
+  .chat-input {
+    height: 20px;
+    background: #F5F5F5;
+    border: 1px solid #E5E7EB;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+  .chat-input .cursor {
+    width: 1px;
+    height: 10px;
+    background: #8A8F98;
+    animation: blink 1.2s step-end infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* ── SVG Connection Lines ── */
+  .connections-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .connections-svg polyline {
+    stroke: #D1D5DB;
+    stroke-width: 1;
+    fill: none;
+    transition: stroke 0.35s ease, stroke-width 0.35s ease;
+  }
+  .connections-svg circle {
+    fill: #D1D5DB;
+    transition: fill 0.35s ease;
+  }
+
+  /* ── Benefit Cards ── */
+  .benefit-card {
+    position: absolute;
+    width: 190px;
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 14px;
+    z-index: 3;
+    cursor: default;
+    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+  }
+
+  .benefit-card .card-img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    background: #F5F5F5;
+    border: 1px solid #E5E7EB;
+    filter: grayscale(100%) opacity(0.6);
+    transition: filter 0.35s ease, border-color 0.35s ease;
+  }
+
+  .benefit-card .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #111;
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+    transition: color 0.35s ease;
+  }
+
+  .benefit-card .card-desc {
+    font-size: 11.5px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #8A8F98;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    transition: max-height 0.4s ease, opacity 0.35s ease, margin-top 0.35s ease;
+  }
+
+  /* ── Default state: images are grayscale, colored on hover ── */
+
+  /* ── Positions ── */
+  .benefit-card[data-id="dateien"]       { top: 20px;  left: 30px; }
+  .benefit-card[data-id="ki-qualitaet"]  { top: 20px;  right: 30px; }
+  .benefit-card[data-id="berechnungen"]  { top: 50%;   left: 10px;  transform: translateY(-50%); }
+  .benefit-card[data-id="internetsuche"] { top: 50%;   right: 10px; transform: translateY(-50%); }
+  .benefit-card[data-id="werkzeuge"]     { bottom: 20px; left: 30px; }
+  .benefit-card[data-id="ablaeufe"]      { bottom: 20px; right: 30px; }
+
+  /* ── Hover states ── */
+  .benefit-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+  }
+  .benefit-card[data-id="berechnungen"]:hover {
+    transform: translateY(calc(-50% - 2px));
+  }
+  .benefit-card[data-id="internetsuche"]:hover {
+    transform: translateY(calc(-50% - 2px));
+  }
+
+  .benefit-card:hover .card-desc {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 6px;
+  }
+
+  /* Per-card accent colors on hover — image becomes full color, border gets accent */
+  .benefit-card:hover .card-img {
+    filter: grayscale(0%) opacity(1);
+  }
+
+  .benefit-card[data-id="dateien"]:hover { border-color: #118AB2; }
+  .benefit-card[data-id="dateien"]:hover .card-img { border-color: #118AB2; }
+
+  .benefit-card[data-id="ki-qualitaet"]:hover { border-color: #FFD166; }
+  .benefit-card[data-id="ki-qualitaet"]:hover .card-img { border-color: #FFD166; }
+
+  .benefit-card[data-id="berechnungen"]:hover { border-color: #06D6A0; }
+  .benefit-card[data-id="berechnungen"]:hover .card-img { border-color: #06D6A0; }
+
+  .benefit-card[data-id="internetsuche"]:hover { border-color: #073B4C; }
+  .benefit-card[data-id="internetsuche"]:hover .card-img { border-color: #073B4C; }
+
+  .benefit-card[data-id="werkzeuge"]:hover { border-color: #EF476F; }
+  .benefit-card[data-id="werkzeuge"]:hover .card-img { border-color: #EF476F; }
+
+  .benefit-card[data-id="ablaeufe"]:hover { border-color: #118AB2; }
+  .benefit-card[data-id="ablaeufe"]:hover .card-img { border-color: #118AB2; }
+
+  /* Highlight connection line on card hover — polylines keep fill:none, only dots get fill */
+  .benefit-card[data-id="dateien"]:hover ~ .connections-svg .path-dateien { stroke: #118AB2; stroke-width: 1.5; }
+  .benefit-card[data-id="dateien"]:hover ~ .connections-svg .dot-dateien { stroke: #118AB2; fill: #118AB2; }
+
+  .benefit-card[data-id="ki-qualitaet"]:hover ~ .connections-svg .path-ki-qualitaet { stroke: #FFD166; stroke-width: 1.5; }
+  .benefit-card[data-id="ki-qualitaet"]:hover ~ .connections-svg .dot-ki-qualitaet { stroke: #FFD166; fill: #FFD166; }
+
+  .benefit-card[data-id="berechnungen"]:hover ~ .connections-svg .path-berechnungen { stroke: #06D6A0; stroke-width: 1.5; }
+  .benefit-card[data-id="berechnungen"]:hover ~ .connections-svg .dot-berechnungen { stroke: #06D6A0; fill: #06D6A0; }
+
+  .benefit-card[data-id="internetsuche"]:hover ~ .connections-svg .path-internetsuche { stroke: #073B4C; stroke-width: 1.5; }
+  .benefit-card[data-id="internetsuche"]:hover ~ .connections-svg .dot-internetsuche { stroke: #073B4C; fill: #073B4C; }
+
+  .benefit-card[data-id="werkzeuge"]:hover ~ .connections-svg .path-werkzeuge { stroke: #EF476F; stroke-width: 1.5; }
+  .benefit-card[data-id="werkzeuge"]:hover ~ .connections-svg .dot-werkzeuge { stroke: #EF476F; fill: #EF476F; }
+
+  .benefit-card[data-id="ablaeufe"]:hover ~ .connections-svg .path-ablaeufe { stroke: #118AB2; stroke-width: 1.5; }
+  .benefit-card[data-id="ablaeufe"]:hover ~ .connections-svg .dot-ablaeufe { stroke: #118AB2; fill: #118AB2; }
+</style>
+</head>
+<body>
+
+<div class="cowork-benefits">
+
+  <!-- Central App Window -->
+  <div class="app-window">
+    <div class="app-titlebar">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+    <div class="app-body">
+      <div class="app-sidebar">
+        <div class="sidebar-item active"></div>
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+      </div>
+      <div class="app-chat">
+        <div class="chat-messages">
+          <div class="msg-user">
+            <div class="line"></div>
+          </div>
+          <div class="msg-claude">
+            <span class="spark">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1 L9.5 6 L14 8 L9.5 10 L8 15 L6.5 10 L2 8 L6.5 6 Z" fill="#FFD166" stroke="#D4A843" stroke-width="0.5"/>
+              </svg>
+            </span>
+            <div class="lines">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input">
+          <div class="cursor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Benefit Cards -->
+
+  <!-- 1: Dateien — Bild: 324×216px (3:2), Darstellung 162×108px -->
+  <div class="benefit-card" data-id="dateien">
+    <img class="card-img" src="img/benefit-dateien.png" alt="Dateien bearbeiten" width="324" height="216">
+    <div class="card-title">Arbeite direkt mit deinen Dateien</div>
+    <div class="card-desc">Erstelle und bearbeite Präsentationen, Dokumente und Tabellen — direkt auf deinem Computer.</div>
+  </div>
+
+  <!-- 2: KI-Qualität — Bild: 324×216px (3:2) -->
+  <div class="benefit-card" data-id="ki-qualitaet">
+    <img class="card-img" src="img/benefit-ki-qualitaet.png" alt="Beste KI" width="324" height="216">
+    <div class="card-title">Die beste KI auf dem Markt</div>
+    <div class="card-desc">Claude ist das aktuell leistungsstärkste KI-Modell — für Texte, Analysen und kreative Aufgaben.</div>
+  </div>
+
+  <!-- 3: Berechnungen — Bild: 324×216px (3:2) -->
+  <div class="benefit-card" data-id="berechnungen">
+    <img class="card-img" src="img/benefit-berechnungen.png" alt="Berechnungen" width="324" height="216">
+    <div class="card-title">Berechnungen und Datenverarbeitung</div>
+    <div class="card-desc">Lasse Kalkulationen ausführen oder große Datenmengen automatisch verarbeiten.</div>
+  </div>
+
+  <!-- 4: Internetsuche — Bild: 324×216px (3:2) -->
+  <div class="benefit-card" data-id="internetsuche">
+    <img class="card-img" src="img/benefit-internetsuche.png" alt="Internetsuche" width="324" height="216">
+    <div class="card-title">Internetsuche über Chrome</div>
+    <div class="card-desc">Claude recherchiert für dich im Internet und fasst die Ergebnisse zusammen.</div>
+  </div>
+
+  <!-- 5: Werkzeuge — Bild: 324×216px (3:2) -->
+  <div class="benefit-card" data-id="werkzeuge">
+    <img class="card-img" src="img/benefit-werkzeuge.png" alt="Werkzeuge anbinden" width="324" height="216">
+    <div class="card-title">Bestehende Werkzeuge anbinden</div>
+    <div class="card-desc">Verbinde E-Mail, Aufgaben&shy;listen oder Projekt&shy;boards — alles an einem Ort.</div>
+  </div>
+
+  <!-- 6: Abläufe — Bild: 324×216px (3:2) -->
+  <div class="benefit-card" data-id="ablaeufe">
+    <img class="card-img" src="img/benefit-ablaeufe.png" alt="Automatische Abläufe" width="324" height="216">
+    <div class="card-title">Automatische Abläufe erstellen</div>
+    <div class="card-desc">Erstelle wiederkehrende Routinen, die Claude regelmäßig für dich erledigt.</div>
+  </div>
+
+  <!-- Connection Lines (SVG) -->
+  <svg class="connections-svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+    <!-- dateien (top-left card) → right-angle → app window top-left -->
+    <polyline class="path-dateien" points="220,88 220,240 310,240"/>
+    <circle class="dot-dateien" cx="220" cy="88" r="3"/>
+
+    <!-- ki-qualitaet (top-right card) → right-angle → app window top-right -->
+    <polyline class="path-ki-qualitaet" points="580,88 580,240 490,240"/>
+    <circle class="dot-ki-qualitaet" cx="580" cy="88" r="3"/>
+
+    <!-- berechnungen (middle-left) → right-angle → app window left -->
+    <polyline class="path-berechnungen" points="200,300 235,300 235,290 270,290"/>
+    <circle class="dot-berechnungen" cx="200" cy="300" r="3"/>
+
+    <!-- internetsuche (middle-right) → right-angle → app window right -->
+    <polyline class="path-internetsuche" points="600,300 565,300 565,290 530,290"/>
+    <circle class="dot-internetsuche" cx="600" cy="300" r="3"/>
+
+    <!-- werkzeuge (bottom-left) → right-angle → app window bottom-left -->
+    <polyline class="path-werkzeuge" points="220,510 220,370 310,370"/>
+    <circle class="dot-werkzeuge" cx="220" cy="510" r="3"/>
+
+    <!-- ablaeufe (bottom-right) → right-angle → app window bottom-right -->
+    <polyline class="path-ablaeufe" points="580,510 580,370 490,370"/>
+    <circle class="dot-ablaeufe" cx="580" cy="510" r="3"/>
+  </svg>
+
+</div>
+
+</body>
+</html>

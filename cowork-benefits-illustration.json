@@ -1,0 +1,105 @@
+{
+  "style": {
+    "aesthetic": "flat minimal UI, fine-line borders, structured card layout, clean tech illustration inspired by modern SaaS design (Linear, Vercel aesthetic)",
+    "rendering": "clean vector style, flat surfaces with 1px borders, no gradients on surfaces, sharp but refined edges, subtle depth through layering and thin shadows only",
+    "mood": "empowering, productive, approachable, modern"
+  },
+  "background": {
+    "type": "single-colour",
+    "color": "#FFFFFF",
+    "overlay": "none — pure clean white, no grid, no pattern, no texture"
+  },
+  "text_overlay": {
+    "headline": {
+      "content": "none — no headline text on this image",
+      "position": "n/a",
+      "note": "this is a feature illustration without overlaid text — the headline and description live in the website layout surrounding this image"
+    }
+  },
+  "elements": {
+    "central_element": {
+      "type": "Claude Desktop / Cowork application window — schematic representation",
+      "style": "a simplified desktop application window (approximately 30% of image width, 40% of image height) with a 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 4px 16px rgba(0,0,0,0.08)), filled with #FFFFFF — clearly the visual centerpiece and largest element in the composition",
+      "details": "a schematic representation of the Claude Desktop app window. At the top: a thin title bar (24px height) with #F5F5F5 background and three small colored dots on the left (red #EF476F, yellow #FFD166, green #06D6A0 — classic window controls). Below the title bar, a thin sidebar on the left (approximately 20% of the window width) with a #FAFAFA background and 1px right border in #E5E7EB — inside the sidebar, three small horizontal lines representing conversation entries, the topmost one highlighted with a #FFD166 left border accent (active conversation). The main content area on the right shows a simplified chat interface: two chat bubbles — the first is a small user message (short gray rounded rectangle, right-aligned, #F5F5F5 fill, 8px radius) with a tiny placeholder text line; below it, a larger assistant response (left-aligned, white fill with 1px #E5E7EB border, 8px radius) containing three miniature text lines and a small golden spark icon (#FFD166) in the top-left corner of the bubble, representing Claude's response. At the bottom of the main area, a thin input bar (rounded rectangle, #F5F5F5 fill, 1px #E5E7EB border, border-radius 999px) with a small cursor line. The overall impression is unmistakably a desktop chat application — clean, modern, familiar",
+      "position": "center of the image, vertically and horizontally centered, slightly shifted upward by 3-5% to leave room for the bottom benefit cards"
+    },
+    "benefit_cards": [
+      {
+        "id": "dateien",
+        "position": "top-left, outside the app window, connected via thin line to the app window's edge",
+        "type": "Arbeite direkt mit deinen Dateien",
+        "style": "white (#FFFFFF) filled rounded rectangle with 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 2px 8px rgba(0,0,0,0.06))",
+        "details": "compact card showing three small file-type icons arranged horizontally: a blue document icon labeled '.pptx' in #118AB2, a green document icon labeled '.docx' in #06D6A0, a coral document icon labeled '.xlsx' in #EF476F — each icon is a simplified flat file shape (rectangle with folded corner) with the extension text in 11px semibold below. Below the icons, a thin 1px divider line, then a miniature preview: a few horizontal text lines and a small bar chart shape, representing an actual document being worked on. The card conveys: Claude arbeitet direkt mit deinen Dateien auf dem Computer"
+      },
+      {
+        "id": "ki-qualitaet",
+        "position": "top-right, outside the app window, connected via thin line to the app window's edge",
+        "type": "Die beste KI auf dem Markt",
+        "style": "white (#FFFFFF) filled rounded rectangle with 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 2px 8px rgba(0,0,0,0.06))",
+        "details": "compact card with a simplified ranking visualization: three horizontal bars of decreasing length, the topmost bar is filled in #FFD166 (gold — first place) and is noticeably longer than the others, second bar in light #D1D5DB at 70% width, third bar in light #D1D5DB at 55% width. A small golden star icon sits at the left end of the top bar. Below the bars, a tiny pill badge reading 'Claude' in 11px semibold #073B4C with a #FFD166 left dot. The card conveys: Claude ist die führende KI — without technical jargon, just a visual quality ranking"
+      },
+      {
+        "id": "berechnungen",
+        "position": "middle-left, outside the app window, connected via thin line to the app window's left edge",
+        "type": "Berechnungen und Datenverarbeitung",
+        "style": "white (#FFFFFF) filled rounded rectangle with 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 2px 8px rgba(0,0,0,0.06))",
+        "details": "compact card showing a simplified results display (NOT a code editor — no programming syntax, no terminal). A small rounded rectangle with #F5F5F5 background contains three result lines with checkmark icons: '✓ 2.847 Einträge verarbeitet' in 12px #06D6A0, '✓ Berechnung abgeschlossen' in 12px #06D6A0, '→ Ergebnis.xlsx erstellt' in 12px #118AB2. Above the results area, a small gear/cog icon in #073B4C. The card conveys: Claude führt Berechnungen aus und verarbeitet große Datenmengen direkt auf deinem Computer"
+      },
+      {
+        "id": "internetsuche",
+        "position": "middle-right, outside the app window, connected via thin line to the app window's right edge",
+        "type": "Internetsuche über Chrome",
+        "style": "white (#FFFFFF) filled rounded rectangle with 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 2px 8px rgba(0,0,0,0.06))",
+        "details": "compact card showing a simplified browser window: a thin top bar (3px height, #F5F5F5 fill) with three tiny dots on the left (classic browser chrome, #D1D5DB) and a rounded address bar shape in the center. Below, the browser content area shows a minimal search results layout — three small result blocks, each with a short title line in #111111 (12px) and a description line in #8A8F98 (10px), with small #118AB2 link-colored text. A small magnifying glass icon in #073B4C sits near the address bar. The card conveys: Claude sucht für dich im Internet über Chrome"
+      },
+      {
+        "id": "werkzeuge",
+        "position": "bottom-left, outside the app window, connected via thin line to the app window's bottom edge",
+        "type": "Bestehende Werkzeuge anbinden",
+        "style": "white (#FFFFFF) filled rounded rectangle with 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 2px 8px rgba(0,0,0,0.06))",
+        "details": "compact card showing a connector visualization: three small abstract app icons arranged in a row — each is a small rounded square (6px radius) in different colors: #EF476F, #118AB2, #06D6A0 — representing different everyday tools (generic, no real logos). Below each square, a tiny label: 'E-Mail', 'Aufgaben', 'Projekte' in 10px #8A8F98. Thin 1px connecting lines from each square converge downward into a single point, forming a merge pattern. Below the merge point, a small checkmark circle in #06D6A0. The card conveys: Binde deine bestehenden Werkzeuge wie E-Mail, Aufgabenlisten oder Projektboards an"
+      },
+      {
+        "id": "ablaeufe",
+        "position": "bottom-right, outside the app window, connected via thin line to the app window's bottom edge",
+        "type": "Automatische Abläufe erstellen",
+        "style": "white (#FFFFFF) filled rounded rectangle with 1px solid border in #E5E7EB, border-radius 12px, subtle shadow (0 2px 8px rgba(0,0,0,0.06))",
+        "details": "compact card showing a simple workflow: a small horizontal sequence of three rounded rectangles (6px radius, 1px border) connected by thin arrow lines (1px, #8A8F98). First box has a clock icon in #118AB2 (Zeitpunkt/Auslöser), second box has a gear icon in #FFD166 (Verarbeitung), third box has a document-out icon in #06D6A0 (Ergebnis). Below the sequence, a small circular refresh/loop arrow in #118AB2 suggesting a repeating routine. A small pill badge reading 'Routine' in 11px #073B4C with a #FFD166 dot sits below. The card conveys: Lasse dir wiederkehrende Abläufe und Routinen erstellen"
+      }
+    ],
+    "connection_lines": {
+      "type": "lines from the central app window to each surrounding benefit card",
+      "style": "thin solid strokes (1px) in #D1D5DB, straight lines from the edge of the central app window outward to the nearest edge of each benefit card — clean and structural, with right-angle turns where needed, no curves, no glow, no gradient",
+      "details": "six lines extending from the borders of the central Claude Desktop window to each of the six surrounding benefit cards. Each line ends with a small 4px circle dot in #D1D5DB where it meets the card border. The lines visually communicate that all these capabilities originate from or connect to the Claude Desktop application. The lines should not cross over each other — clean routing with right-angle turns if needed"
+    }
+  },
+  "composition": {
+    "layout": "the central Claude Desktop app window occupies the middle of the image as the dominant visual anchor. Six smaller benefit cards are distributed around it: two above (Dateien top-left, KI-Qualität top-right), two on the sides (Berechnungen middle-left, Internetsuche middle-right), two below (Werkzeuge bottom-left, Abläufe bottom-right). The central window is approximately 2-3x the size of each individual benefit card, creating a clear visual hierarchy. Connection lines bridge from the window's edges to each card",
+    "depth": "very subtle z-axis: the central app window floats slightly forward with a noticeable but soft shadow (0 4px 16px rgba(0,0,0,0.08)). Benefit cards sit at the same lower depth with barely-there shadows (0 2px 8px rgba(0,0,0,0.06)). No blur, no frosted glass, flat and clean",
+    "negative_space": "generous white space around the entire composition — the outer 8-10% of the image on all sides is clean white with no pattern. Adequate breathing room between the central window and each benefit card (minimum 30px gap). The white background ensures the image works well as a hero illustration and is easy to make transparent"
+  },
+  "technical": {
+    "aspect_ratio": "4:3",
+    "text": "no headline or subtitle text on the image itself — only small labels inside the benefit cards (file extensions, status text, tool names) in 10-12px, all in German. All internal text must be crisp and readable. German labels: use simple, non-technical everyday language throughout",
+    "no": "3d perspective, photorealism, people, hands, faces, stock photo elements, competitor logos or real brand logos, cluttered overlapping, terminal/command line interfaces with visible code, code editors, programming syntax, glassmorphism, frosted glass, backdrop blur, glow effects, neon effects, gradient fills on surfaces, rounded blob shapes, organic flowing shapes, dark backgrounds, any color outside the defined palette, English text — all visible text must be German"
+  },
+  "color_palette": {
+    "background": "#FFFFFF (pure white — clean base for transparency conversion)",
+    "grid_overlay": "none",
+    "text_primary": "#111111 (dark text — the website's --text-primary, for labels inside cards)",
+    "text_secondary": "#8A8F98 (muted gray — the website's --text-secondary, for small descriptions)",
+    "card_fill": "#FFFFFF (white cards matching the website's --bg-base)",
+    "card_border": "#E5E7EB (light gray border — matching the website's light theme card borders)",
+    "card_shadow": "rgba(0, 0, 0, 0.06) (barely-there shadow for subtle lift)",
+    "window_shadow": "rgba(0, 0, 0, 0.08) (slightly stronger shadow for the central app window)",
+    "accent": "#FFD166 (golden yellow — the website's --accent, used for active states, spark icon, highlight elements)",
+    "secondary": "#073B4C (deep navy — the website's --secondary, used for strong icon strokes and text)",
+    "info": "#118AB2 (ocean blue — the website's --info, for links and informational indicators)",
+    "success": "#06D6A0 (mint — the website's --success, for completed states and confirmations)",
+    "warning": "#EF476F (coral pink — the website's --warning, used sparingly for attention and file-type accents)",
+    "surface": "#F5F5F5 (light surface gray — for inner sub-elements like the results background and input bars)",
+    "sidebar": "#FAFAFA (very light gray — for the app window's sidebar area)",
+    "connection_lines": "#D1D5DB (neutral gray — structural lines connecting window to cards)",
+    "border_radius": "6px for small elements (--radius-sm), 12px for cards and app window (--radius-md), 999px for pill badges and input bar"
+  }
+}

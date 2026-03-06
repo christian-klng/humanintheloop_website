@@ -79,33 +79,102 @@
                 </div>
             </section>
 
-            <!-- Value Proposition -->
+            <!-- Cowork Benefits -->
             <section class="container">
-                <h2 class="section-title">Der Human in the Loop Standard</h2>
-                <p class="text-muted">Warum die besten Teams der Welt mit uns lernen.</p>
+                <h2 class="section-title">Was Claude Cowork kann</h2>
+                <p class="text-muted">Dein KI-Assistent, der direkt auf deinem Computer arbeitet.</p>
 
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-icon" aria-hidden="true">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <div class="cowork-benefits">
+                    <!-- Central App Window -->
+                    <div class="app-window">
+                        <div class="app-titlebar">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
                         </div>
-                        <h3>Praxisgeleitetes Curriculum</h3>
-                        <p>Unser Lehrplan wird von aktiven Fachleuten f&uuml;hrender Tech-Unternehmen erstellt und gepflegt. Keine veraltete Theorie.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon" aria-hidden="true">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                        <div class="app-body">
+                            <div class="app-sidebar">
+                                <div class="sidebar-item active"></div>
+                                <div class="sidebar-item"></div>
+                                <div class="sidebar-item"></div>
+                            </div>
+                            <div class="app-chat">
+                                <div class="chat-messages">
+                                    <div class="msg-user">
+                                        <div class="line"></div>
+                                    </div>
+                                    <div class="msg-claude">
+                                        <span class="spark">
+                                            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8 1 L9.5 6 L14 8 L9.5 10 L8 15 L6.5 10 L2 8 L6.5 6 Z" fill="#FFD166" stroke="#D4A843" stroke-width="0.5"/>
+                                            </svg>
+                                        </span>
+                                        <div class="lines">
+                                            <div class="line"></div>
+                                            <div class="line"></div>
+                                            <div class="line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-input">
+                                    <div class="cursor"></div>
+                                </div>
+                            </div>
                         </div>
-                        <h3>Projektbasiertes Lernen</h3>
-                        <p>Lernen durch Handeln. Schlie&szlig;en Sie ab mit einem Portfolio realer Anwendungen und Systemdesigns.</p>
                     </div>
-                    <div class="card">
-                        <div class="card-icon" aria-hidden="true">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        </div>
-                        <h3>Globales Netzwerk</h3>
-                        <p>Werden Sie Teil eines exklusiven Alumni-Netzwerks aus Engineers und Designern. Nehmen Sie an exklusiven AMAs und Meetups teil.</p>
+
+                    <!-- Benefit Cards -->
+                    <div class="benefit-card" data-id="dateien">
+                        <img class="card-img" src="img/benefit-dateien.png" alt="Dateien bearbeiten" width="324" height="216">
+                        <div class="card-title">Arbeite direkt mit deinen Dateien</div>
+                        <div class="card-desc">Erstelle und bearbeite Pr&auml;sentationen, Dokumente und Tabellen &mdash; direkt auf deinem Computer.</div>
                     </div>
+
+                    <div class="benefit-card" data-id="ki-qualitaet">
+                        <img class="card-img" src="img/benefit-ki-qualitaet.png" alt="Beste KI" width="324" height="216">
+                        <div class="card-title">Die beste KI auf dem Markt</div>
+                        <div class="card-desc">Claude ist das aktuell leistungsst&auml;rkste KI-Modell &mdash; f&uuml;r Texte, Analysen und kreative Aufgaben.</div>
+                    </div>
+
+                    <div class="benefit-card" data-id="berechnungen">
+                        <img class="card-img" src="img/benefit-berechnungen.png" alt="Berechnungen" width="324" height="216">
+                        <div class="card-title">Berechnungen und Datenverarbeitung</div>
+                        <div class="card-desc">Lasse Kalkulationen ausf&uuml;hren oder gro&szlig;e Datenmengen automatisch verarbeiten.</div>
+                    </div>
+
+                    <div class="benefit-card" data-id="internetsuche">
+                        <img class="card-img" src="img/benefit-internetsuche.png" alt="Internetsuche" width="324" height="216">
+                        <div class="card-title">Internetsuche &uuml;ber Chrome</div>
+                        <div class="card-desc">Claude recherchiert f&uuml;r dich im Internet und fasst die Ergebnisse zusammen.</div>
+                    </div>
+
+                    <div class="benefit-card" data-id="werkzeuge">
+                        <img class="card-img" src="img/benefit-werkzeuge.png" alt="Werkzeuge anbinden" width="324" height="216">
+                        <div class="card-title">Bestehende Werkzeuge anbinden</div>
+                        <div class="card-desc">Verbinde E-Mail, Aufgaben&shy;listen oder Projekt&shy;boards &mdash; alles an einem Ort.</div>
+                    </div>
+
+                    <div class="benefit-card" data-id="ablaeufe">
+                        <img class="card-img" src="img/benefit-ablaeufe.png" alt="Automatische Abl&auml;ufe" width="324" height="216">
+                        <div class="card-title">Automatische Abl&auml;ufe erstellen</div>
+                        <div class="card-desc">Erstelle wiederkehrende Routinen, die Claude regelm&auml;&szlig;ig f&uuml;r dich erledigt.</div>
+                    </div>
+
+                    <!-- Connection Lines (SVG) -->
+                    <svg class="connections-svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+                        <polyline class="path-dateien" points="220,88 220,240 310,240"/>
+                        <circle class="dot-dateien" cx="220" cy="88" r="3"/>
+                        <polyline class="path-ki-qualitaet" points="580,88 580,240 490,240"/>
+                        <circle class="dot-ki-qualitaet" cx="580" cy="88" r="3"/>
+                        <polyline class="path-berechnungen" points="200,300 235,300 235,290 270,290"/>
+                        <circle class="dot-berechnungen" cx="200" cy="300" r="3"/>
+                        <polyline class="path-internetsuche" points="600,300 565,300 565,290 530,290"/>
+                        <circle class="dot-internetsuche" cx="600" cy="300" r="3"/>
+                        <polyline class="path-werkzeuge" points="220,510 220,370 310,370"/>
+                        <circle class="dot-werkzeuge" cx="220" cy="510" r="3"/>
+                        <polyline class="path-ablaeufe" points="580,510 580,370 490,370"/>
+                        <circle class="dot-ablaeufe" cx="580" cy="510" r="3"/>
+                    </svg>
                 </div>
             </section>
 

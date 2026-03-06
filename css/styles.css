@@ -1465,6 +1465,297 @@ footer {
     outline: none;
 }
 
+/* === Cowork Benefits Illustration === */
+.cowork-benefits {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 4 / 3;
+    margin: 48px auto 0;
+}
+
+/* Central App Window */
+.app-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    width: 260px;
+    height: 200px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.app-titlebar {
+    height: 22px;
+    background: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.app-titlebar .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+.app-titlebar .dot.red { background: var(--warning); }
+.app-titlebar .dot.yellow { background: var(--accent); }
+.app-titlebar .dot.green { background: var(--success); }
+
+.app-body {
+    display: flex;
+    height: calc(100% - 22px);
+}
+
+.app-sidebar {
+    width: 52px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar-item {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-color);
+}
+.sidebar-item.active {
+    border-left: 2px solid var(--accent);
+    background: #F0EDE6;
+}
+
+.app-chat {
+    flex: 1;
+    padding: 12px 10px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.msg-user {
+    align-self: flex-end;
+    background: var(--bg-surface);
+    border-radius: 8px;
+    padding: 5px 8px;
+    max-width: 70%;
+}
+.msg-user .line {
+    height: 4px;
+    border-radius: 2px;
+    background: #D1D5DB;
+    width: 48px;
+}
+
+.msg-claude {
+    align-self: flex-start;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 8px;
+    max-width: 85%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.msg-claude .spark {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}
+.msg-claude .spark svg { display: block; }
+
+.msg-claude .lines {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.msg-claude .lines .line {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border-color);
+}
+.msg-claude .lines .line:nth-child(1) { width: 100%; }
+.msg-claude .lines .line:nth-child(2) { width: 85%; }
+.msg-claude .lines .line:nth-child(3) { width: 60%; }
+
+.chat-input {
+    height: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+.chat-input .cursor {
+    width: 1px;
+    height: 10px;
+    background: var(--text-secondary);
+    animation: blink 1.2s step-end infinite;
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* SVG Connection Lines */
+.connections-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+.connections-svg polyline {
+    stroke: #D1D5DB;
+    stroke-width: 1;
+    fill: none;
+    transition: stroke 0.35s ease, stroke-width 0.35s ease;
+}
+.connections-svg circle {
+    fill: #D1D5DB;
+    transition: fill 0.35s ease;
+}
+
+/* Benefit Cards */
+.benefit-card {
+    position: absolute;
+    width: 190px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 14px;
+    z-index: 3;
+    cursor: default;
+    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+}
+
+.benefit-card .card-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    filter: grayscale(100%) opacity(0.6);
+    transition: filter 0.35s ease, border-color 0.35s ease;
+    font-size: 0;
+    color: transparent;
+}
+
+.benefit-card .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+    transition: color 0.35s ease;
+}
+
+.benefit-card .card-desc {
+    font-size: 11.5px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    transition: max-height 0.4s ease, opacity 0.35s ease, margin-top 0.35s ease;
+}
+
+/* Benefit card positions */
+.benefit-card[data-id="dateien"]       { top: 20px;  left: 30px; }
+.benefit-card[data-id="ki-qualitaet"]  { top: 20px;  right: 30px; }
+.benefit-card[data-id="berechnungen"]  { top: 50%;   left: 10px;  transform: translateY(-50%); }
+.benefit-card[data-id="internetsuche"] { top: 50%;   right: 10px; transform: translateY(-50%); }
+.benefit-card[data-id="werkzeuge"]     { bottom: 20px; left: 30px; }
+.benefit-card[data-id="ablaeufe"]      { bottom: 20px; right: 30px; }
+
+/* Benefit card hover states */
+.benefit-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+    transform: translateY(-2px);
+}
+.benefit-card[data-id="berechnungen"]:hover {
+    transform: translateY(calc(-50% - 2px));
+}
+.benefit-card[data-id="internetsuche"]:hover {
+    transform: translateY(calc(-50% - 2px));
+}
+
+.benefit-card:hover .card-desc {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 6px;
+}
+
+.benefit-card:hover .card-img {
+    filter: grayscale(0%) opacity(1);
+}
+
+/* Per-card accent colors on hover */
+.benefit-card[data-id="dateien"]:hover { border-color: var(--info); }
+.benefit-card[data-id="dateien"]:hover .card-img { border-color: var(--info); }
+
+.benefit-card[data-id="ki-qualitaet"]:hover { border-color: var(--accent); }
+.benefit-card[data-id="ki-qualitaet"]:hover .card-img { border-color: var(--accent); }
+
+.benefit-card[data-id="berechnungen"]:hover { border-color: var(--success); }
+.benefit-card[data-id="berechnungen"]:hover .card-img { border-color: var(--success); }
+
+.benefit-card[data-id="internetsuche"]:hover { border-color: var(--secondary); }
+.benefit-card[data-id="internetsuche"]:hover .card-img { border-color: var(--secondary); }
+
+.benefit-card[data-id="werkzeuge"]:hover { border-color: var(--warning); }
+.benefit-card[data-id="werkzeuge"]:hover .card-img { border-color: var(--warning); }
+
+.benefit-card[data-id="ablaeufe"]:hover { border-color: var(--info); }
+.benefit-card[data-id="ablaeufe"]:hover .card-img { border-color: var(--info); }
+
+/* Highlight connection lines on card hover */
+.benefit-card[data-id="dateien"]:hover ~ .connections-svg .path-dateien { stroke: var(--info); stroke-width: 1.5; }
+.benefit-card[data-id="dateien"]:hover ~ .connections-svg .dot-dateien { stroke: var(--info); fill: var(--info); }
+
+.benefit-card[data-id="ki-qualitaet"]:hover ~ .connections-svg .path-ki-qualitaet { stroke: var(--accent); stroke-width: 1.5; }
+.benefit-card[data-id="ki-qualitaet"]:hover ~ .connections-svg .dot-ki-qualitaet { stroke: var(--accent); fill: var(--accent); }
+
+.benefit-card[data-id="berechnungen"]:hover ~ .connections-svg .path-berechnungen { stroke: var(--success); stroke-width: 1.5; }
+.benefit-card[data-id="berechnungen"]:hover ~ .connections-svg .dot-berechnungen { stroke: var(--success); fill: var(--success); }
+
+.benefit-card[data-id="internetsuche"]:hover ~ .connections-svg .path-internetsuche { stroke: var(--secondary); stroke-width: 1.5; }
+.benefit-card[data-id="internetsuche"]:hover ~ .connections-svg .dot-internetsuche { stroke: var(--secondary); fill: var(--secondary); }
+
+.benefit-card[data-id="werkzeuge"]:hover ~ .connections-svg .path-werkzeuge { stroke: var(--warning); stroke-width: 1.5; }
+.benefit-card[data-id="werkzeuge"]:hover ~ .connections-svg .dot-werkzeuge { stroke: var(--warning); fill: var(--warning); }
+
+.benefit-card[data-id="ablaeufe"]:hover ~ .connections-svg .path-ablaeufe { stroke: var(--info); stroke-width: 1.5; }
+.benefit-card[data-id="ablaeufe"]:hover ~ .connections-svg .dot-ablaeufe { stroke: var(--info); fill: var(--info); }
+
 @media (max-width: 768px) {
     .admin-upload-area {
         padding: 24px 16px;
@@ -1581,6 +1872,46 @@ footer {
 
     .footer-links {
         gap: 40px;
+    }
+
+    /* Cowork benefits: stack cards in grid below 900px */
+    .cowork-benefits {
+        aspect-ratio: auto;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 0;
+    }
+
+    .app-window {
+        position: static;
+        transform: none;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        grid-column: 1 / -1;
+        max-width: 280px;
+        margin: 0 auto 8px;
+    }
+
+    .connections-svg {
+        display: none;
+    }
+
+    .benefit-card {
+        position: static;
+        width: 100%;
+        transform: none;
+    }
+    .benefit-card[data-id="berechnungen"],
+    .benefit-card[data-id="internetsuche"] {
+        transform: none;
+    }
+
+    .benefit-card .card-desc {
+        max-height: none;
+        opacity: 1;
+        margin-top: 6px;
     }
 }
 
@@ -1845,6 +2176,10 @@ footer {
 
     .hero p {
         font-size: 16px;
+    }
+
+    .cowork-benefits {
+        grid-template-columns: 1fr;
     }
 
     .logo {

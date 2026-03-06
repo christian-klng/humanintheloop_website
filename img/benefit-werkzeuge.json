@@ -1,0 +1,26 @@
+{
+  "id": "werkzeuge",
+  "title": "Bestehende Werkzeuge anbinden",
+  "aspect_ratio": "3:2",
+  "resolution": "324x216px (display at 162x108px @2x)",
+  "style": {
+    "aesthetic": "flat minimal UI, fine-line borders, clean tech illustration inspired by modern SaaS design (Linear, Vercel aesthetic)",
+    "rendering": "clean vector style, flat surfaces with 1px borders, no gradients on surfaces, sharp but refined edges, subtle depth through layering and thin shadows only",
+    "mood": "empowering, productive, approachable, modern"
+  },
+  "background": "#FFFFFF (pure white, no grid, no pattern, no texture)",
+  "description": "A compact illustration showing a connector visualization: three small abstract app icons arranged in a row — each is a small rounded square (6px radius) in different colors: #EF476F, #118AB2, #06D6A0 — representing different everyday tools (generic, no real logos). Below each square, a tiny label: 'E-Mail', 'Aufgaben', 'Projekte' in 10px #8A8F98. Thin 1px connecting lines in #D1D5DB from each square converge downward into a single point, forming a merge pattern. Below the merge point, a small checkmark circle in #06D6A0. The illustration conveys: Verbinde deine bestehenden Werkzeuge wie E-Mail, Aufgabenlisten oder Projektboards an einem Ort.",
+  "color_palette": {
+    "background": "#FFFFFF",
+    "text_primary": "#111111",
+    "text_secondary": "#8A8F98",
+    "accent": "#FFD166",
+    "info": "#118AB2",
+    "success": "#06D6A0",
+    "warning": "#EF476F",
+    "surface": "#F5F5F5",
+    "border": "#E5E7EB",
+    "lines": "#D1D5DB"
+  },
+  "no": "3d perspective, photorealism, people, hands, faces, stock photo elements, real brand logos (no Slack, no Gmail, no Trello logos), terminal/command line, code editors, programming syntax, glassmorphism, glow effects, gradient fills, dark backgrounds, English text — all visible text must be German"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "berechnungen",
+  "title": "Berechnungen und Datenverarbeitung",
+  "aspect_ratio": "3:2",
+  "resolution": "324x216px (display at 162x108px @2x)",
+  "style": {
+    "aesthetic": "flat minimal UI, fine-line borders, clean tech illustration inspired by modern SaaS design (Linear, Vercel aesthetic)",
+    "rendering": "clean vector style, flat surfaces with 1px borders, no gradients on surfaces, sharp but refined edges, subtle depth through layering and thin shadows only",
+    "mood": "empowering, productive, approachable, modern"
+  },
+  "background": "#FFFFFF (pure white, no grid, no pattern, no texture)",
+  "description": "A compact illustration showing a simplified results list (NOT a code editor — no programming syntax, no terminal, no containing box or frame). At the top, a small gear/cog icon in #073B4C. Below, three result lines displayed as a clean vertical list directly on the white background: a checkmark icon followed by '2.847 Eintraege verarbeitet' in 12px #06D6A0, a checkmark icon followed by 'Berechnung abgeschlossen' in 12px #06D6A0, a right-arrow icon followed by 'Ergebnis.xlsx erstellt' in 12px #118AB2. The lines are spaced evenly with subtle gaps between them. The illustration conveys: Claude fuehrt Berechnungen aus und verarbeitet grosse Datenmengen direkt auf deinem Computer.",
+  "color_palette": {
+    "background": "#FFFFFF",
+    "text_primary": "#111111",
+    "text_secondary": "#8A8F98",
+    "accent": "#FFD166",
+    "secondary": "#073B4C",
+    "info": "#118AB2",
+    "success": "#06D6A0",
+    "surface": "#F5F5F5",
+    "border": "#E5E7EB",
+    "lines": "#D1D5DB"
+  },
+  "no": "3d perspective, photorealism, people, hands, faces, stock photo elements, real brand logos, terminal/command line, code editors, programming syntax, glassmorphism, glow effects, gradient fills, dark backgrounds, English text — all visible text must be German"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "dateien",
+  "title": "Arbeite direkt mit deinen Dateien",
+  "aspect_ratio": "3:2",
+  "resolution": "324x216px (display at 162x108px @2x)",
+  "style": {
+    "aesthetic": "flat minimal UI, fine-line borders, clean tech illustration inspired by modern SaaS design (Linear, Vercel aesthetic)",
+    "rendering": "clean vector style, flat surfaces with 1px borders, no gradients on surfaces, sharp but refined edges, subtle depth through layering and thin shadows only",
+    "mood": "empowering, productive, approachable, modern"
+  },
+  "background": "#FFFFFF (pure white, no grid, no pattern, no texture)",
+  "description": "A compact illustration showing three small file-type icons arranged horizontally: a blue document icon labeled '.pptx' in #118AB2, a green document icon labeled '.docx' in #06D6A0, a coral document icon labeled '.xlsx' in #EF476F. Each icon is a simplified flat file shape (rectangle with folded corner) with the extension text in 11px semibold below. Below the icons, a thin 1px divider line in #E5E7EB, then a miniature document preview: a few horizontal text lines in #D1D5DB and a small bar chart shape in #118AB2, representing an actual document being worked on. The illustration conveys: Claude arbeitet direkt mit deinen Dateien auf dem Computer.",
+  "color_palette": {
+    "background": "#FFFFFF",
+    "text_primary": "#111111",
+    "text_secondary": "#8A8F98",
+    "accent": "#FFD166",
+    "info": "#118AB2",
+    "success": "#06D6A0",
+    "warning": "#EF476F",
+    "surface": "#F5F5F5",
+    "border": "#E5E7EB",
+    "lines": "#D1D5DB"
+  },
+  "no": "3d perspective, photorealism, people, hands, faces, stock photo elements, real brand logos, terminal/command line, code editors, programming syntax, glassmorphism, glow effects, gradient fills, dark backgrounds, English text — all visible text must be German"
+}

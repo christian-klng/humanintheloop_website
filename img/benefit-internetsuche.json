@@ -1,0 +1,24 @@
+{
+  "id": "internetsuche",
+  "title": "Internetsuche ueber Chrome",
+  "aspect_ratio": "3:2",
+  "resolution": "324x216px (display at 162x108px @2x)",
+  "style": {
+    "aesthetic": "flat minimal UI, fine-line borders, clean tech illustration inspired by modern SaaS design (Linear, Vercel aesthetic)",
+    "rendering": "clean vector style, flat surfaces with 1px borders, no gradients on surfaces, sharp but refined edges, subtle depth through layering and thin shadows only",
+    "mood": "empowering, productive, approachable, modern"
+  },
+  "background": "#FFFFFF (pure white, no grid, no pattern, no texture)",
+  "description": "A compact illustration showing search results directly on a white background (no browser window frame, no titlebar, no containing box). At the top, a small magnifying glass icon in #073B4C next to a thin rounded search input shape in #F5F5F5 with a 1px #E5E7EB border. Below, three search result entries displayed as a clean vertical list: each entry has a short title line in #118AB2 (12px, link-colored) and a description line in #8A8F98 (10px), separated by subtle spacing. The illustration conveys: Claude sucht fuer dich im Internet und fasst die Ergebnisse zusammen.",
+  "color_palette": {
+    "background": "#FFFFFF",
+    "text_primary": "#111111",
+    "text_secondary": "#8A8F98",
+    "secondary": "#073B4C",
+    "info": "#118AB2",
+    "surface": "#F5F5F5",
+    "border": "#E5E7EB",
+    "lines": "#D1D5DB"
+  },
+  "no": "3d perspective, photorealism, people, hands, faces, stock photo elements, real brand logos (no Google, no Chrome logo), terminal/command line, code editors, programming syntax, glassmorphism, glow effects, gradient fills, dark backgrounds, English text — all visible text must be German"
+}
