@@ -1928,14 +1928,7 @@ footer {
     }
 
     .app-window {
-        position: static;
-        transform: none;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 4 / 3;
-        grid-column: 1 / -1;
-        max-width: 280px;
-        margin: 0 auto 8px;
+        display: none;
     }
 
     .connections-svg {
@@ -1950,6 +1943,19 @@ footer {
     .benefit-card[data-id="berechnungen"],
     .benefit-card[data-id="internetsuche"] {
         transform: none;
+    }
+
+    .benefit-card .card-title {
+        font-size: 15px;
+    }
+
+    .benefit-card .card-desc {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .benefit-card .card-img {
+        height: 100px;
     }
 
 }
