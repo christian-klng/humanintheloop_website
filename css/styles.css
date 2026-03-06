@@ -209,15 +209,19 @@ body.menu-open {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
-section {
-    padding: 80px 0;
+section.container {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 /* === Hero Section === */
-.hero {
+section.hero.container {
     text-align: center;
     padding-top: 160px;
     padding-bottom: 120px;
@@ -675,7 +679,7 @@ section {
 }
 
 /* === Section variants === */
-.section--spaced {
+section.section--spaced.container {
     padding-top: 120px;
 }
 
@@ -2062,7 +2066,7 @@ footer {
     }
 
     /* --- Hero --- */
-    .hero {
+    section.hero.container {
         padding-top: 120px;
         padding-bottom: 80px;
     }
@@ -2082,11 +2086,12 @@ footer {
     }
 
     /* --- Sections --- */
-    section {
-        padding: 48px 0;
+    section.container {
+        padding-top: 48px;
+        padding-bottom: 48px;
     }
 
-    .section--spaced {
+    section.section--spaced.container {
         padding-top: 72px;
     }
 
@@ -2212,7 +2217,8 @@ footer {
 /* Small phones */
 @media (max-width: 480px) {
     .container {
-        padding: 0 16px;
+        padding-left: 16px;
+        padding-right: 16px;
     }
 
     .hero h1 {
