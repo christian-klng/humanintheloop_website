@@ -1548,18 +1548,39 @@ footer {
     gap: 8px;
 }
 
+/* Chat animation timeline — 7s loop
+   0.0s  Cursor blinks in input
+   0.8s  User message slides in
+   1.6s  Cursor hides, Claude bubble appears
+   2.0s  Spark pulses
+   2.4s  Line 1 fills
+   3.0s  Line 2 fills
+   3.6s  Line 3 fills
+   5.0s  Hold
+   6.0s  Everything fades out
+   7.0s  Reset */
+
 .msg-user {
     align-self: flex-end;
     background: var(--bg-surface);
     border-radius: 8px;
     padding: 5px 8px;
     max-width: 70%;
+    opacity: 0;
+    transform: translateX(8px);
+    animation: msg-user-in 7s ease infinite;
 }
 .msg-user .line {
     height: 4px;
     border-radius: 2px;
     background: #D1D5DB;
     width: 48px;
+}
+
+@keyframes msg-user-in {
+    0%, 10% { opacity: 0; transform: translateX(8px); }
+    16%, 83% { opacity: 1; transform: translateX(0); }
+    90%, 100% { opacity: 0; transform: translateX(0); }
 }
 
 .msg-claude {
@@ -1572,14 +1593,30 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    opacity: 0;
+    animation: msg-claude-in 7s ease infinite;
+}
+
+@keyframes msg-claude-in {
+    0%, 22% { opacity: 0; }
+    28%, 83% { opacity: 1; }
+    90%, 100% { opacity: 0; }
 }
 
 .msg-claude .spark {
     width: 10px;
     height: 10px;
     display: inline-block;
+    animation: spark-pulse 7s ease infinite;
 }
 .msg-claude .spark svg { display: block; }
+
+@keyframes spark-pulse {
+    0%, 26% { transform: scale(1); opacity: 0.4; }
+    30% { transform: scale(1.4); opacity: 1; }
+    34%, 83% { transform: scale(1); opacity: 1; }
+    90%, 100% { transform: scale(1); opacity: 0; }
+}
 
 .msg-claude .lines {
     display: flex;
@@ -1590,10 +1627,30 @@ footer {
     height: 4px;
     border-radius: 2px;
     background: var(--border-color);
+    transform-origin: left;
+    transform: scaleX(0);
 }
-.msg-claude .lines .line:nth-child(1) { width: 100%; }
-.msg-claude .lines .line:nth-child(2) { width: 85%; }
-.msg-claude .lines .line:nth-child(3) { width: 60%; }
+.msg-claude .lines .line:nth-child(1) {
+    width: 100%;
+    animation: line-fill 7s ease infinite;
+    animation-delay: 0s;
+}
+.msg-claude .lines .line:nth-child(2) {
+    width: 85%;
+    animation: line-fill 7s ease infinite;
+    animation-delay: 0.15s;
+}
+.msg-claude .lines .line:nth-child(3) {
+    width: 60%;
+    animation: line-fill 7s ease infinite;
+    animation-delay: 0.3s;
+}
+
+@keyframes line-fill {
+    0%, 34% { transform: scaleX(0); }
+    42%, 80% { transform: scaleX(1); }
+    88%, 100% { transform: scaleX(0); }
+}
 
 .chat-input {
     height: 20px;
@@ -1608,10 +1665,13 @@ footer {
     width: 1px;
     height: 10px;
     background: var(--text-secondary);
-    animation: blink 1.2s step-end infinite;
+    animation: cursor-blink 7s step-end infinite;
 }
-@keyframes blink {
-    50% { opacity: 0; }
+
+@keyframes cursor-blink {
+    0%, 12% { opacity: 1; }
+    6% { opacity: 0; }
+    12%, 100% { opacity: 0; }
 }
 
 /* SVG Connection Lines */
