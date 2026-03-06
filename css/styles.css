@@ -1470,7 +1470,7 @@ footer {
     position: relative;
     width: 100%;
     max-width: 800px;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 8 / 9;
     margin: 48px auto 0;
 }
 
@@ -1479,7 +1479,7 @@ footer {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -52%);
+    transform: translate(-50%, -50%);
     width: 260px;
     height: 200px;
     background: #fff;
@@ -1646,7 +1646,7 @@ footer {
     padding: 14px;
     z-index: 3;
     cursor: default;
-    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+    transition: box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
 .benefit-card .card-img {
@@ -1681,37 +1681,20 @@ footer {
     font-weight: 400;
     line-height: 1.45;
     color: var(--text-secondary);
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    margin-top: 0;
-    transition: max-height 0.4s ease, opacity 0.35s ease, margin-top 0.35s ease;
+    margin-top: 6px;
 }
 
 /* Benefit card positions */
-.benefit-card[data-id="dateien"]       { top: 20px;  left: 30px; }
-.benefit-card[data-id="ki-qualitaet"]  { top: 20px;  right: 30px; }
+.benefit-card[data-id="dateien"]       { top: 10px;  left: 30px; }
+.benefit-card[data-id="ki-qualitaet"]  { top: 10px;  right: 30px; }
 .benefit-card[data-id="berechnungen"]  { top: 50%;   left: 10px;  transform: translateY(-50%); }
 .benefit-card[data-id="internetsuche"] { top: 50%;   right: 10px; transform: translateY(-50%); }
-.benefit-card[data-id="werkzeuge"]     { bottom: 20px; left: 30px; }
-.benefit-card[data-id="ablaeufe"]      { bottom: 20px; right: 30px; }
+.benefit-card[data-id="werkzeuge"]     { bottom: 10px; left: 30px; }
+.benefit-card[data-id="ablaeufe"]      { bottom: 10px; right: 30px; }
 
 /* Benefit card hover states */
 .benefit-card:hover {
     box-shadow: 0 4px 20px rgba(0,0,0,0.10);
-    transform: translateY(-2px);
-}
-.benefit-card[data-id="berechnungen"]:hover {
-    transform: translateY(calc(-50% - 2px));
-}
-.benefit-card[data-id="internetsuche"]:hover {
-    transform: translateY(calc(-50% - 2px));
-}
-
-.benefit-card:hover .card-desc {
-    max-height: 120px;
-    opacity: 1;
-    margin-top: 6px;
 }
 
 .benefit-card:hover .card-img {
@@ -1908,11 +1891,6 @@ footer {
         transform: none;
     }
 
-    .benefit-card .card-desc {
-        max-height: none;
-        opacity: 1;
-        margin-top: 6px;
-    }
 }
 
 /* Mobile */
