@@ -1470,16 +1470,16 @@ footer {
     position: relative;
     width: 100%;
     max-width: 800px;
-    aspect-ratio: 8 / 9;
+    aspect-ratio: 3 / 2;
     margin: 48px auto 0;
 }
 
 /* Central App Window */
 .app-window {
     position: absolute;
-    top: 50%;
+    bottom: 23px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     width: 260px;
     height: 200px;
     background: #fff;
@@ -1638,7 +1638,7 @@ footer {
 /* Benefit Cards */
 .benefit-card {
     position: absolute;
-    width: 190px;
+    width: 175px;
     background: #fff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -1684,13 +1684,14 @@ footer {
     margin-top: 6px;
 }
 
-/* Benefit card positions */
-.benefit-card[data-id="dateien"]       { top: 10px;  left: 30px; }
-.benefit-card[data-id="ki-qualitaet"]  { top: 10px;  right: 30px; }
-.benefit-card[data-id="berechnungen"]  { top: 50%;   left: 10px;  transform: translateY(-50%); }
-.benefit-card[data-id="internetsuche"] { top: 50%;   right: 10px; transform: translateY(-50%); }
-.benefit-card[data-id="werkzeuge"]     { bottom: 10px; left: 30px; }
-.benefit-card[data-id="ablaeufe"]      { bottom: 10px; right: 30px; }
+/* Benefit card positions — top row (4 cards) */
+.benefit-card[data-id="dateien"]       { top: 10px; left: 20px; }
+.benefit-card[data-id="ki-qualitaet"]  { top: 10px; left: 215px; }
+.benefit-card[data-id="berechnungen"]  { top: 10px; left: 410px; }
+.benefit-card[data-id="internetsuche"] { top: 10px; left: 605px; }
+/* Benefit card positions — bottom row (2 cards flanking app window) */
+.benefit-card[data-id="werkzeuge"]     { bottom: 10px; left: 50px; }
+.benefit-card[data-id="ablaeufe"]      { bottom: 10px; right: 50px; }
 
 /* Benefit card hover states */
 .benefit-card:hover {
