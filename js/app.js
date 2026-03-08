@@ -76,7 +76,7 @@ function responsiveImgAttrs(imageUrl, sizesHint) {
         .map(w => `${base}-${w}w.webp ${w}w`)
         .join(', ');
 
-    return ` srcset="${srcset}" sizes="${sizesHint}"`;
+    return ` srcset="${srcset}" sizes="${sizesHint}" onerror="this.removeAttribute('srcset');this.onerror=null;"`;
 }
 
 // --- Render Helpers ---
