@@ -1015,6 +1015,44 @@ footer {
     margin-top: auto;
 }
 
+/* === Use Case Cards === */
+
+.usecase-card {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.usecase-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.usecase-card-body {
+    padding: 24px;
+}
+
+.usecase-card-body .badge {
+    margin-bottom: 12px;
+}
+
+.usecase-card-body h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.usecase-card-body p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /* === Resource Gallery === */
 
 .gallery-grid {

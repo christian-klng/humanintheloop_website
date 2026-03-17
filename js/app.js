@@ -13,6 +13,44 @@ const WEBHOOK_URL = (
 let events = [];
 let resources = [];
 
+const useCases = [
+    {
+        id: 'strategieentwicklung',
+        title: 'KI-gestützte Strategieentwicklung',
+        tag: 'Beratung',
+        description: 'Entwickle Unternehmensstrategien im Dialog mit KI — von der Marktanalyse über Szenario-Planung bis zum fertigen Strategiepapier, gemeinsam im Team.',
+        thumbnail: 'images/usecase-strategieentwicklung.png'
+    },
+    {
+        id: 'lernprogramme',
+        title: 'Adaptive Lernprogramme gestalten',
+        tag: 'Training',
+        description: 'Erstelle komplette Schulungsprogramme, die sich an Wissensstand und Branche der Teilnehmenden anpassen — inklusive Übungen, Quizze und Zertifikatsvorlagen.',
+        thumbnail: 'images/usecase-lernprogramme.png'
+    },
+    {
+        id: 'projektsteuerung',
+        title: 'Komplexe Projekte live steuern',
+        tag: 'Projektmanagement',
+        description: 'Nutze KI als Co-Pilot für Projektsteuerung: Risiken erkennen, Abhängigkeiten visualisieren und Stakeholder-Updates generieren — direkt im Workshop.',
+        thumbnail: 'images/usecase-projektsteuerung.png'
+    },
+    {
+        id: 'innovationssprints',
+        title: 'Innovationssprints moderieren',
+        tag: 'Innovation',
+        description: 'Führe Design-Thinking-Sprints mit KI-Unterstützung durch — von der Problemanalyse über Ideation bis zum validierten Prototyp-Konzept an einem Tag.',
+        thumbnail: 'images/usecase-innovationssprints.png'
+    },
+    {
+        id: 'organisationsentwicklung',
+        title: 'Organisationsentwicklung begleiten',
+        tag: 'Change Management',
+        description: 'Analysiere Teamdynamiken, entwickle Change-Narrative und erstelle Kommunikationspläne für Transformationsprozesse — datenbasiert und kollaborativ.',
+        thumbnail: 'images/usecase-organisationsentwicklung.png'
+    }
+];
+
 // --- DOM References ---
 const app = document.getElementById('app');
 const views = {
@@ -21,6 +59,7 @@ const views = {
     'event-detail': document.getElementById('event-detail-view'),
     library: document.getElementById('library-view'),
     'resource-detail': document.getElementById('resource-detail-view'),
+    usecases: document.getElementById('usecases-view'),
     styleguide: document.getElementById('styleguide-view'),
     privacy: document.getElementById('privacy-view'),
     terms: document.getElementById('terms-view'),
@@ -32,6 +71,7 @@ const views = {
 
 const navLinks = {
     home: document.getElementById('nav-home'),
+    usecases: document.getElementById('nav-usecases'),
     events: document.getElementById('nav-events'),
     library: document.getElementById('nav-library'),
     styleguide: document.getElementById('nav-styleguide')
@@ -429,6 +469,35 @@ function renderAllResourceCards() {
     if (libraryGrid) renderResourceCards(libraryGrid, resources);
 }
 
+// --- Use Case Render Helpers ---
+
+function createUseCaseCard(useCase) {
+    const card = document.createElement('div');
+    card.className = 'card usecase-card';
+    card.innerHTML = `
+        ${useCase.thumbnail ? `<img src="${useCase.thumbnail}" alt="" class="usecase-card-img" loading="lazy">` : ''}
+        <div class="usecase-card-body">
+            <div class="badge inline">${useCase.tag}</div>
+            <h3>${useCase.title}</h3>
+            <p>${useCase.description}</p>
+        </div>
+    `;
+    return card;
+}
+
+function renderUseCaseCards(container, list) {
+    container.innerHTML = '';
+    list.forEach(uc => container.appendChild(createUseCaseCard(uc)));
+}
+
+function renderAllUseCaseCards() {
+    const homeGrid = document.getElementById('home-usecases-grid');
+    if (homeGrid) renderUseCaseCards(homeGrid, useCases.slice(0, 4));
+
+    const fullGrid = document.getElementById('usecases-grid');
+    if (fullGrid) renderUseCaseCards(fullGrid, useCases);
+}
+
 function renderResourceDetail(resource) {
     const container = document.getElementById('resource-detail-content');
     if (!container || !resource) return;
@@ -793,6 +862,10 @@ function renderRoute(route) {
             title: 'Bibliothek | Human in the Loop',
             description: 'Artikel, Bildergalerien und Videoressourcen aus der Human in the Loop-Community.'
         },
+        usecases: {
+            title: 'Anwendungsfälle | Human in the Loop',
+            description: 'So setzen Teams Claude Cowork in der Praxis ein — von Beratung über Projektmanagement bis Innovation.'
+        },
         styleguide: {
             title: 'Styleguide | Human in the Loop',
             description: 'Das Designsystem und die Komponentenbibliothek von Human in the Loop.'
@@ -939,6 +1012,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await Promise.all([loadEvents(), loadResources()]);
     renderAllEventCards();
     renderAllResourceCards();
+    renderAllUseCaseCards();
     initLightbox();
     renderRoute(getRouteFromPath());
     initHeroCanvas();
