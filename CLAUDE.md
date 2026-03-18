@@ -34,8 +34,13 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
 ├── docker-entrypoint.sh    Container startup (migration, OG gen, servers)
 ├── favicon.ico             Favicons and web manifest
 ├── site.webmanifest
+├── corporate-design-system.md  Corporate Design System (colors, typography, print, etc.)
 └── CLAUDE.md
 ```
+
+## Corporate Design System
+
+The file `corporate-design-system.md` contains the full Corporate Design System for Human in the Loop. It covers brand identity, logo usage, color system (HEX, RGB, CMYK), typography (Switzer), spacing, components, imagery guidelines, print specifications (business cards, flyers, ads, roll-ups), presentation templates, social media formats, and accessibility requirements. Refer to this document when creating any visual materials — digital or print.
 
 ## Naming
 
