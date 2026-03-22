@@ -35,7 +35,8 @@
                 { value: 'automation', label: 'Nein, Automatisierung/Datenanalyse reicht' }
             ],
             visibleWhen: function (s) { return s.q1_1 === 'build'; },
-            dependsOn: ['q1_1']
+            dependsOn: ['q1_1'],
+            footnote: 'Relevant, weil Eigenentwicklung gew\u00e4hlt wurde.'
         },
         {
             id: 'q2_1',
@@ -79,7 +80,8 @@
                 { value: 'none', label: 'Keines davon' }
             ],
             visibleWhen: function (s) { return s.q1_2 === 'ai'; },
-            dependsOn: ['q1_2']
+            dependsOn: ['q1_2'],
+            footnote: 'Relevant, weil KI genutzt wird.'
         },
         {
             id: 'q3_1',
@@ -103,7 +105,8 @@
                 { value: 'no', label: 'Nein, alle sehen dasselbe' }
             ],
             visibleWhen: function (s) { return s.q3_1 === 'multi'; },
-            dependsOn: ['q3_1']
+            dependsOn: ['q3_1'],
+            footnote: 'Relevant, weil mehrere Nutzer geplant sind.'
         },
         {
             id: 'q3_3',
@@ -132,7 +135,8 @@
                 { value: 'other', label: 'Sonstiges (z.\u00a0B. Empfehlungssystem, Zeitreihenanalyse)' }
             ],
             visibleWhen: function (s) { return s.q1_2 === 'ai'; },
-            dependsOn: ['q1_2']
+            dependsOn: ['q1_2'],
+            footnote: 'Relevant, weil KI genutzt wird.'
         },
         {
             id: 'q4_2',
@@ -147,7 +151,8 @@
                 { value: 'own', label: 'Eigenes Modell trainieren' }
             ],
             visibleWhen: function (s) { return s.q1_2 === 'ai'; },
-            dependsOn: ['q1_2']
+            dependsOn: ['q1_2'],
+            footnote: 'Relevant, weil KI genutzt wird.'
         }
     ];
 
@@ -414,17 +419,7 @@
 
             html += '<div class="dh-node' + (isLast && !isAnswered ? ' dh-node--active' : '') + '">';
 
-            // Guide rails for ancestor levels (continuous vertical lines)
-            for (var l = 1; l < q.level; l++) {
-                // Show rail if there are more nodes at or above this rail's level below
-                var showRail = false;
-                for (var j = idx + 1; j < questionsToShow.length; j++) {
-                    if (questionsToShow[j].level <= l) { showRail = true; break; }
-                }
-                html += '<div class="dh-rail' + (showRail ? '' : ' dh-rail--end') + '" aria-hidden="true"></div>';
-            }
-
-            // Connector with dot at this node's own level
+            // Connector with dot
             html += '<div class="dh-connector' + (isLastAtOwnLevel ? ' dh-connector--last' : '') + '" aria-hidden="true"><span class="dh-dot"></span></div>';
 
             // Question card
@@ -457,6 +452,11 @@
                 html += '<div class="dh-warning-box">';
                 html += '<strong>\u26a0\ufe0f</strong> Du hast angegeben, dass sensible Firmendaten nicht an externe Anbieter gesendet werden d\u00fcrfen. Eine API-Nutzung ist dann nur m\u00f6glich, wenn die verarbeiteten Daten nicht sensibel sind oder der Anbieter vertragliche Garantien bietet (Enterprise-Tarif mit DPA).';
                 html += '</div>';
+            }
+
+            // Footnote
+            if (q.footnote) {
+                html += '<div class="dh-footnote">' + q.footnote + '</div>';
             }
 
             html += '</div>'; // close dh-question
