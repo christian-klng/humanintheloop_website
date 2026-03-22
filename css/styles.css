@@ -2036,16 +2036,10 @@ footer {
     z-index: 1;
 }
 
-/* Active (current unanswered) node */
-.dh-node--active .dh-dot {
+/* All dots are accent-colored */
+.dh-dot {
     background: var(--accent);
     border-color: var(--accent);
-}
-
-/* Answered nodes */
-.dh-node:has(.dh-question--answered) .dh-dot {
-    background: var(--success);
-    border-color: var(--success);
 }
 
 /* Last node at its level: cut vertical line at the dot */

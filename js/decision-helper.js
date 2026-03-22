@@ -329,7 +329,12 @@
     // ── State Management ───────────────────────────────────
 
     function setAnswer(questionId, value) {
-        dhState[questionId] = value;
+        // Toggle: if same value clicked again, deselect
+        if (dhState[questionId] === value) {
+            delete dhState[questionId];
+        } else {
+            dhState[questionId] = value;
+        }
         resetDependents(questionId);
         render();
     }
@@ -514,7 +519,6 @@
             activeEntries.forEach(function (e) {
                 var isWarning = e.icon === '\u26a0\ufe0f';
                 html += '<li class="dh-checklist-item' + (isWarning ? ' dh-checklist-item--warning' : '') + '">';
-                html += '<span class="dh-checklist-icon" aria-hidden="true">' + e.icon + '</span>';
                 html += '<span>' + e.text + '</span>';
                 html += '</li>';
             });
