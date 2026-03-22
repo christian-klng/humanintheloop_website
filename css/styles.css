@@ -1943,6 +1943,364 @@ footer {
     cursor: not-allowed;
 }
 
+/* === Decision Helper === */
+
+.dh-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+.dh-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Node: rail(s) + connector + question card in a row */
+.dh-node {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    animation: dh-slide-in 0.25s ease;
+}
+
+/* Guide rail: vertical line for each ancestor level */
+.dh-rail {
+    width: 24px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.dh-rail::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+}
+
+/* End rail: line only extends to midpoint */
+.dh-rail--end::before {
+    bottom: 50%;
+}
+
+/* Connector: vertical line + horizontal branch + dot at this node's level */
+.dh-connector {
+    position: relative;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+/* Vertical line through connector */
+.dh-connector::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+}
+
+/* Horizontal branch to question card */
+.dh-connector::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 28px;
+    width: 12px;
+    height: 2px;
+    background: var(--border-color);
+}
+
+/* Extend horizontal branch left into the rail when a rail precedes the connector */
+.dh-rail + .dh-connector::after {
+    left: -16px;
+    width: 36px;
+}
+
+/* Dot at the branch point */
+.dh-dot {
+    position: absolute;
+    left: 4px;
+    top: 24px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 2px solid var(--border-color);
+    z-index: 1;
+}
+
+/* Active (current unanswered) node */
+.dh-node--active .dh-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Answered nodes */
+.dh-node:has(.dh-question--answered) .dh-dot {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+/* Last node at its level: cut vertical line at the dot */
+.dh-connector--last::before {
+    bottom: calc(100% - 32px);
+}
+
+/* First node overall: start vertical line at the dot */
+.dh-node:first-child > .dh-connector::before {
+    top: 24px;
+}
+
+.dh-question {
+    flex: 1;
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin: 6px 0;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.dh-question--answered {
+    border-color: var(--success);
+    background: rgba(6, 214, 160, 0.03);
+}
+
+.dh-question-header {
+    margin-bottom: 16px;
+}
+
+.dh-question-label {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.dh-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dh-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    background: var(--bg-base);
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.dh-option:hover {
+    border-color: var(--secondary);
+    background: var(--bg-surface);
+}
+
+.dh-option.is-selected {
+    border-color: var(--secondary);
+    background: var(--secondary);
+    color: #ffffff;
+}
+
+.dh-option:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.dh-option--warning {
+    position: relative;
+}
+
+.dh-option--warning::after {
+    content: attr(data-warning);
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--warning);
+    font-weight: 400;
+    white-space: normal;
+    line-height: 1.3;
+}
+
+.dh-hint {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(17, 138, 178, 0.06);
+    border-left: 3px solid var(--info);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+.dh-warning-box {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(239, 71, 111, 0.06);
+    border-left: 3px solid var(--warning);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+.dh-warning-box strong {
+    color: var(--warning);
+}
+
+.dh-checklist {
+    position: sticky;
+    top: 100px;
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.dh-checklist-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+}
+
+.dh-checklist-group {
+    margin-bottom: 20px;
+}
+
+.dh-checklist-group:last-child {
+    margin-bottom: 0;
+}
+
+.dh-checklist-group-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin: 0 0 8px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dh-checklist-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dh-checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 0;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+
+.dh-checklist-item--warning {
+    color: var(--warning);
+}
+
+.dh-checklist-icon {
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+}
+
+.dh-checklist-empty {
+    font-size: 14px;
+    text-align: center;
+    padding: 40px 16px;
+    color: var(--text-secondary);
+}
+
+.dh-multi-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dh-multi-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 14px;
+    background: var(--bg-base);
+    transition: all 0.2s ease;
+    user-select: none;
+    line-height: 1.4;
+}
+
+.dh-multi-option:hover {
+    border-color: var(--secondary);
+    background: var(--bg-surface);
+}
+
+.dh-multi-option.is-selected {
+    border-color: var(--secondary);
+    background: rgba(7, 59, 76, 0.05);
+}
+
+.dh-multi-option:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.dh-multi-check {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.dh-multi-option.is-selected .dh-multi-check {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: #ffffff;
+}
+
+@keyframes dh-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* === Responsive === */
 
 /* Tablet */
@@ -2000,6 +2358,26 @@ footer {
         height: 100px;
     }
 
+    .dh-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dh-checklist {
+        position: static;
+        max-height: none;
+    }
+
+    .dh-rail {
+        width: 16px;
+    }
+
+    .dh-connector {
+        width: 16px;
+    }
+
+    .dh-connector::after {
+        width: 6px;
+    }
 }
 
 /* Mobile */
@@ -2291,4 +2669,25 @@ footer {
 
     .sg-h1 { font-size: 32px; }
     .sg-h2 { font-size: 26px; }
+
+    .dh-rail {
+        width: 12px;
+    }
+
+    .dh-connector {
+        width: 12px;
+    }
+
+    .dh-question {
+        padding: 16px;
+    }
+
+    .dh-checklist {
+        padding: 16px;
+    }
+
+    .dh-option {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
 }
