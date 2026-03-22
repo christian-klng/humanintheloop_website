@@ -2063,8 +2063,7 @@ footer {
 }
 
 .dh-question--answered {
-    border-color: var(--success);
-    background: rgba(6, 214, 160, 0.03);
+    border-color: var(--border-color);
 }
 
 .dh-question-header {
@@ -2136,13 +2135,9 @@ footer {
 
 .dh-hint {
     margin-top: 16px;
-    padding: 12px 16px;
-    background: rgba(17, 138, 178, 0.06);
-    border-left: 3px solid var(--info);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     font-size: 14px;
     line-height: 1.5;
-    color: var(--text-primary);
+    color: var(--text-secondary);
 }
 
 .dh-warning-box {
