@@ -9,14 +9,6 @@ DATA_SOURCE=volume FILES_DIR=/files HTML_ROOT=/usr/share/nginx/html OUTPUT_DIR=/
 
 echo "==> Starting API server..."
 node /app/server/api.js &
-API_PID=$!
 
 echo "==> Starting nginx..."
-nginx -g 'daemon off;' &
-NGINX_PID=$!
-
-# Wait for either process to exit
-wait -n $API_PID $NGINX_PID 2>/dev/null || true
-echo "==> One of the processes exited, shutting down..."
-kill $API_PID $NGINX_PID 2>/dev/null || true
-exit 1
+exec nginx -g 'daemon off;'
