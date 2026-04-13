@@ -9,7 +9,7 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
 - HTML5, CSS3 (custom properties), vanilla JS
 - Google Fonts (Switzer via Fontshare)
 - Express.js API server (admin CRUD + data aggregation)
-- Deployed via Northflank (Docker/nginx + Node.js)
+- Deployed via Coolify (Docker/nginx + Node.js) on https://humanintheloop.academy
 
 ## Project Structure
 
@@ -52,7 +52,7 @@ The file `corporate-design-system.md` contains the full Corporate Design System 
 - **No inline styles** — all styling via classes in css/styles.css (exception: styleguide color swatches)
 - **Events are data-driven** — individual JSON files on `/files/` volume, served via API
 - **Library resources are data-driven** — individual JSON files on `/files/` volume, served via API
-- **Media files served from `/files/` volume** — Northflank volume mounted at `/files/`, referenced as `/files/library/...` in resource JSON
+- **Media files served from `/files/` volume** — Docker volume mounted at `/files/`, referenced as `/files/library/...` in resource JSON
 - **Path-based SPA routing** — URLs use `/`, `/events`, `/event/{id}`, `/library`, `/resource/{id}`, `/styleguide`, `/privacy`, `/terms`, `/imprint`, `/admin`
 - **Semantic HTML** — use `<a>` and `<button>` (not `<div onclick>`), include ARIA labels
 - **OG meta tags** — generated per-route at Docker build time via `scripts/generate-pages.js`; regenerated at container startup from volume data; also regenerated automatically by the API server after every admin write operation (create/update/delete); also updated client-side on navigation
@@ -93,7 +93,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 ## Admin Panel
 
 - **Access**: Navigate to `/admin` (no link in public navigation)
-- **Authentication**: Username + password login via `ADMIN_USER` and `ADMIN_PASSWORD` environment variables (Northflank secret group)
+- **Authentication**: Username + password login via `ADMIN_USER` and `ADMIN_PASSWORD` environment variables
 - **Features**: Edit (raw JSON), add, and delete events and resources; upload media files (images/videos) with folder tabs, URL copy, and lightbox preview
 - **API server**: Express.js on port 3000 (proxied by nginx at `/api/*`)
 - **Session**: Bearer token stored in `sessionStorage`, 24h expiry
@@ -134,7 +134,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 
 **Via admin panel** (preferred): Navigate to `/admin` → login → Add Resource → edit JSON → Save.
 
-**Via files**: Create `/files/library/{resource-id}/resource.json` on the Northflank volume.
+**Via files**: Create `/files/library/{resource-id}/resource.json` on the Docker volume.
 
 ### Resource JSON Schema
 
@@ -162,7 +162,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 
 **Via admin panel** (preferred): Navigate to `/admin` → login → Add Event → edit JSON → Save.
 
-**Via files**: Create `/files/events/{event-id}.json` on the Northflank volume.
+**Via files**: Create `/files/events/{event-id}.json` on the Docker volume.
 
 ### Event JSON Schema
 
@@ -190,39 +190,18 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 }
 ```
 
-- `pricing`: `"free"` (webhook registration) or `"paid"` (Stripe redirect)
+- `pricing`: `"free"` or `"paid"` (Stripe redirect)
 - `stripeLink`: Full Stripe Payment Link URL for paid events (one link per event series), `null` for free events
-- `onlineLink`: Event URL (Zoom etc.), sent via webhook to n8n for confirmation emails, `null` if not applicable
-- `confirmationText`: Custom text for confirmation emails sent by n8n
+- `onlineLink`: Event URL (Zoom etc.), `null` if not applicable
+- `confirmationText`: Custom text for confirmation messages
 
 ## Event Registration
 
 Events support two registration modes controlled by the `pricing` field:
 
-**Free events** (`pricing: "free"`): User enters email → POST to n8n webhook with event details + email + `onlineLink` + `confirmationText` → n8n sends confirmation email.
+**Free events** (`pricing: "free"`): Currently shows a registration form, but the webhook backend is not connected. The `__WEBHOOK_URL__` placeholder in `index.html` remains unreplaced, and `app.js` detects this and shows a "not available" message.
 
 **Paid events** (`pricing: "paid"`): User enters email → Redirect to Stripe Payment Link with `client_reference_id={event.id}` and `prefilled_email={email}`. One Stripe Payment Link is created per event series; `client_reference_id` identifies the specific event instance.
-
-### Webhook Configuration
-
-The n8n webhook URL is injected at build time via the `N8N_WEBHOOK_URL` build argument:
-- In `index.html`: `<script>window.__CONFIG__={webhookUrl:"__WEBHOOK_URL__"};</script>`
-- `generate-pages.js` replaces `__WEBHOOK_URL__` with the actual URL
-- `app.js` reads it from `window.__CONFIG__.webhookUrl`
-- Without the build step (local dev), the placeholder remains and registration shows a "not available" message
-
-### Webhook Payload (free events)
-
-```json
-{
-    "eventId": "advanced-system-architecture",
-    "eventTitle": "Fortgeschrittene Systemarchitektur",
-    "eventDate": "12. Oktober 2026",
-    "eventTime": "10:00 – 15:00 Uhr (MEZ)",
-    "email": "user@example.com",
-    "onlineLink": "https://zoom.us/j/...",
-    "confirmationText": "Dein Platz ist bestätigt! ..."
-}
 
 ## Local Development
 
@@ -235,10 +214,10 @@ npx serve -s -l 8000
 ## Docker Build
 
 ```sh
-docker build --build-arg BASE_URL=https://your-domain.com -t humanintheloop .
+docker build --build-arg BASE_URL=https://humanintheloop.academy -t humanintheloop .
 docker run -p 8080:80 -e ADMIN_USER=admin -e ADMIN_PASSWORD=yourpassword -v ./test-files:/files humanintheloop
 ```
 
-`BASE_URL` is required — it sets the absolute URLs for OG meta tags and canonical links.
-`ADMIN_USER` is required — it sets the admin login username.
-`ADMIN_PASSWORD` is required — it sets the admin login password.
+`BASE_URL` is required (build arg) — it sets the absolute URLs for OG meta tags and canonical links.
+`ADMIN_USER` is required (env var) — it sets the admin login username.
+`ADMIN_PASSWORD` is required (env var) — it sets the admin login password.
