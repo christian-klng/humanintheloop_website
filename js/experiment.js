@@ -541,19 +541,28 @@
         }
     };
 
-    window.verifyMagicLink = async function (token) {
+    let pendingVerifyToken = null;
+
+    window.verifyMagicLink = function (token) {
+        pendingVerifyToken = token;
+    };
+
+    window.doVerify = async function () {
+        if (!pendingVerifyToken) return;
         const container = document.getElementById('verify-message');
-        if (!container) return;
+        const btn = document.getElementById('verify-btn');
+        if (btn) btn.disabled = true;
+        if (container) container.innerHTML = '<div class="verify-container"><div class="verify-spinner"></div><p>Wird verifiziert...</p></div>';
 
         try {
-            const res = await fetch(`/api/auth/verify/${token}`);
+            const res = await fetch(`/api/auth/verify/${pendingVerifyToken}`);
             const data = await res.json();
 
             if (!res.ok) {
                 container.innerHTML = `
-                    <div class="verify-error">
+                    <div class="verify-container">
                         <h3>${escapeHtml(data.error)}</h3>
-                        <a href="/login" data-link class="btn btn-primary">Neuen Link anfordern</a>
+                        <a href="/login" class="btn">Neuen Link anfordern</a>
                     </div>`;
                 return;
             }
@@ -562,9 +571,9 @@
             window.navigateTo('/dashboard');
         } catch (err) {
             container.innerHTML = `
-                <div class="verify-error">
+                <div class="verify-container">
                     <h3>Verifizierung fehlgeschlagen</h3>
-                    <a href="/login" data-link class="btn btn-primary">Neuen Link anfordern</a>
+                    <a href="/login" class="btn">Neuen Link anfordern</a>
                 </div>`;
         }
     };

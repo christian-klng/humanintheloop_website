@@ -682,12 +682,13 @@
 
         <!-- ===== User: Verify Magic Link ===== -->
         <main id="verify-view" class="view">
-            <section class="container section-narrow">
-                <div id="verify-message">
-                    <div class="evaluating-indicator">
-                        <div class="spinner"></div>
-                        <span>Link wird verifiziert...</span>
-                    </div>
+            <section class="container">
+                <div class="page-header page-header--borderless">
+                    <h1>Anmeldung bestätigen</h1>
+                </div>
+                <div id="verify-message" class="verify-container">
+                    <p>Klicke auf den Button, um dich anzumelden.</p>
+                    <button id="verify-btn" class="btn btn-outline" onclick="doVerify()">Anmeldung bestätigen</button>
                 </div>
             </section>
         </main>
