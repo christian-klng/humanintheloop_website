@@ -673,8 +673,8 @@
                 <p class="text-muted">Gib deine E-Mail-Adresse ein und wir senden dir einen Login-Link.</p>
                 <form class="login-form" onsubmit="handleMagicLinkLogin(event)">
                     <input type="email" id="login-email" class="admin-input" placeholder="name@beispiel.de" autocomplete="email" required>
-                    <p id="login-error" class="admin-error" hidden></p>
-                    <p id="login-success" class="field-success" hidden></p>
+                    <p id="login-error" class="field-error"></p>
+                    <p id="login-success" class="field-success"></p>
                     <button class="btn btn-primary" type="submit">Login-Link senden</button>
                 </form>
             </section>
@@ -698,13 +698,15 @@
             <section class="container">
                 <div class="dashboard-header">
                     <h1>Projekte</h1>
-                    <div class="dashboard-actions">
-                        <input type="text" id="new-project-name" class="admin-input" placeholder="Neues Projekt...">
-                        <button class="btn btn-primary" onclick="createProject()">Erstellen</button>
-                        <button class="btn btn-secondary" onclick="userLogout()">Abmelden</button>
+                    <div class="dashboard-header-actions">
+                        <button class="btn" onclick="userLogout()">Abmelden</button>
                     </div>
                 </div>
-                <div id="dashboard-projects" class="projects-grid"></div>
+                <div class="create-project-form">
+                    <input type="text" id="new-project-name" class="admin-input" placeholder="Neues Projekt...">
+                    <button class="btn" onclick="createProject()">Erstellen</button>
+                </div>
+                <div id="dashboard-projects" class="project-grid"></div>
             </section>
         </main>
 

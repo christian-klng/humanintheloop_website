@@ -57,16 +57,16 @@
             }
 
             container.innerHTML = projects.map(p => `
-                <a href="/project/${p.id}" class="project-card" data-link>
+                <a href="/project/${p.id}" class="project-card">
                     <h3>${escapeHtml(p.name)}</h3>
-                    <div class="project-meta">
-                        <span>${escapeHtml(p.owner_name)}</span>
-                        <span>${p.test_case_count || 0} Testfälle</span>
+                    <div class="project-card-meta">
+                        <span class="project-card-stat">${escapeHtml(p.owner_name)}</span>
+                        <span class="project-card-stat">${p.test_case_count || 0} Testfälle</span>
                     </div>
-                    <div class="project-versions">
+                    ${(p.latest_criteria_version || p.latest_prompt_version) ? `<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
                         ${p.latest_criteria_version ? `<span class="version-badge">Kriterien v${p.latest_criteria_version}</span>` : ''}
                         ${p.latest_prompt_version ? `<span class="version-badge">Prompt v${p.latest_prompt_version}</span>` : ''}
-                    </div>
+                    </div>` : ''}
                 </a>
             `).join('');
         } catch (err) {
@@ -199,10 +199,10 @@
                 ${promptVersions.length > 0 ? `<span class="version-badge">v${latest.version}</span>` : ''}
             </div>
             <div class="prompt-tabs">
-                <button class="tab-btn active" onclick="switchPromptTab('prompt')">Prompt</button>
-                <button class="tab-btn" onclick="switchPromptTab('system')">System Prompt</button>
+                <button class="prompt-tab is-active" onclick="switchPromptTab('prompt')">Prompt</button>
+                <button class="prompt-tab" onclick="switchPromptTab('system')">System Prompt</button>
             </div>
-            <div id="prompt-tab-prompt" class="prompt-tab-content active">
+            <div id="prompt-tab-prompt" class="prompt-tab-content is-active">
                 <textarea id="prompt-editor-textarea">${escapeHtml(latest ? latest.prompt_md : '')}</textarea>
             </div>
             <div id="prompt-tab-system" class="prompt-tab-content">
@@ -239,16 +239,16 @@
     }
 
     window.switchPromptTab = function (tab) {
-        document.querySelectorAll('.prompt-tabs .tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.prompt-tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.prompt-tabs .prompt-tab').forEach(b => b.classList.remove('is-active'));
+        document.querySelectorAll('.prompt-tab-content').forEach(c => c.classList.remove('is-active'));
 
         const btn = tab === 'prompt'
-            ? document.querySelector('.prompt-tabs .tab-btn:first-child')
-            : document.querySelector('.prompt-tabs .tab-btn:last-child');
-        if (btn) btn.classList.add('active');
+            ? document.querySelector('.prompt-tabs .prompt-tab:first-child')
+            : document.querySelector('.prompt-tabs .prompt-tab:last-child');
+        if (btn) btn.classList.add('is-active');
 
         const content = document.getElementById(`prompt-tab-${tab}`);
-        if (content) content.classList.add('active');
+        if (content) content.classList.add('is-active');
     };
 
     window.savePrompts = async function () {
@@ -392,8 +392,8 @@
         if (isEvaluating) {
             container.innerHTML = `
                 <div class="panel-header"><h3>Evaluation</h3></div>
-                <div class="evaluating-indicator">
-                    <div class="spinner"></div>
+                <div class="eval-loading">
+                    <div class="panel-spinner"></div>
                     <span>Evaluiert...</span>
                 </div>`;
             return;
@@ -415,15 +415,15 @@
                 <h3>Evaluation</h3>
                 ${tc.evaluation_model ? `<span class="version-badge">${tc.evaluation_model}</span>` : ''}
             </div>
-            ${outdated ? '<div class="evaluation-outdated-warning">Evaluation veraltet — Kriterien wurden geändert. Generiere einen neuen Testfall.</div>' : ''}
-            <div class="evaluation-scores">
+            ${outdated ? '<div class="eval-outdated"><span class="eval-outdated-icon">&#9888;</span> Evaluation veraltet — Kriterien wurden geändert. Generiere einen neuen Testfall.</div>' : ''}
+            <div class="eval-scores">
                 ${(Array.isArray(results) ? results : []).map(r => `
-                    <div class="score-card ${outdated ? 'outdated' : ''}">
-                        <div class="score-header">
-                            <span class="score-name">${escapeHtml(r.criterion || r.name || '')}</span>
-                            <span class="score-value score-${getScoreClass(r.score)}">${r.score}/10</span>
+                    <div class="eval-card ${outdated ? 'outdated' : ''}">
+                        <div class="eval-card-header">
+                            <span class="eval-card-name">${escapeHtml(r.criterion || r.name || '')}</span>
+                            <span class="eval-score eval-score--${getScoreClass(r.score)}">${r.score}/10</span>
                         </div>
-                        <p class="score-comment">${escapeHtml(r.comment || '')}</p>
+                        <p class="eval-card-comment">${escapeHtml(r.comment || '')}</p>
                     </div>
                 `).join('')}
             </div>`;

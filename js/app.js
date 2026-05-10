@@ -1064,6 +1064,12 @@ document.addEventListener('click', (e) => {
     } else if (href.startsWith('/resource/')) {
         const detailId = href.replace('/resource/', '');
         navigateTo('resource-detail', detailId);
+    } else if (href.match(/^\/project\/(.+?)\/settings\/?$/)) {
+        const detailId = href.match(/^\/project\/(.+?)\/settings\/?$/)[1];
+        navigateTo('project-settings', detailId);
+    } else if (href.match(/^\/project\/(.+?)\/?$/)) {
+        const detailId = href.match(/^\/project\/(.+?)\/?$/)[1];
+        navigateTo('experiment', detailId);
     } else {
         const page = href.slice(1);
         navigateTo(page);
