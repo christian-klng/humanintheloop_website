@@ -34,7 +34,12 @@ COPY --from=builder /app/dist/ /usr/share/nginx/html/
 COPY --from=api-deps /app/server/node_modules /app/server/node_modules
 COPY server/api.js /app/server/
 COPY server/image-variants.js /app/server/
+COPY server/db.js /app/server/
+COPY server/user-api.js /app/server/
+COPY server/experiment-api.js /app/server/
+COPY server/openrouter.js /app/server/
 COPY server/package.json /app/server/
+COPY server/migrations/ /app/server/migrations/
 
 # Copy scripts for runtime migration + OG regeneration
 COPY scripts/ /app/scripts/
@@ -47,5 +52,7 @@ EXPOSE 80
 ENV ADMIN_USER=""
 ENV ADMIN_PASSWORD=""
 ENV BASE_URL=""
+ENV DATABASE_URL=""
+ENV MAGIC_LINK_WEBHOOK_URL=""
 
 ENTRYPOINT ["/docker-entrypoint.sh"]

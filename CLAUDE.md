@@ -8,7 +8,8 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
 
 - HTML5, CSS3 (custom properties), vanilla JS
 - Google Fonts (Switzer via Fontshare)
-- Express.js API server (admin CRUD + data aggregation)
+- Express.js API server (admin CRUD + data aggregation + user auth + experiment API)
+- PostgreSQL database (optional, for user auth, projects, experiments)
 - Deployed via Coolify (Docker/nginx + Node.js) on https://humanintheloop.academy
 
 ## Project Structure
@@ -19,12 +20,19 @@ Website for Human in the Loop. Plain HTML, CSS, and vanilla JavaScript served vi
 ├── css/styles.css          All styles, design system variables
 ├── js/app.js               SPA router (History API), event rendering
 ├── js/admin.js             Admin panel UI logic
+├── js/experiment.js        Experiment UI (dashboard, project views)
 ├── events/
 │   └── events.json         Bundled event data (migration seed)
 ├── library/
 │   └── resources.json      Bundled resource data (migration seed)
 ├── server/
-│   ├── api.js              Express API server (auth + CRUD)
+│   ├── api.js              Express API server (admin auth + CRUD)
+│   ├── user-api.js         User auth, projects, admin user/org management
+│   ├── experiment-api.js   Experiment endpoints (criteria, prompts, test cases, evaluations)
+│   ├── openrouter.js       OpenRouter API client for LLM calls
+│   ├── db.js               PostgreSQL connection pool + migration runner
+│   ├── migrations/         SQL migration files
+│   │   └── 001-initial-schema.sql
 │   └── package.json        API server dependencies
 ├── scripts/
 │   ├── generate-pages.js   Build-time OG meta tag generator
@@ -53,7 +61,7 @@ The file `corporate-design-system.md` contains the full Corporate Design System 
 - **Events are data-driven** — individual JSON files on `/files/` volume, served via API
 - **Library resources are data-driven** — individual JSON files on `/files/` volume, served via API
 - **Media files served from `/files/` volume** — Docker volume mounted at `/files/`, referenced as `/files/library/...` in resource JSON
-- **Path-based SPA routing** — URLs use `/`, `/events`, `/event/{id}`, `/library`, `/resource/{id}`, `/styleguide`, `/privacy`, `/terms`, `/imprint`, `/admin`
+- **Path-based SPA routing** — URLs use `/`, `/events`, `/event/{id}`, `/library`, `/resource/{id}`, `/styleguide`, `/privacy`, `/terms`, `/imprint`, `/admin`, `/login`, `/dashboard`, `/project/{id}`, `/project/{id}/settings`
 - **Semantic HTML** — use `<a>` and `<button>` (not `<div onclick>`), include ARIA labels
 - **OG meta tags** — generated per-route at Docker build time via `scripts/generate-pages.js`; regenerated at container startup from volume data; also regenerated automatically by the API server after every admin write operation (create/update/delete); also updated client-side on navigation
 
@@ -93,7 +101,7 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 ## Admin Panel
 
 - **Access**: Navigate to `/admin` (no link in public navigation)
-- **Authentication**: Username + password login via `ADMIN_USER` and `ADMIN_PASSWORD` environment variables
+- **Authentication**: Email + password login for admin users (stored as bcrypt hash in `users` table with `is_admin` flag)
 - **Features**: Edit (raw JSON), add, and delete events and resources; upload media files (images/videos) with folder tabs, URL copy, and lightbox preview
 - **API server**: Express.js on port 3000 (proxied by nginx at `/api/*`)
 - **Session**: Bearer token stored in `sessionStorage`, 24h expiry
@@ -129,6 +137,60 @@ On first container startup, `migrate-to-individual.js` splits the bundled `event
 | `GET` | `/api/uploads?folder=` | Yes | List uploaded media files (folder: `events`, `library`, or empty for root) |
 | `POST` | `/api/uploads?folder=` | Yes | Upload file (multipart/form-data, max 50 MB) |
 | `DELETE` | `/api/uploads/:filename?folder=` | Yes | Delete uploaded file |
+
+## User Authentication & Experiments
+
+- **User auth**: Magic link login (email-based, no passwords). Only pre-registered users can log in.
+- **Admin creates users**: Admin users manage user accounts, organizations, and org membership.
+- **Organizations**: Users belong to organizations. Each org stores an OpenRouter API key for LLM calls.
+- **Projects**: Users create projects within their organization. Only project owners can edit; org members can view.
+- **Experiment UI**: 4-column layout (Criteria, Prompts, Test Cases, Evaluations) with append-only versioning.
+- **LLM integration**: OpenRouter API for generating test cases and evaluating them against criteria.
+- **Database**: PostgreSQL (optional, connected via `DATABASE_URL` env var). Without it, user/experiment features are disabled but the rest of the site works.
+
+### User Routes
+
+| Route | View |
+|-------|------|
+| `/login` | Magic link login form |
+| `/auth/verify/:token` | Magic link verification |
+| `/dashboard` | Project list for logged-in user |
+| `/project/{id}` | 4-column experiment editor |
+| `/project/{id}/settings` | Project name + model settings |
+
+### User API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/api/auth/magic-link` | No | Request magic link email |
+| `GET` | `/api/auth/verify/:token` | No | Verify token, create session |
+| `GET` | `/api/auth/me` | User | Current user info |
+| `POST` | `/api/auth/logout` | User | End session |
+| `GET` | `/api/projects` | User | List visible projects |
+| `POST` | `/api/projects` | User | Create project |
+| `GET` | `/api/projects/:id` | User | Project detail |
+| `PUT` | `/api/projects/:id` | Owner | Update project |
+| `DELETE` | `/api/projects/:id` | Owner | Delete project |
+| `GET` | `/api/projects/:id/criteria` | User | Criteria version history |
+| `PUT` | `/api/projects/:id/criteria` | Owner | Save new criteria version |
+| `GET` | `/api/projects/:id/prompts` | User | Prompt version history |
+| `PUT` | `/api/projects/:id/prompts` | Owner | Save new prompt version |
+| `GET` | `/api/projects/:id/test-cases` | User | Test case history |
+| `POST` | `/api/projects/:id/generate` | Owner | Generate test case via LLM |
+| `POST` | `/api/projects/:id/evaluate/:tcId` | Owner | Evaluate test case via LLM |
+
+### Admin User Management Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| `POST` | `/api/admin/users` | Admin | Create user |
+| `GET` | `/api/admin/users` | Admin | List users |
+| `DELETE` | `/api/admin/users/:id` | Admin | Delete user |
+| `POST` | `/api/admin/organizations` | Admin | Create organization |
+| `GET` | `/api/admin/organizations` | Admin | List organizations |
+| `PUT` | `/api/admin/organizations/:id` | Admin | Update org |
+| `POST` | `/api/admin/organizations/:id/members` | Admin | Add member |
+| `DELETE` | `/api/admin/organizations/:id/members/:userId` | Admin | Remove member |
 
 ## Adding a New Resource
 
@@ -219,8 +281,8 @@ docker run -p 8080:80 -e ADMIN_USER=admin -e ADMIN_PASSWORD=yourpassword -v ./te
 ```
 
 `BASE_URL` is required (build arg) — it sets the absolute URLs for OG meta tags and canonical links.
-`ADMIN_USER` is required (env var) — it sets the admin login username.
-`ADMIN_PASSWORD` is required (env var) — it sets the admin login password.
+`DATABASE_URL` is optional (env var) — PostgreSQL connection string. Without it, user/experiment features are disabled.
+`MAGIC_LINK_WEBHOOK_URL` is optional (env var) — n8n webhook URL for sending magic link emails.
 
 ## Skill routing
 

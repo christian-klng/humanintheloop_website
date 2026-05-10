@@ -66,7 +66,12 @@ const views = {
     imprint: document.getElementById('imprint-view'),
     admin: document.getElementById('admin-view'),
     'admin-dashboard': document.getElementById('admin-dashboard-view'),
-    'admin-edit': document.getElementById('admin-edit-view')
+    'admin-edit': document.getElementById('admin-edit-view'),
+    login: document.getElementById('login-view'),
+    verify: document.getElementById('verify-view'),
+    dashboard: document.getElementById('dashboard-view'),
+    experiment: document.getElementById('experiment-view'),
+    'project-settings': document.getElementById('project-settings-view')
 };
 
 const navLinks = {
@@ -739,6 +744,30 @@ function getRouteFromPath() {
         return { page: 'resource-detail', detailId: resourceMatch[1] };
     }
 
+    // User routes
+    if (path === '/login' || path === '/login/') {
+        return { page: 'login' };
+    }
+
+    const verifyMatch = path.match(/^\/auth\/verify\/(.+?)(?:\/)?$/);
+    if (verifyMatch) {
+        return { page: 'verify', token: verifyMatch[1] };
+    }
+
+    if (path === '/dashboard' || path === '/dashboard/') {
+        return { page: 'dashboard' };
+    }
+
+    const projectSettingsMatch = path.match(/^\/project\/(.+?)\/settings(?:\/)?$/);
+    if (projectSettingsMatch) {
+        return { page: 'project-settings', detailId: projectSettingsMatch[1] };
+    }
+
+    const projectMatch = path.match(/^\/project\/(.+?)(?:\/)?$/);
+    if (projectMatch) {
+        return { page: 'experiment', detailId: projectMatch[1] };
+    }
+
     // Admin routes
     const adminEditEventMatch = path.match(/^\/admin\/event\/(.+?)(?:\/)?$/);
     if (adminEditEventMatch) {
@@ -785,6 +814,10 @@ function navigateTo(page, detailId, opts) {
         }
     } else if (page === 'admin-dashboard') {
         path = '/admin/dashboard';
+    } else if (page === 'experiment' && detailId) {
+        path = `/project/${detailId}`;
+    } else if (page === 'project-settings' && detailId) {
+        path = `/project/${detailId}/settings`;
     } else if (page !== 'home') {
         path = `/${page}`;
     }
@@ -844,6 +877,32 @@ function renderRoute(route) {
         if (typeof renderAdminEditor === 'function') {
             renderAdminEditor(route.editType, detailId, route.isNew);
         }
+    } else if (page === 'login') {
+        // Show login form
+    } else if (page === 'verify') {
+        if (typeof verifyMagicLink === 'function' && route.token) {
+            verifyMagicLink(route.token);
+        }
+    } else if (page === 'dashboard') {
+        if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+            navigateTo('login');
+            return;
+        }
+        if (typeof renderDashboard === 'function') renderDashboard();
+    } else if (page === 'experiment') {
+        if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+            navigateTo('login');
+            return;
+        }
+        if (typeof renderExperimentView === 'function') renderExperimentView(detailId);
+        const settingsLink = document.getElementById('experiment-settings-link');
+        if (settingsLink) settingsLink.href = `/project/${detailId}/settings`;
+    } else if (page === 'project-settings') {
+        if (typeof isUserLoggedIn === 'function' && !isUserLoggedIn()) {
+            navigateTo('login');
+            return;
+        }
+        if (typeof renderProjectSettings === 'function') renderProjectSettings(detailId);
     } else if (navLinks[page]) {
         navLinks[page].classList.add('active');
     }
@@ -893,6 +952,26 @@ function renderRoute(route) {
         'admin-edit': {
             title: 'Admin-Editor | Human in the Loop',
             description: 'Veranstaltungs- oder Ressourcendaten bearbeiten.'
+        },
+        login: {
+            title: 'Anmelden | Human in the Loop',
+            description: 'Melden Sie sich bei Ihrem Human in the Loop-Konto an.'
+        },
+        verify: {
+            title: 'Link bestätigen | Human in the Loop',
+            description: 'Ihr Anmeldelink wird überprüft.'
+        },
+        dashboard: {
+            title: 'Dashboard | Human in the Loop',
+            description: 'Ihre Projekte und Experimente verwalten.'
+        },
+        experiment: {
+            title: 'Experiment | Human in the Loop',
+            description: 'Kriterien, Prompts und Testfälle für Ihr Projekt verwalten.'
+        },
+        'project-settings': {
+            title: 'Projekteinstellungen | Human in the Loop',
+            description: 'Projektname und Modelleinstellungen bearbeiten.'
         }
     };
 
@@ -996,6 +1075,9 @@ window.addEventListener('popstate', () => {
     closeMenu();
     renderRoute(getRouteFromPath());
 });
+
+// Expose navigateTo globally for experiment.js
+window.navigateTo = navigateTo;
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', async () => {

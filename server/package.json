@@ -2,7 +2,9 @@
     "name": "hitl-admin-api",
     "private": true,
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "express": "^4.21.0",
+        "pg": "^8.13.0",
         "sharp": "^0.33.2"
     }
 }

@@ -5,8 +5,7 @@
  * Reads/writes individual JSON files on the /files/ volume.
  *
  * Environment variables:
- *   ADMIN_USER      — required, the admin login username
- *   ADMIN_PASSWORD  — required, the admin login password
+ *   DATABASE_URL    — optional, PostgreSQL connection string
  *   FILES_DIR       — optional, defaults to /files
  */
 
@@ -16,16 +15,13 @@ const path = require('path');
 const crypto = require('crypto');
 const { execFile } = require('child_process');
 const { generateVariants, deleteVariants } = require('./image-variants');
+const db = require('./db');
+const userRouter = require('./user-api');
+const experimentRouter = require('./experiment-api');
+const { requireUserAuth, requireAdmin } = require('./user-api');
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
-
-const ADMIN_USER = process.env.ADMIN_USER;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-if (!ADMIN_USER || !ADMIN_PASSWORD) {
-    console.error('ERROR: ADMIN_USER and ADMIN_PASSWORD environment variables are required.');
-    process.exit(1);
-}
 
 const FILES_DIR = process.env.FILES_DIR || '/files';
 const EVENTS_DIR = path.join(FILES_DIR, 'events');
@@ -45,51 +41,16 @@ fs.mkdirSync(path.join(UPLOADS_DIR, 'library'), { recursive: true });
 const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.mp4', '.webm']);
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
 
-// --- Token store (in-memory, 24h expiry) ---
-
-const TOKEN_TTL = 24 * 60 * 60 * 1000; // 24 hours
-const tokens = new Map(); // token → { createdAt }
-
-function cleanExpiredTokens() {
-    const now = Date.now();
-    for (const [token, data] of tokens) {
-        if (now - data.createdAt > TOKEN_TTL) tokens.delete(token);
-    }
-}
-
-setInterval(cleanExpiredTokens, 60 * 60 * 1000); // hourly cleanup
-
-// --- Rate limiting for login ---
-
-const loginAttempts = new Map(); // ip → { count, resetAt }
-const LOGIN_LIMIT = 5;
-const LOGIN_WINDOW = 60 * 1000; // 1 minute
-
-function checkLoginRate(ip) {
-    const now = Date.now();
-    const entry = loginAttempts.get(ip);
-    if (!entry || now > entry.resetAt) {
-        loginAttempts.set(ip, { count: 1, resetAt: now + LOGIN_WINDOW });
-        return true;
-    }
-    entry.count++;
-    return entry.count <= LOGIN_LIMIT;
-}
-
-// --- Auth middleware ---
+// --- Auth middleware (DB-backed, shared with user-api.js) ---
 
 function requireAuth(req, res, next) {
-    const auth = req.headers.authorization;
-    if (!auth || !auth.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'Nicht autorisiert' });
-    }
-    const token = auth.slice(7);
-    const data = tokens.get(token);
-    if (!data || Date.now() - data.createdAt > TOKEN_TTL) {
-        tokens.delete(token);
-        return res.status(401).json({ error: 'Token abgelaufen oder ungültig' });
-    }
-    next();
+    return requireUserAuth(req, res, (err) => {
+        if (err) return next(err);
+        if (!req.user || !req.user.is_admin) {
+            return res.status(403).json({ error: 'Nur für Administratoren' });
+        }
+        next();
+    });
 }
 
 // --- ID validation ---
@@ -123,33 +84,7 @@ function regenerateOGPages() {
     });
 }
 
-// --- Auth endpoints ---
-
-app.post('/api/login', (req, res) => {
-    const ip = req.headers['x-real-ip'] || req.ip;
-    if (!checkLoginRate(ip)) {
-        return res.status(429).json({ error: 'Zu viele Anmeldeversuche. Bitte später erneut versuchen.' });
-    }
-
-    const { username, password } = req.body;
-    if (!username || !password || username !== ADMIN_USER || password !== ADMIN_PASSWORD) {
-        return res.status(401).json({ error: 'Ungültiger Benutzername oder Passwort' });
-    }
-
-    const token = crypto.randomBytes(32).toString('hex');
-    tokens.set(token, { createdAt: Date.now() });
-    res.json({ token });
-});
-
-app.post('/api/logout', requireAuth, (req, res) => {
-    const token = req.headers.authorization.slice(7);
-    tokens.delete(token);
-    res.json({ ok: true });
-});
-
-app.get('/api/auth/check', requireAuth, (req, res) => {
-    res.json({ ok: true });
-});
+// --- Auth endpoints are handled by user-api.js sub-router ---
 
 // --- Event endpoints ---
 
@@ -535,9 +470,36 @@ app.delete('/api/uploads/:filename', requireAuth, (req, res) => {
     res.json({ ok: true });
 });
 
+// --- Mount sub-routers ---
+
+app.use(userRouter);
+app.use(experimentRouter);
+
 // --- Start server ---
 
 const PORT = process.env.API_PORT || 3000;
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`API server running on 127.0.0.1:${PORT}`);
+
+async function start() {
+    try {
+        await db.runMigrations();
+        console.log('Database migrations complete.');
+    } catch (err) {
+        console.error('Migration failed:', err.message);
+        if (db.pool) {
+            console.error('Exiting due to migration failure.');
+            process.exit(1);
+        }
+    }
+
+    app.listen(PORT, '127.0.0.1', () => {
+        console.log(`API server running on 127.0.0.1:${PORT}`);
+    });
+}
+
+process.on('SIGTERM', async () => {
+    console.log('SIGTERM received, shutting down...');
+    await db.close();
+    process.exit(0);
 });
+
+start();

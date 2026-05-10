@@ -36,6 +36,9 @@
 
     <!-- Plyr video player -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+
+    <!-- EasyMDE Markdown editor -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
 </head>
 <body>
 
@@ -663,6 +666,71 @@
             </section>
         </main>
 
+        <!-- ===== User: Login ===== -->
+        <main id="login-view" class="view">
+            <section class="container section-narrow">
+                <h1>Anmelden</h1>
+                <p class="text-muted">Gib deine E-Mail-Adresse ein und wir senden dir einen Login-Link.</p>
+                <form class="login-form" onsubmit="handleMagicLinkLogin(event)">
+                    <input type="email" id="login-email" class="admin-input" placeholder="name@beispiel.de" autocomplete="email" required>
+                    <p id="login-error" class="admin-error" hidden></p>
+                    <p id="login-success" class="field-success" hidden></p>
+                    <button class="btn btn-primary" type="submit">Login-Link senden</button>
+                </form>
+            </section>
+        </main>
+
+        <!-- ===== User: Verify Magic Link ===== -->
+        <main id="verify-view" class="view">
+            <section class="container section-narrow">
+                <div id="verify-message">
+                    <div class="evaluating-indicator">
+                        <div class="spinner"></div>
+                        <span>Link wird verifiziert...</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== User: Dashboard ===== -->
+        <main id="dashboard-view" class="view">
+            <section class="container">
+                <div class="dashboard-header">
+                    <h1>Projekte</h1>
+                    <div class="dashboard-actions">
+                        <input type="text" id="new-project-name" class="admin-input" placeholder="Neues Projekt...">
+                        <button class="btn btn-primary" onclick="createProject()">Erstellen</button>
+                        <button class="btn btn-secondary" onclick="userLogout()">Abmelden</button>
+                    </div>
+                </div>
+                <div id="dashboard-projects" class="projects-grid"></div>
+            </section>
+        </main>
+
+        <!-- ===== User: Experiment View ===== -->
+        <main id="experiment-view" class="view">
+            <section class="container experiment-container">
+                <div class="experiment-header">
+                    <a href="/dashboard" data-link class="back-link">&larr; Projekte</a>
+                    <h1 id="experiment-project-name"></h1>
+                    <a href="" id="experiment-settings-link" data-link class="btn btn-secondary btn-sm">Einstellungen</a>
+                </div>
+                <div class="experiment-grid">
+                    <div class="experiment-panel" id="criteria-content"></div>
+                    <div class="experiment-panel" id="prompt-content"></div>
+                    <div class="experiment-panel" id="testcase-content"></div>
+                    <div class="experiment-panel" id="evaluation-content"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== User: Project Settings ===== -->
+        <main id="project-settings-view" class="view">
+            <section class="container section-narrow">
+                <div id="project-settings-content"></div>
+            </section>
+        </main>
+
         <!-- ===== Admin: JSON Editor ===== -->
         <main id="admin-edit-view" class="view">
             <div class="page-header page-header--borderless container">
@@ -771,8 +839,13 @@
     <!-- Plyr video player -->
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
 
+    <!-- EasyMDE Markdown editor + marked renderer -->
+    <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+
     <script>window.__CONFIG__={webhookUrl:"__WEBHOOK_URL__"};</script>
     <script src="js/app.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/experiment.js"></script>
 </body>
 </html>

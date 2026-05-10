@@ -1944,10 +1944,591 @@ footer {
 }
 
 
+/* === User Login === */
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.login-container p {
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+.login-form {
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.login-status {
+    font-size: 14px;
+    margin-top: 12px;
+    min-height: 20px;
+}
+
+.login-status--error {
+    color: var(--warning);
+}
+
+.login-status--success {
+    color: var(--success);
+}
+
+/* === Verify View === */
+
+.verify-container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.verify-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.verify-container p {
+    color: var(--text-secondary);
+}
+
+/* === Dashboard === */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.dashboard-header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.dashboard-user {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.project-card {
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.project-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    border-color: #d1d1d1;
+    transform: translateY(-2px);
+}
+
+.project-card h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.project-card-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.project-card-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.create-project-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.create-project-form input {
+    flex: 1;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-base);
+    color: var(--text-primary);
+}
+
+.create-project-form input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+/* === Experiment View === */
+
+.experiment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.experiment-header h1 {
+    font-size: 24px;
+}
+
+.experiment-header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.experiment-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.experiment-panel {
+    background: var(--bg-base);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.panel-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.panel-header-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.panel-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.panel-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+/* Version badge */
+.version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+}
+
+/* Version select */
+.version-select {
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.version-select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+/* Criteria panel */
+.criteria-textarea {
+    width: 100%;
+    min-height: 280px;
+    padding: 12px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    resize: vertical;
+    tab-size: 2;
+    box-sizing: border-box;
+}
+
+.criteria-textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+/* Prompt panel — EasyMDE overrides */
+.prompt-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 16px;
+}
+
+.prompt-tab {
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    margin-bottom: -1px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.prompt-tab:hover {
+    color: var(--text-primary);
+}
+
+.prompt-tab.is-active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent);
+}
+
+.prompt-editor-container {
+    display: none;
+}
+
+.prompt-editor-container.is-active {
+    display: block;
+}
+
+.panel-body .EasyMDEContainer {
+    border: none;
+}
+
+.panel-body .EasyMDEContainer .CodeMirror {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    min-height: 200px;
+    background: var(--bg-surface);
+}
+
+.panel-body .EasyMDEContainer .CodeMirror-focused {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.panel-body .editor-toolbar {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    padding: 4px;
+    opacity: 1;
+}
+
+.panel-body .editor-toolbar button {
+    color: var(--text-secondary);
+    border: none;
+    border-radius: 4px;
+}
+
+.panel-body .editor-toolbar button:hover {
+    background: var(--bg-surface-hover);
+    color: var(--text-primary);
+}
+
+.panel-body .editor-toolbar button.active {
+    background: var(--bg-surface-hover);
+    color: var(--text-primary);
+}
+
+/* Test case panel */
+.testcase-output {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-primary);
+}
+
+.testcase-output h1,
+.testcase-output h2,
+.testcase-output h3 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.testcase-output p {
+    margin-bottom: 12px;
+}
+
+.testcase-output ul,
+.testcase-output ol {
+    margin-left: 20px;
+    margin-bottom: 12px;
+}
+
+.testcase-output li {
+    margin-bottom: 4px;
+}
+
+.testcase-output code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    padding: 2px 6px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.testcase-output pre {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    overflow-x: auto;
+    margin-bottom: 12px;
+}
+
+.testcase-output pre code {
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.testcase-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.testcase-history {
+    margin-bottom: 16px;
+}
+
+/* Evaluation panel */
+.eval-scores {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.eval-card {
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+}
+
+.eval-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.eval-card-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.eval-score {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.eval-score--high {
+    background: var(--success);
+}
+
+.eval-score--mid {
+    background: var(--accent);
+    color: var(--text-primary);
+}
+
+.eval-score--low {
+    background: var(--warning);
+}
+
+.eval-card-comment {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.eval-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Evaluating spinner */
+.eval-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Evaluation outdated warning */
+.eval-outdated {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(255, 209, 102, 0.12);
+    border: 1px solid rgba(255, 209, 102, 0.4);
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.eval-outdated-icon {
+    flex-shrink: 0;
+    color: var(--accent-hover);
+    margin-top: 1px;
+}
+
+/* Generating / loading states */
+.panel-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.panel-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* === Project Settings === */
+
+.settings-container {
+    max-width: 600px;
+}
+
+.settings-field {
+    margin-bottom: 24px;
+}
+
+.settings-field label {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.settings-field input,
+.settings-field select {
+    width: 100%;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-base);
+    color: var(--text-primary);
+}
+
+.settings-field input:focus,
+.settings-field select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.settings-field .text-muted {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+}
+
 /* === Responsive === */
 
 /* Tablet */
 @media (max-width: 900px) {
+    .experiment-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
     .detail-layout {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -2005,6 +2586,31 @@ footer {
 
 /* Mobile */
 @media (max-width: 768px) {
+    .experiment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .experiment-header {
+        padding-top: 80px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .create-project-form {
+        flex-direction: column;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+
     /* --- Mobile Nav (hamburger menu) --- */
     nav {
         padding: 12px 20px;
