@@ -19,7 +19,7 @@
     async function userFetch(url, options = {}) {
         const token = getToken();
         if (!token) {
-            window.navigateTo('/login');
+            window.navigateTo('login');
             throw new Error('Not authenticated');
         }
         const headers = { ...options.headers, 'Authorization': `Bearer ${token}` };
@@ -29,7 +29,7 @@
         const res = await fetch(url, { ...options, headers });
         if (res.status === 401) {
             sessionStorage.removeItem('userToken');
-            window.navigateTo('/login');
+            window.navigateTo('login');
             throw new Error('Session expired');
         }
         return res;
@@ -99,6 +99,11 @@
     // --- Experiment View ---
 
     window.renderExperimentView = async function (projectId) {
+        ['criteria-content', 'prompt-content', 'testcase-content', 'evaluation-content'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.innerHTML = '<div class="panel-loading"><div class="panel-spinner"></div></div>';
+        });
+
         try {
             const [projectRes, criteriaRes, promptsRes, testCasesRes] = await Promise.all([
                 userFetch(`/api/projects/${projectId}`),
@@ -568,7 +573,7 @@
             }
 
             sessionStorage.setItem('userToken', data.token);
-            window.navigateTo('/dashboard');
+            window.navigateTo('dashboard');
         } catch (err) {
             container.innerHTML = `
                 <div class="verify-container">
@@ -587,7 +592,7 @@
             }).catch(() => {});
         }
         sessionStorage.removeItem('userToken');
-        window.navigateTo('/login');
+        window.navigateTo('login');
     };
 
     window.isUserLoggedIn = function () {
